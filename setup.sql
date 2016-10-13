@@ -1,27 +1,25 @@
 CREATE TABLE Users
 (
-    UserID INT NOT NULL AUTO_INCREMENT,
-	PRIMARY KEY(UserID),
+    UserId INT NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY(UserId),
     Username varchar(30),
     PasswordHash char(40),
-	GivenName varchar(30),
-	Surname varchar(30),
 	AuthCode varchar(20)
 );
 
-CREATE TABLE Chats
+CREATE TABLE Characters
 (
-    ChatID INT NOT NULL AUTO_INCREMENT,
-	PRIMARY KEY(ChatID),
+    CharacterId INT NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY(CharacterId),
     DisplayName varchar(30),
 	FileName varchar(30)
 );
 
 CREATE TABLE Permissions
 (
-	UserID INT NOT NULL,
-	FOREIGN KEY (UserID) REFERENCES Users(UserID),
-	ChatID INT NOT NULL,
-	FOREIGN KEY (ChatID) REFERENCES Chats(ChatID),
-	CONSTRAINT PermID PRIMARY KEY (UserID, ChatID)
+	UserId INT NOT NULL,
+	FOREIGN KEY (UserId) REFERENCES Users(UserId),
+	CharacterId INT NOT NULL,
+	FOREIGN KEY (CharacterId) REFERENCES Characters(CharacterId),
+	CONSTRAINT PermId PRIMARY KEY (UserId, CharacterId)
 );

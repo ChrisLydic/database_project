@@ -5,11 +5,9 @@ require("db_open.php");
 
 $duplicate = false;
 
-if (isset($_POST["user"]) && isset($_POST["pass"]) && isset($_POST["first"]) && isset($_POST["last"])) {
+if (isset($_POST["user"]) && isset($_POST["pass"])) {
 	$user = mysqli_real_escape_string($con, $_POST["user"]); //htmlentities
 	$pass = mysqli_real_escape_string($con, sha1($_POST["pass"]));
-	$first = mysqli_real_escape_string($con, $_POST["first"]);
-	$last = mysqli_real_escape_string($con, $_POST["last"]);
 	
 	$result = mysqli_query($con, "SELECT Username FROM Users");
 	if ($result) {
@@ -21,7 +19,7 @@ if (isset($_POST["user"]) && isset($_POST["pass"]) && isset($_POST["first"]) && 
 	}
 
 	if (!$duplicate) {
-		mysqli_query($con, "INSERT INTO Users (Username, PasswordHash, GivenName, Surname, AuthCode) VALUES ('$user', '$pass', '$first', '$last', 'false')");
+		mysqli_query($con, "INSERT INTO Users (Username, PasswordHash, AuthCode) VALUES ('$user', '$pass', 'false')");
 	}
 }
 ?>
@@ -31,7 +29,6 @@ if (isset($_POST["user"]) && isset($_POST["pass"]) && isset($_POST["first"]) && 
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<link href="screen.css" rel="stylesheet" type="text/css" media="screen" />
 		<title>Create User</title>
-		<meta name="author" content="Alex Hedges" />
 		<script type="text/javascript">
 		//<![CDATA[
 			function validateForm() {
@@ -54,8 +51,6 @@ if ($duplicate) {
 }
 ?>
 		<form name= "form" method="post" onsubmit="return validateForm();">
-			<input type="text" name="first" placeholder="First Name" required="required"/>
-			<input type="text" name="last" placeholder="Last Name" required="required"/>
 			<input type="text" name="user" placeholder="Username" required="required"/>
 			<input type="password" name="pass" placeholder="Password" required="required"/>
 			<input type="password" name="pass2" placeholder="Confirm Password" required="required"/>

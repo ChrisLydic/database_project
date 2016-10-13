@@ -30,17 +30,17 @@ if ($_SESSION["auth"]) {
 				$_SESSION["auth"] = true;
 				$_SESSION["user"] = $user;
 				$array = array();
-				mysqli_query($con, "CREATE OR REPLACE VIEW AllowedChats AS
-				SELECT Chats.ChatID, DisplayName, Username FROM Chats
+				mysqli_query($con, "CREATE OR REPLACE VIEW AllowedChars AS
+				SELECT Characters.CharacterId, DisplayName, Username FROM Characters
 				INNER JOIN Permissions
-				ON Chats.ChatID = Permissions.ChatID
+				ON Characters.CharacterId = Permissions.CharacterId
 				INNER JOIN Users
-				ON Permissions.UserID = Users.UserID;");
-				$result = mysqli_query($con, "SELECT ChatID, DisplayName FROM AllowedChats 
+				ON Permissions.UserId = Users.UserId;");
+				$result = mysqli_query($con, "SELECT CharacterId, DisplayName FROM AllowedChars 
 				WHERE Username = '{$_SESSION["user"]}';");
 				if ($result) {
 					while($row = mysqli_fetch_array($result)) {
-						$array[$row["ChatID"]] = $row["DisplayName"];
+						$array[$row["CharacterId"]] = $row["DisplayName"];
 					}
 					$_SESSION["allowed"] = $array;
 				}
@@ -55,7 +55,6 @@ if ($_SESSION["auth"]) {
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<link href="screen.css" rel="stylesheet" type="text/css" media="screen" />
 		<title>Log In</title>
-		<meta name="author" content="Alex Hedges" />
 	</head>
 	<body>
 		<h1>Log In</h1>

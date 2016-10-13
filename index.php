@@ -15,18 +15,17 @@ if (!$_SESSION["auth"]) {
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<link href="screen.css" rel="stylesheet" type="text/css" media="screen" />
 		<title>Welcome!</title>
-		<meta name="author" content="Alex Hedges" />
 	</head>
 	<body>
 		<?php require("header.php"); ?>
 		<h1>Welcome, <?php echo $_SESSION["user"]; ?>!</h1>
-		<h2>Available Chats</h2>
+		<h2>Your Characters:</h2>
 		<ul>
 <?php
 			$array = $_SESSION["allowed"];
 			foreach ($array as $key => $value) {
 ?>
-			<li><a href="chat.php?b=<?php echo $key; ?>"><?php echo $value; ?></a></li>
+			<li><a href="character.php?b=<?php echo $key; ?>"><?php echo $value; ?></a></li>
 <?php
 			}
 ?>
