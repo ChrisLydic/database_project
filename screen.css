@@ -1,0 +1,13 @@
+@charset "utf-8";
+
+#header {
+	float: right;
+}
+
+#header p, #header a {
+	display: inline;
+}
+
+.error {
+	color: #FF0000;
+}
