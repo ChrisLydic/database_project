@@ -13,9 +13,9 @@ if (!$_SESSION["auth"]) {
 
 	if (isset($_SESSION["allowed"][$charId])) {
 		require("db_open.php");
-		$result = mysqli_query($con, "SELECT Name FROM Characters WHERE CharacterId='$charId'");
+		$result = mysqli_query($con, "SELECT CharacterName FROM Characters WHERE CharacterId='$charId'");
 		$row = mysqli_fetch_array($result);
-		$display = $row["Name"];
+		$display = $row["CharacterName"];
 	} else {
 		header("Location: error.php");
 	}

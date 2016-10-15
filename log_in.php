@@ -31,16 +31,16 @@ if ($_SESSION["auth"]) {
 				$_SESSION["user"] = $user;
 				$array = array();
 				mysqli_query($con, "CREATE OR REPLACE VIEW AllowedChars AS
-				SELECT Characters.CharacterId, Name, Username FROM Characters
+				SELECT Characters.CharacterId, CharacterName, Username FROM Characters
 				INNER JOIN Permissions
 				ON Characters.CharacterId = Permissions.CharacterId
 				INNER JOIN Users
 				ON Permissions.UserId = Users.UserId;");
-				$result = mysqli_query($con, "SELECT CharacterId, Name FROM AllowedChars 
+				$result = mysqli_query($con, "SELECT CharacterId, CharacterName FROM AllowedChars 
 				WHERE Username = '{$_SESSION["user"]}';");
 				if ($result) {
 					while($row = mysqli_fetch_array($result)) {
-						$array[$row["CharacterId"]] = $row["Name"];
+						$array[$row["CharacterId"]] = $row["CharacterName"];
 					}
 					$_SESSION["allowed"] = $array;
 				}
