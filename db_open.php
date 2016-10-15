@@ -1,8 +1,8 @@
 <?php
 $HOST = "localhost";
-$USERNAME = "catnob_chatlogin";
-$PASSWORD = "durian";
-$DBNAME = "catnob_chatlogin";
+$USERNAME = "root";
+$PASSWORD = "";
+$DBNAME = "rpg";
 $con = mysqli_connect($HOST, $USERNAME, $PASSWORD, $DBNAME);
 
 if (mysqli_connect_errno()) {

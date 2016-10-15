@@ -11,8 +11,7 @@ CREATE TABLE Characters
 (
     CharacterId INT NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY(CharacterId),
-    DisplayName varchar(30),
-	FileName varchar(30)
+    Name varchar(30)
 );
 
 CREATE TABLE Permissions

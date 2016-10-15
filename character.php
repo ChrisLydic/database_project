@@ -13,10 +13,9 @@ if (!$_SESSION["auth"]) {
 
 	if (isset($_SESSION["allowed"][$charId])) {
 		require("db_open.php");
-		$result = mysqli_query($con, "SELECT DisplayName, FileName FROM Characters WHERE CharacterId='$charId'");
+		$result = mysqli_query($con, "SELECT Name FROM Characters WHERE CharacterId='$charId'");
 		$row = mysqli_fetch_array($result);
-		$display = $row["DisplayName"];
-		//$file = $row["FileName"];
+		$display = $row["Name"];
 	} else {
 		header("Location: error.php");
 	}
