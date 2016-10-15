@@ -9,17 +9,17 @@ if (isset($_POST["user"]) && isset($_POST["pass"])) {
 	$user = mysqli_real_escape_string($con, $_POST["user"]); //htmlentities
 	$pass = mysqli_real_escape_string($con, sha1($_POST["pass"]));
 	
-	$result = mysqli_query($con, "SELECT Username FROM Users");
+	$result = mysqli_query($con, "SELECT username FROM users");
 	if ($result) {
 		while ($row = mysqli_fetch_array($result)) {
-			if ($row["Username"] === $user) {
+			if ($row["username"] === $user) {
 				$duplicate = true;
 			}
 		}
 	}
 
 	if (!$duplicate) {
-		mysqli_query($con, "INSERT INTO Users (Username, PasswordHash, AuthCode) VALUES ('$user', '$pass', 'true')");
+		mysqli_query($con, "INSERT INTO users (username, password_hash, auth_code) VALUES ('$user', '$pass', 'true')");
 		header("Location: index.php");
 	}
 }

@@ -17,30 +17,30 @@ if ($_SESSION["auth"]) {
 		$user = mysqli_real_escape_string($con, $_POST["user"]); //htmlentities
 		$pass = mysqli_real_escape_string($con, sha1($_POST["pass"]));
 		
-		$result = mysqli_query($con, "SELECT PasswordHash, AuthCode FROM Users WHERE Username='$user'");
+		$result = mysqli_query($con, "SELECT password_hash, auth_code FROM users WHERE username='$user'");
 		if (!$result) {
 			$invalid = true;
 		} else {
 			$row = mysqli_fetch_array($result);
-			if ($row["PasswordHash"] !== $pass) {
+			if ($row["password_hash"] !== $pass) {
 				$invalid = true;
-			} else if ($row["AuthCode"] !== "true") {
+			} else if ($row["auth_code"] !== "true") {
 				$disabled = true;
 			} else {
 				$_SESSION["auth"] = true;
 				$_SESSION["user"] = $user;
 				$array = array();
-				mysqli_query($con, "CREATE OR REPLACE VIEW AllowedChars AS
-				SELECT Characters.CharacterId, CharacterName, Username FROM Characters
-				INNER JOIN Permissions
-				ON Characters.CharacterId = Permissions.CharacterId
-				INNER JOIN Users
-				ON Permissions.UserId = Users.UserId;");
-				$result = mysqli_query($con, "SELECT CharacterId, CharacterName FROM AllowedChars 
-				WHERE Username = '{$_SESSION["user"]}';");
+				mysqli_query($con, "CREATE OR REPLACE VIEW allowed_chars AS
+				SELECT characters.character_id, character_name, username FROM characters
+				INNER JOIN permissions
+				ON characters.character_id = permissions.character_id
+				INNER JOIN users
+				ON permissions.user_id = users.user_id;");
+				$result = mysqli_query($con, "SELECT character_id, character_name FROM allowed_chars 
+				WHERE username = '{$_SESSION["user"]}';");
 				if ($result) {
 					while($row = mysqli_fetch_array($result)) {
-						$array[$row["CharacterId"]] = $row["CharacterName"];
+						$array[$row["character_id"]] = $row["character_name"];
 					}
 					$_SESSION["allowed"] = $array;
 				}
