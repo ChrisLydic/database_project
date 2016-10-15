@@ -20,6 +20,7 @@ if (isset($_POST["user"]) && isset($_POST["pass"])) {
 
 	if (!$duplicate) {
 		mysqli_query($con, "INSERT INTO Users (Username, PasswordHash, AuthCode) VALUES ('$user', '$pass', 'true')");
+		header("Location: index.php");
 	}
 }
 ?>
