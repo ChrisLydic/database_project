@@ -8,6 +8,16 @@ if (!isset($_SESSION["auth"])) {
 if (!$_SESSION["auth"]) {
 	header("Location: log_in.php");
 } else {
+	require("db_open.php");
+	$array = array();
+	$result = mysqli_query($con, "SELECT character_id, character_name FROM characters, users 
+	WHERE username = '{$_SESSION["user"]}' and characters.user_id = users.user_id;");
+	if ($result) {
+		while($row = mysqli_fetch_array($result)) {
+			$array[$row["character_id"]] = $row["character_name"];
+		}
+		$_SESSION["allowed"] = $array;
+	}
 ?>
 <!DOCTYPE html>
 <html lang="en" xml:lang="en">
@@ -25,7 +35,7 @@ if (!$_SESSION["auth"]) {
 			$array = $_SESSION["allowed"];
 			foreach ($array as $key => $value) {
 ?>
-			<li><a href="character.php?b=<?php echo $key; ?>"><?php echo $value; ?></a></li>
+			<li><a href="character.php?char=<?php echo $key; ?>"><?php echo $value; ?></a></li>
 <?php
 			}
 ?>

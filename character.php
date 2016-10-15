@@ -13,7 +13,7 @@ if (!$_SESSION["auth"]) {
 
 	if (isset($_SESSION["allowed"][$charId])) {
 		require("db_open.php");
-		$result = mysqli_query($con, "SELECT character_name FROM characters WHERE characterId='$charId'");
+		$result = mysqli_query($con, "SELECT character_name FROM characters WHERE character_id='$charId'");
 		$row = mysqli_fetch_array($result);
 		$display = $row["character_name"];
 	} else {

@@ -2,8 +2,8 @@ CREATE TABLE users
 (
 	user_id INT NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY(user_id),
-	username VARCHAR(30),
-	password_hash CHAR(40),
+	username VARCHAR(30) NOT NULL,
+	password_hash CHAR(40) NOT NULL,
 	auth_code VARCHAR(20)
 );
 
@@ -11,47 +11,38 @@ CREATE TABLE characters
 (
 	character_id INT NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY(character_id),
-	character_name VARCHAR(50),
-	character_level INT,
-	str_attr INT,
-	int_attr INT,
-	char_attr INT,
-	con_attr INT,
-	dex_attr INT,
-	wis_attr INT,
+	character_name VARCHAR(50) NOT NULL,
+	character_level INT NOT NULL,
+	str_attr INT NOT NULL,
+	int_attr INT NOT NULL,
+	char_attr INT NOT NULL,
+	con_attr INT NOT NULL,
+	dex_attr INT NOT NULL,
+	wis_attr INT NOT NULL,
 	weight INT,
 	height INT,
 	age INT,
 	religion VARCHAR(20),
 	gender VARCHAR(10),
-	char_class INT,
+	char_class INT NOT NULL,
 	FOREIGN KEY (char_class) REFERENCES classes(class_id),
-	race INT,
+	race INT NOT NULL,
 	FOREIGN KEY (race) REFERENCES races(race_id),
 	hit_points INT,
 	alignment CHAR(2),
 	money DECIMAL(10, 2),
-	user_id INT,
-	FOREIGN KEY (user_id) REFERENCES users(user_id)
-);
-
-CREATE TABLE permissions
-(
 	user_id INT NOT NULL,
-	FOREIGN KEY (user_id) REFERENCES users(user_id),
-	character_id INT NOT NULL,
-	FOREIGN KEY (character_id) REFERENCES characters(character_id),
-	CONSTRAINT permissions_id PRIMARY KEY (user_id, character_id)
+	FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 CREATE TABLE skills
 (
 	skill_id INT NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY(skill_id),
-	skill_name VARCHAR(40),
-	attribute CHAR(3),
-	armor_penalty INT,
-	untrained BOOLEAN
+	skill_name VARCHAR(40) NOT NULL,
+	attribute CHAR(3) NOT NULL,
+	armor_penalty INT NOT NULL,
+	untrained BOOLEAN NOT NULL
 	# synergies
 );
 
@@ -105,18 +96,26 @@ CREATE TABLE races
 (
 	race_id INT NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY(race_id),
-	race_name VARCHAR(20),
-	speed INT,
-	race_size INT,
+	race_name VARCHAR(20) NOT NULL,
+	speed INT NOT NULL,
+	race_size VARCHAR(10) NOT NULL,
 	racial_features TEXT,
 	ability_adjustments TEXT
 );
+
+INSERT INTO races (race_name, speed, race_size) VALUES ('Human', 30, 'Medium');
+INSERT INTO races (race_name, speed, race_size) VALUES ('Dwarf', 20, 'Medium');
+INSERT INTO races (race_name, speed, race_size) VALUES ('Elf', 30, 'Medium');
+INSERT INTO races (race_name, speed, race_size) VALUES ('Gnome', 20, 'Small');
+INSERT INTO races (race_name, speed, race_size) VALUES ('Half-elf', 30, 'Medium');
+INSERT INTO races (race_name, speed, race_size) VALUES ('Half-orc', 30, 'Medium');
+INSERT INTO races (race_name, speed, race_size) VALUES ('Halfling', 20, 'Small');
 
 CREATE TABLE classes
 (
 	class_id INT NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY(class_id),
-	class_name VARCHAR(20),
+	class_name VARCHAR(20) NOT NULL,
 	base_attack INT,
 	fort_save INT,
 	will_save INT,
@@ -132,7 +131,7 @@ CREATE TABLE feats
 (
 	feat_id INT NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY(feat_id),
-	feat_name VARCHAR(20),
+	feat_name VARCHAR(20) NOT NULL,
 	description TEXT,
 	prerequisites TEXT
 );
@@ -141,27 +140,49 @@ CREATE TABLE languages
 (
 	language_id INT NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY(language_id),
-	language_name VARCHAR(20)
+	language_name VARCHAR(20) NOT NULL,
+	alphabet VARCHAR(10) NOT NULL
 );
+
+INSERT INTO languages(language_name, alphabet) VALUES ('Abyssal', 'Infernal');
+INSERT INTO languages(language_name, alphabet) VALUES ('Aquan', 'Elven');
+INSERT INTO languages(language_name, alphabet) VALUES ('Auran', 'Draconic');
+INSERT INTO languages(language_name, alphabet) VALUES ('Celestial', 'Celestial');
+INSERT INTO languages(language_name, alphabet) VALUES ('Common', 'Common');
+INSERT INTO languages(language_name, alphabet) VALUES ('Draconic', 'Draconic');
+INSERT INTO languages(language_name, alphabet) VALUES ('Druidic', 'Druidic');
+INSERT INTO languages(language_name, alphabet) VALUES ('Dwarven', 'Dwarven');
+INSERT INTO languages(language_name, alphabet) VALUES ('Elven', 'Elven');
+INSERT INTO languages(language_name, alphabet) VALUES ('Giant', 'Dwarven');
+INSERT INTO languages(language_name, alphabet) VALUES ('Gnome', 'Dwarven');
+INSERT INTO languages(language_name, alphabet) VALUES ('Goblin', 'Dwarven');
+INSERT INTO languages(language_name, alphabet) VALUES ('Gnoll', 'Common');
+INSERT INTO languages(language_name, alphabet) VALUES ('Halfling', 'Common');
+INSERT INTO languages(language_name, alphabet) VALUES ('Ignan', 'Draconic');
+INSERT INTO languages(language_name, alphabet) VALUES ('Infernal', 'Infernal');
+INSERT INTO languages(language_name, alphabet) VALUES ('Orc', 'Dwarven');
+INSERT INTO languages(language_name, alphabet) VALUES ('Sylvan', 'Elven');
+INSERT INTO languages(language_name, alphabet) VALUES ('Terran', 'Dwarven');
+INSERT INTO languages(language_name, alphabet) VALUES ('Undercommon', 'Elven');
 
 CREATE TABLE spells
 (
 	spell_id INT NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY(spell_id),
-	spell_name VARCHAR(20),
-	spell_type VARCHAR(20)
+	spell_name VARCHAR(20) NOT NULL,
+	spell_type VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE armor
 (
 	armor_id INT NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY(armor_id),
-	armor_name VARCHAR(20),
-	cost DECIMAL(10, 2),
-	armor_bonus INT,
-	max_dex INT,
-	armor_check_penalty INT,
-	arcane_spell_failure_chance INT,
+	armor_name VARCHAR(20) NOT NULL,
+	cost DECIMAL(10, 2) NOT NULL,
+	armor_bonus INT NOT NULL,
+	max_dex INT NOT NULL,
+	armor_check_penalty INT NOT NULL,
+	arcane_spell_failure_chance INT NOT NULL,
 	weight INT
 );
 
@@ -169,8 +190,8 @@ CREATE TABLE generic_items
 (
 	generic_item_id INT NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY(generic_item_id),
-	generic_item_name VARCHAR(30),
-	cost DECIMAL(10, 2),
+	generic_item_name VARCHAR(30) NOT NULL,
+	cost DECIMAL(10, 2) NOT NULL,
 	weight INT
 );
 
@@ -178,91 +199,91 @@ CREATE TABLE weapons
 (
 	weapon_id INT NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY(weapon_id),
-	weapons_name VARCHAR(30),
-	damage VARCHAR(10),
+	weapons_name VARCHAR(30) NOT NULL,
+	damage VARCHAR(10) NOT NULL,
 	weapon_range INT,
-	cost DECIMAL(10, 2),
+	cost DECIMAL(10, 2) NOT NULL,
 	weight INT,
-	critical VARCHAR(10),
-	damage_type VARCHAR(3)
+	critical VARCHAR(10) NOT NULL,
+	damage_type VARCHAR(3) NOT NULL
 );
 
 CREATE TABLE characters_skills
 (
-	character_id INT,
+	character_id INT NOT NULL,
 	FOREIGN KEY (character_id) REFERENCES characters(character_id),
-	skill_id INT,
+	skill_id INT NOT NULL,
 	FOREIGN KEY (skill_id) REFERENCES skills(skill_id),
-	skill_rank INT
+	skill_rank INT NOT NULL
 );
 
 CREATE TABLE skills_races
 (
-	skill_id INT,
+	skill_id INT NOT NULL,
 	FOREIGN KEY (skill_id) REFERENCES skills(skill_id),
-	race_id INT,
+	race_id INT NOT NULL,
 	FOREIGN KEY (race_id) REFERENCES races(race_id)
 );
 
 CREATE TABLE skills_classes
 (
-	skill_id INT,
+	skill_id INT NOT NULL,
 	FOREIGN KEY (skill_id) REFERENCES skills(skill_id),
-	class_id INT,
+	class_id INT NOT NULL,
 	FOREIGN KEY (class_id) REFERENCES classes(class_id),
 	cross_class BOOLEAN
 );
 
 CREATE TABLE characters_feats
 (
-	character_id INT,
+	character_id INT NOT NULL,
 	FOREIGN KEY (character_id) REFERENCES characters(character_id),
-	feat_id INT,
+	feat_id INT NOT NULL,
 	FOREIGN KEY (feat_id) REFERENCES feats(feat_id)
 );
 
 CREATE TABLE characters_languages
 (
-	character_id INT,
+	character_id INT NOT NULL,
 	FOREIGN KEY (character_id) REFERENCES characters(character_id),
-	language_id INT,
+	language_id INT NOT NULL,
 	FOREIGN KEY (language_id) REFERENCES languages(language_id)
 );
 
 CREATE TABLE characters_spells
 (
-	character_id INT,
+	character_id INT NOT NULL,
 	FOREIGN KEY (character_id) REFERENCES characters(character_id),
-	spell_id INT,
+	spell_id INT NOT NULL,
 	FOREIGN KEY (spell_id) REFERENCES spells(spell_id)
 );
 
 CREATE TABLE characters_armors
 (
-	character_id INT,
+	character_id INT NOT NULL,
 	FOREIGN KEY (character_id) REFERENCES characters(character_id),
-	armor_id INT,
+	armor_id INT NOT NULL,
 	FOREIGN KEY (armor_id) REFERENCES armors(armor_id),
-	quantity INT,
+	quantity INT NOT NULL,
 	location VARCHAR(30)
 );
 
 CREATE TABLE characters_generic_items
 (
-	character_id INT,
+	character_id INT NOT NULL,
 	FOREIGN KEY (character_id) REFERENCES characters(character_id),
-	generic_item_id INT,
+	generic_item_id INT NOT NULL,
 	FOREIGN KEY (generic_item_id) REFERENCES generic_items(generic_item_id),
-	quantity INT,
+	quantity INT NOT NULL,
 	location VARCHAR(30)
 );
 
 CREATE TABLE characters_weapons
 (
-	character_id INT,
+	character_id INT NOT NULL,
 	FOREIGN KEY (character_id) REFERENCES characters(character_id),
-	weapon_id INT,
+	weapon_id INT NOT NULL,
 	FOREIGN KEY (weapon_id) REFERENCES weapons(weapon_id),
-	quantity INT,
+	quantity INT NOT NULL,
 	location VARCHAR(30)
 );

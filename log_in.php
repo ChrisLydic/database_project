@@ -29,21 +29,6 @@ if ($_SESSION["auth"]) {
 			} else {
 				$_SESSION["auth"] = true;
 				$_SESSION["user"] = $user;
-				$array = array();
-				mysqli_query($con, "CREATE OR REPLACE VIEW allowed_chars AS
-				SELECT characters.character_id, character_name, username FROM characters
-				INNER JOIN permissions
-				ON characters.character_id = permissions.character_id
-				INNER JOIN users
-				ON permissions.user_id = users.user_id;");
-				$result = mysqli_query($con, "SELECT character_id, character_name FROM allowed_chars 
-				WHERE username = '{$_SESSION["user"]}';");
-				if ($result) {
-					while($row = mysqli_fetch_array($result)) {
-						$array[$row["character_id"]] = $row["character_name"];
-					}
-					$_SESSION["allowed"] = $array;
-				}
 				header("Location: index.php");
 			}
 		}	
