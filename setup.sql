@@ -13,24 +13,37 @@ CREATE TABLE characters
 	PRIMARY KEY(character_id),
 	character_name VARCHAR(50) NOT NULL,
 	character_level INT NOT NULL,
+	CHECK (character_level > 0)
 	str_attr INT NOT NULL,
-	int_attr INT NOT NULL,
-	char_attr INT NOT NULL,
-	con_attr INT NOT NULL,
+	CHECK (str_attr >= 0),
 	dex_attr INT NOT NULL,
+	CHECK (dex_attr >= 0),
+	con_attr INT NOT NULL,
+	CHECK (con_attr >= 0),
+	int_attr INT NOT NULL,
+	CHECK (int_attr >= 0),
 	wis_attr INT NOT NULL,
+	CHECK (wis_attr >= 0),
+	cha_attr INT NOT NULL,
+	CHECK (cha_attr >= 0),
 	weight INT,
+	CHECK (weight > 0),
 	height INT,
+	CHECK (height > 0),
 	age INT,
+	CHECK (age > 0),
 	religion VARCHAR(20),
 	gender VARCHAR(10),
 	char_class INT NOT NULL,
 	FOREIGN KEY (char_class) REFERENCES classes(class_id),
 	race INT NOT NULL,
 	FOREIGN KEY (race) REFERENCES races(race_id),
-	hit_points INT,
-	alignment CHAR(2),
+	hit_points INT NOT NULL,
+	CHECK (age >= -10),
+	alignment CHAR(2) NOT NULL,
+	CHECK (alignment IN ('LG', 'NG', 'CG', 'LN', 'N', 'CN', 'LE', 'NE', 'CE')),
 	money DECIMAL(10, 2),
+	CHECK (age >= 0),
 	user_id INT NOT NULL,
 	FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
@@ -41,7 +54,9 @@ CREATE TABLE skills
 	PRIMARY KEY(skill_id),
 	skill_name VARCHAR(40) NOT NULL,
 	attribute CHAR(3) NOT NULL,
+	CHECK (attribute IN ('STR', 'DEX', 'CON', 'INT', 'WIS', 'CHA', 'NON')),
 	armor_penalty INT NOT NULL,
+	CHECK (armor_penalty >= 0),
 	untrained BOOLEAN NOT NULL
 	# synergies
 );
@@ -83,7 +98,7 @@ INSERT INTO skills (skill_name, attribute, untrained, armor_penalty) VALUES ('Ri
 INSERT INTO skills (skill_name, attribute, untrained, armor_penalty) VALUES ('Seach', 'INT', TRUE, 0);
 INSERT INTO skills (skill_name, attribute, untrained, armor_penalty) VALUES ('Sense Motive', 'WIS', TRUE, 0);
 INSERT INTO skills (skill_name, attribute, untrained, armor_penalty) VALUES ('Sleight of Hand', 'DEX', FALSE, 1);
-INSERT INTO skills (skill_name, attribute, untrained, armor_penalty) VALUES ('Speak Language', '', FALSE, 0);
+INSERT INTO skills (skill_name, attribute, untrained, armor_penalty) VALUES ('Speak Language', 'NON', FALSE, 0);
 INSERT INTO skills (skill_name, attribute, untrained, armor_penalty) VALUES ('Spellcraft', 'INT', FALSE, 0);
 INSERT INTO skills (skill_name, attribute, untrained, armor_penalty) VALUES ('Spot', 'WIS', TRUE, 0);
 INSERT INTO skills (skill_name, attribute, untrained, armor_penalty) VALUES ('Survival', 'WIS', TRUE, 0);
@@ -98,7 +113,9 @@ CREATE TABLE races
 	PRIMARY KEY(race_id),
 	race_name VARCHAR(20) NOT NULL,
 	speed INT NOT NULL,
+	CHECK (speed >= 0),
 	race_size VARCHAR(10) NOT NULL,
+	CHECK (race_size IN ('Fine', 'Diminutive', 'Tiny', 'Small', 'Medium', 'Large', 'Huge', 'Gargantuan', 'Colossal')),
 	racial_features TEXT,
 	ability_adjustments TEXT
 );
@@ -116,11 +133,11 @@ CREATE TABLE classes
 	class_id INT NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY(class_id),
 	class_name VARCHAR(20) NOT NULL,
-	base_attack INT,
-	fort_save INT,
-	will_save INT,
-	ref_save INT,
-	hd INT,
+	base_attack INT NOT NULL,
+	fort_save INT NOT NULL,
+	will_save INT NOT NULL,
+	ref_save INT NOT NULL,
+	hd INT NOT NULL,
 	spells_per_day INT,
 	class_features TEXT,
 	alignment TEXT,
