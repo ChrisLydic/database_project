@@ -12,7 +12,7 @@ CREATE TABLE characters
 	character_id INT NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY(character_id),
 	character_name VARCHAR(50) NOT NULL,
-	character_level INT NOT NULL,
+	character_level INT NOT NULL, # include XP too?
 	CHECK (character_level > 0)
 	str_attr INT NOT NULL,
 	CHECK (str_attr >= 0),
@@ -133,16 +133,32 @@ CREATE TABLE classes
 	class_id INT NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY(class_id),
 	class_name VARCHAR(20) NOT NULL,
-	base_attack INT NOT NULL,
-	fort_save INT NOT NULL,
-	will_save INT NOT NULL,
-	ref_save INT NOT NULL,
+	base_attack VARCHAR(4) NOT NULL,
+	CHECK (base_attack IN ('Good', 'Average', 'Poor')),
+	fort_save VARCHAR(7) INT NOT NULL,
+	CHECK (fort_save IN ('Good', 'Poor')),
+	ref_save VARCHAR(7) INT NOT NULL,
+	CHECK (ref_save IN ('Good', 'Poor')),
+	will_save VARCHAR(7) INT NOT NULL,
+	CHECK (will_save IN ('Good', 'Poor')),
 	hd INT NOT NULL,
 	spells_per_day INT,
 	class_features TEXT,
 	alignment TEXT,
 	skill_points INT
 );
+
+INSERT INTO classes (class_name, base_attack, fort_save, ref_save, will_save, hd, alignment) VALUES ('Barbarian', 'Good', 'Good', 'Poor', 'Poor', 12, '!L');
+INSERT INTO classes (class_name, base_attack, fort_save, ref_save, will_save, hd, alignment) VALUES ('Bard', 'Average', 'Poor', 'Good', 'Good', 6, '!L');
+INSERT INTO classes (class_name, base_attack, fort_save, ref_save, will_save, hd, alignment) VALUES ('Cleric', 'Average', 'Good', 'Poor', 'Good', 8, 'Within one step of deity');
+INSERT INTO classes (class_name, base_attack, fort_save, ref_save, will_save, hd, alignment) VALUES ('Druid', 'Average', 'Good', 'Poor', 'Good', 8, 'Any N');
+INSERT INTO classes (class_name, base_attack, fort_save, ref_save, will_save, hd, alignment) VALUES ('Fighter', 'Good', 'Good', 'Poor', 'Poor', 10, 'Any');
+INSERT INTO classes (class_name, base_attack, fort_save, ref_save, will_save, hd, alignment) VALUES ('Monk', 'Average', 'Good', 'Good', 'Good', 8, 'Any L');
+INSERT INTO classes (class_name, base_attack, fort_save, ref_save, will_save, hd, alignment) VALUES ('Paladin', 'Good', 'Good', 'Poor', 'Poor', 10, 'LG');
+INSERT INTO classes (class_name, base_attack, fort_save, ref_save, will_save, hd, alignment) VALUES ('Ranger', 'Good', 'Good', 'Good', 'Poor', 8, 'Any');
+INSERT INTO classes (class_name, base_attack, fort_save, ref_save, will_save, hd, alignment) VALUES ('Rogue', 'Average', 'Poor', 'Good', 'Poor', 6, 'Any');
+INSERT INTO classes (class_name, base_attack, fort_save, ref_save, will_save, hd, alignment) VALUES ('Sorcerer', 'Poor', 'Poor', 'Poor', 'Good', 4, 'Any');
+INSERT INTO classes (class_name, base_attack, fort_save, ref_save, will_save, hd, alignment) VALUES ('Wizard', 'Poor', 'Poor', 'Poor', 'Good', 4, 'Any');
 
 CREATE TABLE feats
 (
@@ -231,7 +247,8 @@ CREATE TABLE characters_skills
 	FOREIGN KEY (character_id) REFERENCES characters(character_id),
 	skill_id INT NOT NULL,
 	FOREIGN KEY (skill_id) REFERENCES skills(skill_id),
-	skill_rank INT NOT NULL
+	skill_rank INT NOT NULL,
+	CHECK (bonus >= 0)
 );
 
 CREATE TABLE skills_races
@@ -239,7 +256,8 @@ CREATE TABLE skills_races
 	skill_id INT NOT NULL,
 	FOREIGN KEY (skill_id) REFERENCES skills(skill_id),
 	race_id INT NOT NULL,
-	FOREIGN KEY (race_id) REFERENCES races(race_id)
+	FOREIGN KEY (race_id) REFERENCES races(race_id),
+	bonus INT NOT NULL,
 );
 
 CREATE TABLE skills_classes
