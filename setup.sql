@@ -7,7 +7,7 @@ CREATE TABLE users
 	PRIMARY KEY(user_id),
 	username VARCHAR(30) NOT NULL,
 	password_hash CHAR(40) NOT NULL,
-	auth_code VARCHAR(20) DEFAULT 'true'
+	auth_code VARCHAR(20) DEFAULT 'true' # Can be modified to deactivate users
 );
 
 # Add your own preferred default user for testing
@@ -21,24 +21,24 @@ CREATE TABLE characters
 	character_name VARCHAR(50) NOT NULL,
 	character_level INT NOT NULL, # include XP too?
 	CHECK (character_level > 0),
-	str_attr INT NOT NULL,
-	CHECK (str_attr >= 0),
-	dex_attr INT NOT NULL,
-	CHECK (dex_attr >= 0),
-	con_attr INT NOT NULL,
-	CHECK (con_attr >= 0),
-	int_attr INT NOT NULL,
-	CHECK (int_attr >= 0),
-	wis_attr INT NOT NULL,
-	CHECK (wis_attr >= 0),
-	cha_attr INT NOT NULL,
-	CHECK (cha_attr >= 0),
-	weight INT,
-	CHECK (weight > 0),
+	str_attr INT, # No NOT NULL because not needed to be a creature (e.g. non-corporeal)
+	CHECK (str_attr > 0),
+	dex_attr INT,
+	CHECK (dex_attr > 0),
+	con_attr INT,
+	CHECK (con_attr > 0),
+	int_attr INT,
+	CHECK (int_attr > 0),
+	wis_attr INT NOT NULL, # Needed to be a creature
+	CHECK (wis_attr > 0),
+	cha_attr INT NOT NULL, # Needed to be a creature
+	CHECK (cha_attr > 0),
+	weight INT, # Non-corporeal can be massless
+	CHECK (weight >= 0),
 	height INT,
 	CHECK (height > 0),
 	age INT,
-	CHECK (age > 0),
+	CHECK (age >= 0),
 	religion VARCHAR(20),
 	gender VARCHAR(10),
 	char_class INT NOT NULL,
