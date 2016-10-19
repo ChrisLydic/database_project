@@ -36,7 +36,7 @@ if (!$_SESSION["auth"]) {
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<link href="screen.css" rel="stylesheet" type="text/css" media="screen" />
-		<title>Chat</title>
+		<title><?php echo $row["character_name"]; ?></title>
 		<meta name="author" content="Alex Hedges" />
 	</head>
 	<body onload="refresh(false);">
