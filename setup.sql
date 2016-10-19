@@ -13,7 +13,7 @@ CREATE TABLE characters
 	PRIMARY KEY(character_id),
 	character_name VARCHAR(50) NOT NULL,
 	character_level INT NOT NULL, # include XP too?
-	CHECK (character_level > 0)
+	CHECK (character_level > 0),
 	str_attr INT NOT NULL,
 	CHECK (str_attr >= 0),
 	dex_attr INT NOT NULL,
@@ -133,13 +133,13 @@ CREATE TABLE classes
 	class_id INT NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY(class_id),
 	class_name VARCHAR(20) NOT NULL,
-	base_attack VARCHAR(4) NOT NULL,
+	base_attack VARCHAR(4) NOT NULL, # the insertions below this violate 4 char length
 	CHECK (base_attack IN ('Good', 'Average', 'Poor')),
-	fort_save VARCHAR(7) INT NOT NULL,
+	fort_save VARCHAR(7) NOT NULL, # previously fort_save VARCHAR(7) INT NOT NULL
 	CHECK (fort_save IN ('Good', 'Poor')),
-	ref_save VARCHAR(7) INT NOT NULL,
+	ref_save VARCHAR(7) NOT NULL, # previously ref_save VARCHAR(7) INT NOT NULL
 	CHECK (ref_save IN ('Good', 'Poor')),
-	will_save VARCHAR(7) INT NOT NULL,
+	will_save VARCHAR(7) NOT NULL, # previously will_save VARCHAR(7) INT NOT NULL
 	CHECK (will_save IN ('Good', 'Poor')),
 	hd INT NOT NULL,
 	spells_per_day INT,
@@ -257,7 +257,7 @@ CREATE TABLE skills_races
 	FOREIGN KEY (skill_id) REFERENCES skills(skill_id),
 	race_id INT NOT NULL,
 	FOREIGN KEY (race_id) REFERENCES races(race_id),
-	bonus INT NOT NULL,
+	bonus INT NOT NULL
 );
 
 CREATE TABLE skills_classes
