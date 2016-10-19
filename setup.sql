@@ -139,6 +139,7 @@ CREATE TABLE classes
 	class_id INT NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY(class_id),
 	class_name VARCHAR(20) NOT NULL,
+<<<<<<< HEAD
 	base_attack VARCHAR(7) NOT NULL,
 	CHECK (base_attack IN ('Good', 'Average', 'Poor')),
 	fort_save VARCHAR(4) NOT NULL,
@@ -146,6 +147,15 @@ CREATE TABLE classes
 	ref_save VARCHAR(4) NOT NULL,
 	CHECK (ref_save IN ('Good', 'Poor')),
 	will_save VARCHAR(4) NOT NULL,
+=======
+	base_attack VARCHAR(4) NOT NULL, # the insertions below this violate 4 char length
+	CHECK (base_attack IN ('Good', 'Average', 'Poor')),
+	fort_save VARCHAR(7) NOT NULL, # previously fort_save VARCHAR(7) INT NOT NULL
+	CHECK (fort_save IN ('Good', 'Poor')),
+	ref_save VARCHAR(7) NOT NULL, # previously ref_save VARCHAR(7) INT NOT NULL
+	CHECK (ref_save IN ('Good', 'Poor')),
+	will_save VARCHAR(7) NOT NULL, # previously will_save VARCHAR(7) INT NOT NULL
+>>>>>>> origin/master
 	CHECK (will_save IN ('Good', 'Poor')),
 	hd INT NOT NULL,
 	skill_points INT NOT NULL,
