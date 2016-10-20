@@ -128,7 +128,7 @@ if ($is_form_full) {
 			}
 			mysqli_query($con, "UPDATE characters SET $set_str WHERE character_id=$charId;");
 			
-			header("Location: character.php?" . http_build_query($_GET));
+			header("Location: character.php?" . http_build_query($_GET)); # TODO Fix to not add edit to URL
 		} else
 		{
 			$insert_str = "INSERT INTO characters (";
@@ -238,7 +238,7 @@ if ($is_form_full) {
 			</select>
 
 			<label for="hit_points">Hit Points:</label>
-			<input type="number" name="hit_points" value="<?php echo ($edit ? $row["hit_points"] : 0) ?>" min="0" max="1000">
+			<input type="number" name="hit_points" value="<?php echo ($edit ? $row["hit_points"] : 0) ?>" min="<?php echo PHP_INT_MIN ?>" max="<?php echo PHP_INT_MAX ?>">
 
 			<label for="alignment">Alignment:</label>
 			<select name="alignment">
