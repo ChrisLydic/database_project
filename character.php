@@ -58,9 +58,9 @@ if (!$_SESSION["auth"]) {
 		<p>Race: <?php echo $_SESSION["race"]; ?></p>
 		<p>Hit Points: <?php echo $row["hit_points"]; ?></p>
 		<p>Alignment: <?php echo $row["alignment"]; ?></p>
-		<p>Money: $<?php echo $row["money"]; ?></p>
+		<p>Money: <?php echo $row["money"]; ?> gp</p>
 
-		<a href="edit_character.php?char=<?php echo $charId; ?>">Edit Character</a> |
+		<a href="character_form.php?mode=edit&char=<?php echo $charId; ?>">Edit Character</a> |
 		<a href="delete_character.php?char=<?php echo $charId; ?>">Delete Character</a>
 	</body>
 </html>

@@ -29,6 +29,7 @@ if (!$_SESSION["auth"]) {
 	<body>
 		<?php require("header.php"); ?>
 		<h1>Welcome, <?php echo $_SESSION["user"]; ?>!</h1>
+		<a href="character_form.php">Create Character</a>
 		<h2>Your Characters:</h2>
 		<ul>
 <?php
