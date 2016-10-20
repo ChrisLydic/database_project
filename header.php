@@ -12,7 +12,8 @@ if (!$_SESSION["auth"]) {
 } else {
 ?>
 			<p><a href="index.php">Home</a> | 
-			User: <?php echo $_SESSION["user"]; ?> | 
+			<p><a href="search.php">Search</a> | 
+			User: <?php echo $_SESSION["user"]; ?> |
 			<a href="log_out.php">Log Out</a></p>
 <?php
 }

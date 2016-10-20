@@ -161,12 +161,6 @@ if ($is_form_full) {
 //			}
 		//]]>
 		</script>
-
-		<style>
-			label, input, select { display: block; font-size: 1rem; }
-			input, select { margin: 0 0 20px 0; padding: 5px; }
-			label { margin: 0 0 5px 0; }
-		</style>
 	</head>
 	<body>
 		<?php require("header.php"); ?>
