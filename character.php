@@ -42,6 +42,11 @@ if (!$_SESSION["auth"]) {
 	<body onload="refresh(false);">
 		<?php require("header.php"); ?>
 		<h1><?php echo $row["character_name"]; ?></h1>
+
+<!--		<a href="item.php?char=--><?php //echo $charId; ?><!--">Add Item</a> |-->
+		<a href="character_form.php?mode=edit&char=<?php echo $charId; ?>">Edit Character</a> |
+		<a href="delete_character.php?char=<?php echo $charId; ?>">Delete Character</a>
+
 		<p>Level: <?php echo $row["character_level"]; ?></p>
 		<p>Strength: <?php echo $row["str_attr"]; ?></p>
 		<p>Intelligence: <?php echo $row["int_attr"]; ?></p>
@@ -59,9 +64,6 @@ if (!$_SESSION["auth"]) {
 		<p>Hit Points: <?php echo $row["hit_points"]; ?></p>
 		<p>Alignment: <?php echo $row["alignment"]; ?></p>
 		<p>Money: <?php echo $row["money"]; ?> gp</p>
-
-		<a href="character_form.php?mode=edit&char=<?php echo $charId; ?>">Edit Character</a> |
-		<a href="delete_character.php?char=<?php echo $charId; ?>">Delete Character</a>
 	</body>
 </html>
 <?php
