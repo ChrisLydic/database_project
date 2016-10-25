@@ -1,14 +1,8 @@
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+This README describes the set-up and guidelines for this project.
 
-### What is this repository for? ###
-
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
-
-### How do I get set up? ###
+### Set-Up ###
 
 * Summary of set up
 * Configuration
@@ -23,7 +17,9 @@ This README would normally document whatever steps are necessary to get your app
 * Code review
 * Other guidelines
 
-### Who do I talk to? ###
+### Contact ###
 
-* Repo owner or admin
-* Other community or team contact
+* Team Leader: Alex Hedges
+* Design Engineer: Christopher Lydic
+* Test Engineer: Pushpinder Singh
+* UI Engineer: Rebecca Brown
