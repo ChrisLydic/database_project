@@ -1,6 +1,9 @@
 CREATE DATABASE IF NOT EXISTS rpg DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE rpg;
 
+CREATE USER IF NOT EXISTS 'rpg_user'@'localhost' IDENTIFIED BY 'This_is_a_passphrase!';
+GRANT ALL PRIVILEGES ON rpg.* TO 'rpg_user'@'localhost'; # TODO Might want to restrict permissions later
+
 CREATE TABLE users
 (
 	user_id INT NOT NULL AUTO_INCREMENT,

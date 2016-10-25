@@ -248,7 +248,7 @@ if ($is_form_full) {
 			</select>
 
 			<label for="money">Money:</label>
-			<input type="number" name="money" value="<?php echo ($edit ? $row["money"] : 0) ?>" min="0" max="10000000">
+			<input type="number" name="money" value="<?php echo ($edit ? $row["money"] : 0) ?>" min="0" max="10000000"> <!-- TODO Money needs to be fractional -->
 			
 			<input type="submit" value="Submit" />
 
