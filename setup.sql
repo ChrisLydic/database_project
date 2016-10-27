@@ -1,3 +1,5 @@
+DROP DATABASE IF EXISTS rpg;
+
 CREATE DATABASE IF NOT EXISTS rpg DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE rpg;
 
@@ -330,3 +332,5 @@ CREATE TABLE characters_weapons
 	quantity INT NOT NULL,
 	location VARCHAR(30)
 );
+
+INSERT INTO characters (character_name, character_level, str_attr, dex_attr, con_attr, int_attr, wis_attr, cha_attr, weight, height, age, religion, gender, char_class, race, hit_points, alignment, money, user_id) VALUES ('Akane', 3, 9, 14, 12, 16, 10, 10, 150, 68, 23, 'Boccob', 'Female', (SELECT class_id FROM classes WHERE class_name = 'Wizard'), (SELECT race_id FROM races WHERE race_name = 'Human'), 16, 'LN', 100, (SELECT user_id FROM users WHERE username = 'alexwho314'));

@@ -13,7 +13,7 @@ This README describes the set-up and guidelines for Team Null's project for CSCI
 * Configuration
     * Place all files in a directory on the server.
     * Run `setup.sql` on the database.
-    * Open `localhost/path` in a web browser where `path` is the directoy on the server this project is stored in.
+    * Open `localhost/path` in a web browser where `path` is the directory on the server this project is stored in.
 * Deployment Instructions
     * We have yet to establish a remote server to use.
 
@@ -26,7 +26,7 @@ This README describes the set-up and guidelines for Team Null's project for CSCI
         * All files are encoded in UTF-8.
 		* Line endings should be UNIX style (LF only).
 		* Indentation is 1 tab.
-		* Variables should use camelCase unless otherwise specified.
+		* Variables should use `camelCase` unless otherwise specified.
 		* Line wrapping is not required.
     * HTML
         * HTML validates as HTML5 and XHTML.
@@ -35,8 +35,8 @@ This README describes the set-up and guidelines for Team Null's project for CSCI
         * CSS validates as CSS3.
 		* Follow [Google HTML/CSS Style Guide](https://google.github.io/styleguide/htmlcssguide.xml) unless it conflicts with the above.
     * MySQL
-        * All keywords are UPPERCASE.
-        * Table and attribute names are separated_by_underscores.
+        * All keywords are `UPPERCASE`.
+        * Table and attribute names are `separated_by_underscores`.
 		* Table names are plural, as a large number of our table names are reserved words in the singular.
 	* PHP
 	    * Follow [PHP Standards Recommendations](http://www.php-fig.org/psr/) unless it conflicts with the above.

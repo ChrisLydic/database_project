@@ -39,7 +39,7 @@ if (!$_SESSION["auth"]) {
 		<h1>Search</h1>
 
 		<form name="form" method="post">
-			<input name="query" type="text" required="true">
+			<input name="query" type="search" required="required">
 
 			<select name="search_type">
 				<option value="character">Characters</option>

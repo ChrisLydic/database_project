@@ -38,6 +38,7 @@ if ($result_races) {
 }
 
 // check if all form data exists
+// TODO Either allow nullable fields to be unset or change nullable fields to nonullable fields
 $is_form_full = !empty($_POST["character_name"])
 	&& isset($_POST["character_level"])
 	&& isset($_POST["str_attr"])
@@ -169,37 +170,37 @@ if ($is_form_full) {
 		<form name="form" method="post">
 
 			<label for="character_name">Name:</label>
-			<input type="text" name="character_name" placeholder="Name" maxlength="50" required="true" value="<?php echo ($edit ? $row["character_name"] : "") ?>">
+			<input type="text" name="character_name" placeholder="Name" maxlength="50" required="required" value="<?php echo ($edit ? $row["character_name"] : "") ?>">
 			
 			<label for="character_level">Level:</label>
-			<input type="number" name="character_level" value="<?php echo ($edit ? $row["character_level"] : 1) ?>" min="1" max="100">
+			<input type="number" name="character_level" required="required" value="<?php echo ($edit ? $row["character_level"] : 1) ?>" min="1" max="<?php echo PHP_INT_MAX ?>">
 			
 			<label for="str_attr">Strength:</label>
-			<input type="number" name="str_attr" value="<?php echo ($edit ? $row["str_attr"] : 0) ?>" min="0" max="100">
-			
-			<label for="int_attr">Intelligence:</label>
-			<input type="number" name="int_attr" value="<?php echo ($edit ? $row["int_attr"] : 0) ?>" min="0" max="100">
-			
-			<label for="cha_attr">Charisma:</label>
-			<input type="number" name="cha_attr" value="<?php echo ($edit ? $row["cha_attr"] : 0) ?>" min="0" max="100">
-			
-			<label for="con_attr">Constitution:</label>
-			<input type="number" name="con_attr" value="<?php echo ($edit ? $row["con_attr"] : 0) ?>" min="0" max="100">
+			<input type="number" name="str_attr" value="<?php echo ($edit ? $row["str_attr"] : 0) ?>" min="0" max="<?php echo PHP_INT_MAX ?>">
 			
 			<label for="dex_attr">Dexterity:</label>
-			<input type="number" name="dex_attr" value="<?php echo ($edit ? $row["dex_attr"] : 0) ?>" min="0" max="100">
+			<input type="number" name="dex_attr" value="<?php echo ($edit ? $row["dex_attr"] : 0) ?>" min="0" max="<?php echo PHP_INT_MAX ?>">
+			
+			<label for="con_attr">Constitution:</label>
+			<input type="number" name="con_attr" value="<?php echo ($edit ? $row["con_attr"] : 0) ?>" min="0" max="<?php echo PHP_INT_MAX ?>">
+			
+			<label for="int_attr">Intelligence:</label>
+			<input type="number" name="int_attr" value="<?php echo ($edit ? $row["int_attr"] : 0) ?>" min="0" max="<?php echo PHP_INT_MAX ?>">
 			
 			<label for="wis_attr">Wisdom:</label>
-			<input type="number" name="wis_attr" value="<?php echo ($edit ? $row["wis_attr"] : 0) ?>" min="0" max="100">
+			<input type="number" name="wis_attr" required="required" value="<?php echo ($edit ? $row["wis_attr"] : 0) ?>" min="0" max="<?php echo PHP_INT_MAX ?>">
+			
+			<label for="cha_attr">Charisma:</label>
+			<input type="number" name="cha_attr" required="required" value="<?php echo ($edit ? $row["cha_attr"] : 0) ?>" min="0" max="<?php echo PHP_INT_MAX ?>">
 			
 			<label for="weight">Weight:</label>
-			<input type="number" name="weight" value="<?php echo ($edit ? $row["weight"] : 0) ?>" min="1" max="1000">
+			<input type="number" name="weight" value="<?php echo ($edit ? $row["weight"] : 0) ?>" min="0" max="<?php echo PHP_INT_MAX ?>">
 			
 			<label for="height">Height:</label>
-			<input type="number" name="height" value="<?php echo ($edit ? $row["height"] : 0) ?>" min="1" max="100">
+			<input type="number" name="height" value="<?php echo ($edit ? $row["height"] : 0) ?>" min="1" max="<?php echo PHP_INT_MAX ?>">
 			
 			<label for="age">Age:</label>
-			<input type="number" name="age" value="<?php echo ($edit ? $row["age"] : 0) ?>" min="1" max="1000">
+			<input type="number" name="age" value="<?php echo ($edit ? $row["age"] : 0) ?>" min="0" max="<?php echo PHP_INT_MAX ?>">
 			
 			<label for="religion">Religion:</label>
 			<input type="text" name="religion" placeholder="Religion" maxlength="20" required="true" value="<?php echo ($edit ? $row["religion"] : "") ?>">
@@ -208,7 +209,7 @@ if ($is_form_full) {
 			<input type="text" name="gender" placeholder="Gender" maxlength="10" required="true" value="<?php echo ($edit ? $row["gender"] : "") ?>">
 
 			<label for="char_class">Class:</label>
-			<select name="char_class">
+			<select name="char_class" required="required">
 				<?php
 					$array = $_SESSION["classes"];
 					foreach ($array as $key => $value) {
@@ -220,7 +221,7 @@ if ($is_form_full) {
 			</select>
 
 			<label for="race">Race:</label>
-			<select name="race">
+			<select name="race" required="required">
 				<?php
 					$array = $_SESSION["races"];
 					foreach ($array as $key => $value) {
@@ -232,10 +233,10 @@ if ($is_form_full) {
 			</select>
 
 			<label for="hit_points">Hit Points:</label>
-			<input type="number" name="hit_points" value="<?php echo ($edit ? $row["hit_points"] : 0) ?>" min="<?php echo PHP_INT_MIN ?>" max="<?php echo PHP_INT_MAX ?>">
+			<input type="number" name="hit_points" required="required" value="<?php echo ($edit ? $row["hit_points"] : 0) ?>" min="<?php echo PHP_INT_MIN ?>" max="<?php echo PHP_INT_MAX ?>">
 
 			<label for="alignment">Alignment:</label>
-			<select name="alignment">
+			<select name="alignment" required="required">
 				<option value="LG" <?php echo ("LG" == $row["alignment"] ? "selected=\"selected\"" : "") ?>>Lawful Good</option>
 				<option value="NG" <?php echo ("NG" == $row["alignment"] ? "selected=\"selected\"" : "") ?>>Neutral Good</option>
 				<option value="CG" <?php echo ("CG" == $row["alignment"] ? "selected=\"selected\"" : "") ?>>Chaotic Good</option>
@@ -248,7 +249,7 @@ if ($is_form_full) {
 			</select>
 
 			<label for="money">Money:</label>
-			<input type="number" name="money" value="<?php echo ($edit ? $row["money"] : 0) ?>" min="0" max="10000000"> <!-- TODO Money needs to be fractional -->
+			<input type="number" name="money" required="required" value="<?php echo ($edit ? $row["money"] : 0) ?>" min="0" max="<?php echo PHP_INT_MAX ?>" step="0.01">
 			
 			<input type="submit" value="Submit" />
 
