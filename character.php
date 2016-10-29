@@ -205,6 +205,8 @@ if (!$_SESSION["auth"]) {
 					$mod = $wis_mod;
 				} elseif ($value[2] == "CHA") {
 					$mod = $cha_mod;
+				} elseif ($value[2] == "NON") {
+					$mod = 0;
 				}
 				$mod = $value[7]+$mod;
 				if ($result_armor_on) {

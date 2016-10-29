@@ -35,9 +35,9 @@ CREATE TABLE characters
 	CHECK (con_attr > 0),
 	int_attr INT,
 	CHECK (int_attr > 0),
-	wis_attr INT NOT NULL, # Needed to be a creature
+	wis_attr INT NOT NULL, # Required in order to be considered a creature
 	CHECK (wis_attr > 0),
-	cha_attr INT NOT NULL, # Needed to be a creature
+	cha_attr INT NOT NULL, # Required in order to be considered a creature
 	CHECK (cha_attr > 0),
 	weight INT, # Non-corporeal can be massless
 	CHECK (weight >= 0),
@@ -260,14 +260,15 @@ CREATE TABLE weapons
 	damage_type VARCHAR(3) NOT NULL
 );
 
-CREATE TABLE characters_skills
+CREATE TABLE characters_skills  # TODO Add some sort of on-delete cascade; aso add official primary keys
 (
 	character_id INT NOT NULL,
 	FOREIGN KEY (character_id) REFERENCES characters(character_id),
 	skill_id INT NOT NULL,
 	FOREIGN KEY (skill_id) REFERENCES skills(skill_id),
 	skill_rank INT NOT NULL,
-	CHECK (bonus >= 0)
+	CHECK (bonus >= 0),
+	PRIMARY KEY (character_id, skill_id)
 );
 
 CREATE TABLE skills_races
@@ -276,7 +277,8 @@ CREATE TABLE skills_races
 	FOREIGN KEY (skill_id) REFERENCES skills(skill_id),
 	race_id INT NOT NULL,
 	FOREIGN KEY (race_id) REFERENCES races(race_id),
-	bonus INT NOT NULL
+	bonus INT NOT NULL,
+	PRIMARY KEY (skill_id, race_id)
 );
 
 CREATE TABLE skills_classes
@@ -285,7 +287,8 @@ CREATE TABLE skills_classes
 	FOREIGN KEY (skill_id) REFERENCES skills(skill_id),
 	class_id INT NOT NULL,
 	FOREIGN KEY (class_id) REFERENCES classes(class_id),
-	cross_class BOOLEAN NOT NULL
+	cross_class BOOLEAN NOT NULL,
+	PRIMARY KEY (skill_id, class_id)
 );
 
 CREATE TABLE characters_feats
@@ -293,7 +296,8 @@ CREATE TABLE characters_feats
 	character_id INT NOT NULL,
 	FOREIGN KEY (character_id) REFERENCES characters(character_id),
 	feat_id INT NOT NULL,
-	FOREIGN KEY (feat_id) REFERENCES feats(feat_id)
+	FOREIGN KEY (feat_id) REFERENCES feats(feat_id),
+	PRIMARY KEY (character_id, feat_id)
 );
 
 CREATE TABLE characters_languages
@@ -301,7 +305,8 @@ CREATE TABLE characters_languages
 	character_id INT NOT NULL,
 	FOREIGN KEY (character_id) REFERENCES characters(character_id),
 	language_id INT NOT NULL,
-	FOREIGN KEY (language_id) REFERENCES languages(language_id)
+	FOREIGN KEY (language_id) REFERENCES languages(language_id),
+	PRIMARY KEY (character_id, language_id)
 );
 
 CREATE TABLE characters_spells
@@ -309,7 +314,8 @@ CREATE TABLE characters_spells
 	character_id INT NOT NULL,
 	FOREIGN KEY (character_id) REFERENCES characters(character_id),
 	spell_id INT NOT NULL,
-	FOREIGN KEY (spell_id) REFERENCES spells(spell_id)
+	FOREIGN KEY (spell_id) REFERENCES spells(spell_id),
+	PRIMARY KEY (character_id, spell_id)
 );
 
 CREATE TABLE characters_armors
@@ -319,7 +325,8 @@ CREATE TABLE characters_armors
 	armor_id INT NOT NULL,
 	FOREIGN KEY (armor_id) REFERENCES armors(armor_id),
 	quantity INT NOT NULL,
-	location VARCHAR(30)
+	location VARCHAR(30),
+	PRIMARY KEY (character_id, armor_id)
 );
 
 CREATE TABLE characters_generic_items
@@ -329,7 +336,8 @@ CREATE TABLE characters_generic_items
 	generic_item_id INT NOT NULL,
 	FOREIGN KEY (generic_item_id) REFERENCES generic_items(generic_item_id),
 	quantity INT NOT NULL,
-	location VARCHAR(30)
+	location VARCHAR(30),
+	PRIMARY KEY (character_id, generic_item_id)
 );
 
 CREATE TABLE characters_weapons
@@ -339,13 +347,9 @@ CREATE TABLE characters_weapons
 	weapon_id INT NOT NULL,
 	FOREIGN KEY (weapon_id) REFERENCES weapons(weapon_id),
 	quantity INT NOT NULL,
-	location VARCHAR(30)
+	location VARCHAR(30),
+	PRIMARY KEY (character_id, weapon_id)
 );
-
-
-
-
-
 
 INSERT INTO characters (character_id, character_name, character_level, str_attr, dex_attr, con_attr, int_attr, wis_attr, cha_attr, weight, height, age, religion, gender, char_class, race, hit_points, alignment, money, user_id) VALUES (1, 'Akane', 3, 9, 14, 12, 16, 10, 10, 150, 68, 23, 'Boccob', 'Female', (SELECT class_id FROM classes WHERE class_name = 'Wizard'), (SELECT race_id FROM races WHERE race_name = 'Human'), 16, 'LN', 100, (SELECT user_id FROM users WHERE username = 'alexwho314'));
 INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Appraise'), 0);
