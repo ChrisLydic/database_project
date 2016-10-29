@@ -161,8 +161,8 @@ CREATE TABLE classes
 	class_features TEXT
 );
 
-INSERT INTO classes (class_name, base_attack, fort_save, ref_save, will_save, hd, skill_points, alignment) VALUES ('Barbarian', 'Good', 'Good', 'Poor', 'Poor', 12, 4, '!L');
-INSERT INTO classes (class_name, base_attack, fort_save, ref_save, will_save, hd, skill_points, alignment) VALUES ('Bard', 'Average', 'Poor', 'Good', 'Good', 6, 6, '!L');
+INSERT INTO classes (class_name, base_attack, fort_save, ref_save, will_save, hd, skill_points, alignment) VALUES ('Barbarian', 'Good', 'Good', 'Poor', 'Poor', 12, 4, 'Not L');
+INSERT INTO classes (class_name, base_attack, fort_save, ref_save, will_save, hd, skill_points, alignment) VALUES ('Bard', 'Average', 'Poor', 'Good', 'Good', 6, 6, 'Not L');
 INSERT INTO classes (class_name, base_attack, fort_save, ref_save, will_save, hd, skill_points, alignment) VALUES ('Cleric', 'Average', 'Good', 'Poor', 'Good', 8, 2, 'Within one step of deity');
 INSERT INTO classes (class_name, base_attack, fort_save, ref_save, will_save, hd, skill_points, alignment) VALUES ('Druid', 'Average', 'Good', 'Poor', 'Good', 8, 4, 'Any N');
 INSERT INTO classes (class_name, base_attack, fort_save, ref_save, will_save, hd, skill_points, alignment) VALUES ('Fighter', 'Good', 'Good', 'Poor', 'Poor', 10, 2, 'Any');
@@ -230,11 +230,30 @@ CREATE TABLE armor
 	UNIQUE (armor_name),
 	cost DECIMAL(10, 2) NOT NULL,
 	armor_bonus INT NOT NULL,
-	max_dex INT NOT NULL,
+	max_dex INT,
 	armor_check_penalty INT NOT NULL,
-	arcane_spell_failure_chance INT NOT NULL,
-	weight INT
+	arcane_spell_failure_chance DECIMAL(2, 2) NOT NULL,
+	weight INT NOT NULL
 );
+
+INSERT INTO armor(armor_name, cost, armor_bonus, max_dex, armor_check_penalty, arcane_spell_failure_chance, weight) VALUES ('Padded', 5, 1, 8, 0, .05, 10);
+INSERT INTO armor(armor_name, cost, armor_bonus, max_dex, armor_check_penalty, arcane_spell_failure_chance, weight) VALUES ('Leather', 10, 2, 6, 0, .10, 15);
+INSERT INTO armor(armor_name, cost, armor_bonus, max_dex, armor_check_penalty, arcane_spell_failure_chance, weight) VALUES ('Studded leather', 25, 3, 5, -1, .15, 20);
+INSERT INTO armor(armor_name, cost, armor_bonus, max_dex, armor_check_penalty, arcane_spell_failure_chance, weight) VALUES ('Chain shirt', 100, 4, 4, -2, .20, 25);
+INSERT INTO armor(armor_name, cost, armor_bonus, max_dex, armor_check_penalty, arcane_spell_failure_chance, weight) VALUES ('Hide', 15, 3, 4, -3, .20, 25);
+INSERT INTO armor(armor_name, cost, armor_bonus, max_dex, armor_check_penalty, arcane_spell_failure_chance, weight) VALUES ('Scale mail', 50, 4, 3, -4, .25, 30);
+INSERT INTO armor(armor_name, cost, armor_bonus, max_dex, armor_check_penalty, arcane_spell_failure_chance, weight) VALUES ('Chain mail', 150, 5, 2, -5, .30, 40);
+INSERT INTO armor(armor_name, cost, armor_bonus, max_dex, armor_check_penalty, arcane_spell_failure_chance, weight) VALUES ('Breastplate', 200, 5, 3, -4, .25, 30);
+INSERT INTO armor(armor_name, cost, armor_bonus, max_dex, armor_check_penalty, arcane_spell_failure_chance, weight) VALUES ('Splint mail', 200, 6, 0, -7, .40, 45);
+INSERT INTO armor(armor_name, cost, armor_bonus, max_dex, armor_check_penalty, arcane_spell_failure_chance, weight) VALUES ('Banded mail', 250, 6, 1, -6, .35, 35);
+INSERT INTO armor(armor_name, cost, armor_bonus, max_dex, armor_check_penalty, arcane_spell_failure_chance, weight) VALUES ('Half-plate', 600, 7, 0, -7, .40, 50);
+INSERT INTO armor(armor_name, cost, armor_bonus, max_dex, armor_check_penalty, arcane_spell_failure_chance, weight) VALUES ('Full plate', 1500, 8, 1, -6, .35, 50);
+INSERT INTO armor(armor_name, cost, armor_bonus, max_dex, armor_check_penalty, arcane_spell_failure_chance, weight) VALUES ('Buckler', 15, 1, NULL, -1, .05, 5);
+INSERT INTO armor(armor_name, cost, armor_bonus, max_dex, armor_check_penalty, arcane_spell_failure_chance, weight) VALUES ('Shield, light wooden', 3, 1, NULL, -1, .05, 5);
+INSERT INTO armor(armor_name, cost, armor_bonus, max_dex, armor_check_penalty, arcane_spell_failure_chance, weight) VALUES ('Shield, light steel', 9, 1, NULL, -1, .05, 6);
+INSERT INTO armor(armor_name, cost, armor_bonus, max_dex, armor_check_penalty, arcane_spell_failure_chance, weight) VALUES ('Shield, heavy wooden', 7, 2, NULL, -2, .15, 10);
+INSERT INTO armor(armor_name, cost, armor_bonus, max_dex, armor_check_penalty, arcane_spell_failure_chance, weight) VALUES ('Shield, heavy steel', 20, 2, NULL, -2, .15, 15);
+INSERT INTO armor(armor_name, cost, armor_bonus, max_dex, armor_check_penalty, arcane_spell_failure_chance, weight) VALUES ('Shield, tower', 30, 4, 2, -10, .50, 45);
 
 CREATE TABLE generic_items
 (
@@ -252,13 +271,35 @@ CREATE TABLE weapons
 	PRIMARY KEY(weapon_id),
 	weapon_name VARCHAR(30) NOT NULL,
 	UNIQUE (weapon_name),
-	damage VARCHAR(10) NOT NULL,
-	weapon_range INT,
 	cost DECIMAL(10, 2) NOT NULL,
-	weight INT,
+	damage VARCHAR(10) NOT NULL, # For Medium character
 	critical VARCHAR(10) NOT NULL,
+	weapon_range INT, # Feet
+	weight INT,
 	damage_type VARCHAR(3) NOT NULL
 );
+
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Gauntlet', 2, '1d3', 'x2', NULL, 1, 'B');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Unarmed strike', 0, '1d3', 'x2', NULL, 0, 'B');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Dagger', 2, '1d4', '19-20/x2', 10, 1, 'PS');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Dagger, punching', 2, '1d4', 'x3', NULL, 1, 'P');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Gauntlet, spiked', 5, '1d4', 'x2', NULL, 1, 'P');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Mace, light', 5, '1d6', 'x2', NULL, 4, 'B');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Sickle', 6, '1d6', 'x2', NULL, 2, 'S');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Club', 0, '1d6', 'x2', 10, 3, 'B');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Mace, heavy', 12, '1d8', 'x2', NULL, 8, 'B');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Morningstar', 8, '1d8', 'x2', NULL, 6, 'BP');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Shortspear', 1, '1d6', 'x2', 20, 3, 'P');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Longspear', 5, '1d8', 'x3', NULL, 9, 'P');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Quarterstaff', 0, '1d6/1d6', 'x2', NULL, 4, 'B');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Spear', 2, '1d8', 'x3', 20, 6, 'P');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Crossbow, heavy', 50, '1d10', '19-20/x2', 120, 8, 'P');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Crossbow, light', 35, '1d8', '19-20/x2', 80, 4, 'P');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Dart', .5, '1d4', 'x2', 20, .5, 'P');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Javelin', 1, '1d6', 'x2', 30, 2, 'P');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Sling', 0, '1d4', 'x2', 50, 0, 'B');
+# INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('', , '', '', , , '');
+# Possibly add more than simple weapons
 
 CREATE TABLE characters_skills  # TODO Add some sort of on-delete cascade; aso add official primary keys
 (

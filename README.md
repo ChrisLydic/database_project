@@ -24,12 +24,11 @@ This README describes the set-up and guidelines for Team Null's project for CSCI
 * Style
     * General
         * All files are encoded in UTF-8.
-		* Line endings should be UNIX style (LF only).
 		* Indentation is 1 tab.
-		* Variables should use `camelCase` unless otherwise specified.
+		* Variables should use `separated_by_underscores` unless otherwise specified.
 		* Line wrapping is not required.
     * HTML
-        * HTML validates as HTML5 and XHTML.
+        * HTML validates as HTML5.
 		* Follow [Google HTML/CSS Style Guide](https://google.github.io/styleguide/htmlcssguide.xml) unless it conflicts with the above.
     * CSS
         * CSS validates as CSS3.
