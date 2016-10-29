@@ -262,8 +262,110 @@ CREATE TABLE generic_items
 	generic_item_name VARCHAR(30) NOT NULL,
 	UNIQUE (generic_item_name),
 	cost DECIMAL(10, 2) NOT NULL,
-	weight INT
+	weight INT # TODO Maybe make decimal
 );
+
+# Adventuring gear
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Backpack (empty)', 2, 2);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Barrel (empty)', 2, 30);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Basket (empty)', .4, 1);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Bedroll', .1, 5);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Bell', 1, NULL);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Blanket, winter', .5, 3);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Block and tackle', 5, 5);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Bottle, wine, glass', 2, NULL);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Bucket (empty)', .5, 2);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Caltrops', 1, 2);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Candle', .01, NULL);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Canvas (sq. yd.)', .1, 1);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Case, map or scroll', 1, .5);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Chain (10 ft.)', 30, 2);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Chalk, 1 piece', .01, NULL);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Chest (empty)', 2, 25);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Crowbar', 2, 5);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Firewood (per day)', .01, 20);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Fishhook', .1, NULL);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Fishing net, 25 sq. ft.', 4, 5);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Flask (empty)', .03, 1.5);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Flint and steel', 1, NULL);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Grappling hook', 1, 4);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Hammer', .5, 2);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Ink (1 oz. vial)', 8, NULL);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Inkpen', .1, NULL);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Jug, clay', .03, 9);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Ladder, 10-foot', .05, 20);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Lamp, common', .1, 1);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Lantern, bullseye', 12, 3);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Lantern, hooded', 7, 2);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Lock (very simple)', 20, 1);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Lock (average)', 40, 1);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Lock (good)', 80, 1);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Lock (amazing)', 150, 1);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Manacles', 15, 2);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Manacles, masterwork', 50, 2);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Mirror, small steel', 10, .5);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Mug/Tankard, clay', .02, 1);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Oil (1-pint flask)', .1, 1);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Paper (sheet)', .4, NULL);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Parchment (sheet)', .2, NULL);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Pick, miner\'s', 3, 10);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Pitcher, clay', .02, 5);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Piton', .01, .5);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Pole, 10-foot', .2, 8);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Pot, iron', .5, 10);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Pouch, belt (empty)', 1, .5);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Ram, portable', 10, 20);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Rations, trail (per day)', .5, 1);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Rope, hempen (50 ft.)', 1, 10);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Rope, slk (50 ft.)', 10, 5);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Sack (empty)', .1, .5);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Sealing wax', 1, 1);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Sewing needle', .5, NULL);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Signal whistle', .8, NULL);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Signet ring', 5, NULL);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Sledge', 1, 10);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Soap (per lb.)', .5, 1);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Spade or shovel', 2, 8);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Spyglass', 1000, 1);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Tent', 10, 20);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Torch', .01, 1);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Vial, ink or potion', 1, .1);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Waterskin', 1, 4);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Whetstone', .02, 1);
+
+# Special substances and items
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Acid (flask)', 10, 1);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Alchemist\'s fire (flask)', 20, 1);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Antitoxin (vial)', 50, NULL);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Everburing torch', 110, 1);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Holy water (flask)', 25, 1);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Smokestick', 20, .5);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Sunrod', 2, 1);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Tanglefoot bag', 50, 4);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Thunderstone', 30, 1);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Tindertwig', 1, NULL);
+
+# Tools and skill kits
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Alchemist\s lab', 500, 40);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Artisan\'s tools', 5, 5);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Artisan\'s tools, masterwork', 55, 5);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Climber\'s kit', 80, 5);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Disguise kit', 50, 8);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Healer\'s kit', 50, 1);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Holly and mistletoe', 0, NULL);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Holy symbol, wooden', 1, NULL);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Holy symbol, silver', 25, 1);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Hourglass', 25, 1);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Magnifying glass', 100, NULL);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Musical instrument, common', 5, 3);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Musical instrument, masterwork', 100, 3);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Scale, merchant\'s', 2, 1);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Spell component pouch', 5, 2);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Spellbook, wizard\'s (blank)', 15, 3);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Thieves\' tools', 30, 1);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Thieves\' tools, masterwork', 100, 2);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Tool, masterwork', 50, 1);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Water clock', 1000, 200);
 
 CREATE TABLE weapons
 (
