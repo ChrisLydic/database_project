@@ -29,17 +29,17 @@ if (!$_SESSION["auth"]) {
 		}
 
 		//get skills in 2D array
-		$result_skill = mysqli_query($con,"SELECT * FROM skills INNER JOIN characters_skills on characters_skills.skill_id=skills.skill_id WHERE characters_skills.character_id = '$charId'");
+		$result_skill = mysqli_query($con,"SELECT * FROM skills INNER JOIN characters_skills ON characters_skills.skill_id = skills.skill_id WHERE characters_skills.character_id = '$charId'");
 		$skills_table = mysqli_fetch_all($result_skill);
 
 		//get equipped armor
-		$result_armor_on = mysqli_query($con,"SELECT * FROM armors INNER JOIN characters_armors on characters_armors.armor_id=armors.armor_id WHERE characters_armors.character_id = '$charId' and characters_armors.location = 'EQUIPED'");
+		$result_armor_on = mysqli_query($con,"SELECT * FROM armors INNER JOIN characters_armors ON characters_armors.armor_id = armors.armor_id WHERE characters_armors.character_id = '$charId' AND characters_armors.location = 'EQUIPED'");
 		if($result_armor_on) {
 			$armor_on = mysqli_fetch_array($result_armor_on);
 		}
 
 		//get equipped weapon
-		$result_weapon_on = mysqli_query($con,"SELECT * FROM weapons INNER JOIN characters_weapons on characters_weapons.weapon_id=weapons.weapon_id WHERE characters_weapons.character_id = '$charId' and characters_weapons.location = 'EQUIPED'");
+		$result_weapon_on = mysqli_query($con,"SELECT * FROM weapons INNER JOIN characters_weapons ON characters_weapons.weapon_id = weapons.weapon_id WHERE characters_weapons.character_id = '$charId' AND characters_weapons.location = 'EQUIPED'");
 		if($result_weapon_on) {
 			$weapon_on = mysqli_fetch_array($result_weapon_on);
 		}
@@ -52,16 +52,16 @@ if (!$_SESSION["auth"]) {
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<link href="screen.css" rel="stylesheet" type="text/css" media="screen" />
-		<title><?php echo $row["character_name"]; ?></title>
+		<title><?= $row["character_name"]; ?></title>
 		<meta name="author" content="Alex Hedges" />
 	</head>
 	<body onload="refresh(false);">
 		<?php require("header.php"); ?>
-		<h1><?php echo $row["character_name"]; ?></h1>
+		<h1><?= $row["character_name"]; ?></h1>
 
 <!--		<a href="item.php?char=--><?php //echo $charId; ?><!--">Add Item</a> |-->
-		<a href="character_form.php?mode=edit&char=<?php echo $charId; ?>">Edit Character</a> |
-		<a href="delete_character.php?char=<?php echo $charId; ?>">Delete Character</a>
+		<a href="character_form.php?mode=edit&char=<?= $charId; ?>">Edit Character</a> |
+		<a href="delete_character.php?char=<?= $charId; ?>">Delete Character</a>
 		<?php
 		// basic modifier calculations
 		$str_mod = (floor($row["str_attr"]/2)-5);
@@ -74,75 +74,31 @@ if (!$_SESSION["auth"]) {
 		?>
 
 
-		<p>Level: <?php echo $row["character_level"]; ?></p>
-		<p>Strength: <?php echo $row["str_attr"]; ?><br>
-			Strength Modifier: <?= $str_mod ?></p>
-		<p>Intelligence: <?php echo $row["int_attr"]; ?><br>
-			Intelligence Modifier: <?= $int_mod ?></p>
-		<p>Charisma: <?php echo $row["cha_attr"]; ?><br>
-			Charisma Modifier: <?= $cha_mod ?></p>
-		<p>Constitution: <?php echo $row["con_attr"]; ?><br>
-			Constitution Modifier: <?= $con_mod ?></p>
-		<p>Dexterity: <?php echo $row["dex_attr"]; ?><br>
-			Dexterity Modifier: <?= $dex_mod ?></p>
-		<p>Wisdom: <?php echo $row["wis_attr"]; ?><br>
-			Wisdom Modifier: <?= $wis_mod ?></p>
-		<p>Weight: <?php echo $row["weight"]; ?> pounds</p>
-		<p>Height: <?php echo $row["height"]; ?> inches</p>
-		<p>Age: <?php echo $row["age"]; ?></p>
-		<p>Religion: <?php echo $row["religion"]; ?></p>
-		<p>Gender: <?php echo $row["gender"]; ?></p>
-		<p>Class: <?php echo $_SESSION["class"]; ?></p>
-		<p>Race: <?php echo $_SESSION["race"]; ?></p>
-		<p>Hit Points: <?php echo $row["hit_points"]; ?></p>
-		<p>Alignment: <?php echo $row["alignment"]; ?></p>
-		<p>Money: <?php echo $row["money"]; ?> gp</p>
-
-
+		<p>Level: <?= $row["character_level"]; ?></p>
+		<p>Strength: <?= $row["str_attr"]; ?></p>
+		<p>Strength Modifier: <?= $str_mod ?></p>
+		<p>Intelligence: <?= $row["int_attr"]; ?></p>
+		<p>Intelligence Modifier: <?= $int_mod ?></p>
+		<p>Charisma: <?= $row["cha_attr"]; ?></p>
+		<p>Charisma Modifier: <?= $cha_mod ?></p>
+		<p>Constitution: <?= $row["con_attr"]; ?></p>
+		<p>Constitution Modifier: <?= $con_mod ?></p>
+		<p>Dexterity: <?= $row["dex_attr"]; ?></p>
+		<p>Dexterity Modifier: <?= $dex_mod ?></p>
+		<p>Wisdom: <?= $row["wis_attr"]; ?></p>
+		<p>Wisdom Modifier: <?= $wis_mod ?></p>
+		<p>Weight: <?= $row["weight"]; ?> pounds</p>
+		<p>Height: <?= $row["height"]; ?> inches</p>
+		<p>Age: <?= $row["age"]; ?></p>
+		<p>Religion: <?= $row["religion"]; ?></p>
+		<p>Gender: <?= $row["gender"]; ?></p>
+		<p>Class: <?= $_SESSION["class"]; ?></p>
+		<p>Race: <?= $_SESSION["race"]; ?></p>
+		<p>Hit Points: <?= $row["hit_points"]; ?></p>
+		<p>Alignment: <?= $row["alignment"]; ?></p>
+		<p>Money: <?= $row["money"]; ?> gp</p>
 
 		<?php
-		//calculate mods from skills
-		echo "<h3>Skills:</h3><br>";
-		foreach ($skills_table as $value){
-			echo "<b>";
-			echo $value[1];
-			echo "</b><br>";
-			if($value[7] == 0 && $value[4] == 0){
-				//skill has no effect
-			}else
-			{
-				$result_skills_races = mysqli_query($con,"SELECT * FROM skills_races WHERE skill_id = '$value[0]' and race_id = '$row[15]'");
-				$skills_races = mysqli_fetch_array($result_skills_races);
-				print_r($skills_races);
-				if($value[2] = "INT")
-				{
-					$mod = $int_mod;
-				}elseif ($value[2] = "DEX"){
-					$mod = $dex_mod;
-				}elseif ($value[2] = "CON"){
-					$mod = $con_mod;
-				}elseif ($value[2] = "STR"){
-					$mod = $str_mod;
-				}elseif ($value[2] = "WIS"){
-					$mod = $wis_mod;
-				}elseif ($value[2] = "CHA"){
-					$mod = $cha_mod;
-				}
-				$mod = $value[7]+$mod;
-				if($result_armor_on)
-				{
-					$mod += $value[3] * $armor_on["armor_check_penalty"];
-				}
-				if($skills_races)
-				{
-					$mod += $skills_races["bonus"];
-				}
-				echo "Skill mod:";
-				echo $mod;
-				echo "<br><br>";
-			}
-		}
-
 		//base attack bonus calculation
 		$base_attack_bonus = 0;
 		if($class_row["base_attack"] == "Good")
@@ -216,12 +172,57 @@ if (!$_SESSION["auth"]) {
 		$will_save_mod = $base_save+$wis_mod;
 		?>
 
-		<p>Base Attack Bonus: <?= $base_attack_bonus; ?></p>
+		<p>Base attack bonus: <?= $base_attack_bonus; ?></p>
 
-		<p>Fort save modifier: <?= $fort_save_mod?><br>
-			Ref save modifier: <?= $ref_save_mod?><br>
-			Will save modifier: <?= $will_save_mod?><br>
-		</p>
+		<p>Fortitude save modifier: <?= $fort_save_mod?></p>
+		<p>Reflex save modifier: <?= $ref_save_mod?></p>
+		<p>Will save modifier: <?= $will_save_mod?></p>
+
+		<?php
+		//calculate mods from skills
+		echo "<h3>Skills:</h3><ul>";
+		foreach ($skills_table as $value){
+			echo "<li><b>";
+			echo $value[1]; // TODO Replace numbers with human-readable values
+			echo "</b>: ";
+			if($value[7] == 0 && $value[4] == 0){
+				//skill has no effect
+				unset($mod);
+			}else
+			{
+				$result_skills_races = mysqli_query($con,"SELECT * FROM skills_races WHERE skill_id = '$value[0]' and race_id = '$row[15]'");
+				$skills_races = mysqli_fetch_array($result_skills_races);
+				print_r($skills_races);
+				if ($value[2] == "INT") {
+					$mod = $int_mod;
+				} elseif ($value[2] == "DEX") {
+					$mod = $dex_mod;
+				} elseif ($value[2] == "CON") {
+					$mod = $con_mod;
+				} elseif ($value[2] == "STR") {
+					$mod = $str_mod;
+				} elseif ($value[2] == "WIS") {
+					$mod = $wis_mod;
+				} elseif ($value[2] == "CHA") {
+					$mod = $cha_mod;
+				}
+				$mod = $value[7]+$mod;
+				if ($result_armor_on) {
+					$mod += $value[3] * $armor_on["armor_check_penalty"];
+				}
+				if ($skills_races) {
+					$mod += $skills_races["bonus"];
+				}
+				echo $mod > 0 ? "+" : "";
+				
+			}
+			echo isset($mod) ? $mod : "n/a";
+			echo "</li>";
+		}
+		echo "</ul>";
+		?>
+		
+		
 	</body>
 </html>
 <?php

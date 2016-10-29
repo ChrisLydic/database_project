@@ -11,6 +11,7 @@ CREATE TABLE users
 	user_id INT NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY(user_id),
 	username VARCHAR(30) NOT NULL,
+	UNIQUE (username),
 	password_hash CHAR(40) NOT NULL,
 	auth_code VARCHAR(20) DEFAULT 'true' # Can be modified to deactivate users
 );
@@ -106,7 +107,7 @@ INSERT INTO skills (skill_name, attribute, untrained, armor_penalty) VALUES ('Op
 INSERT INTO skills (skill_name, attribute, untrained, armor_penalty) VALUES ('Perform', 'CHA', TRUE, 0);
 INSERT INTO skills (skill_name, attribute, untrained, armor_penalty) VALUES ('Profession', 'WIS', FALSE, 0);
 INSERT INTO skills (skill_name, attribute, untrained, armor_penalty) VALUES ('Ride', 'DEX', TRUE, 0);
-INSERT INTO skills (skill_name, attribute, untrained, armor_penalty) VALUES ('Seach', 'INT', TRUE, 0);
+INSERT INTO skills (skill_name, attribute, untrained, armor_penalty) VALUES ('Search', 'INT', TRUE, 0);
 INSERT INTO skills (skill_name, attribute, untrained, armor_penalty) VALUES ('Sense Motive', 'WIS', TRUE, 0);
 INSERT INTO skills (skill_name, attribute, untrained, armor_penalty) VALUES ('Sleight of Hand', 'DEX', FALSE, 1);
 INSERT INTO skills (skill_name, attribute, untrained, armor_penalty) VALUES ('Speak Language', 'NON', FALSE, 0);
@@ -123,6 +124,7 @@ CREATE TABLE races
 	race_id INT NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY(race_id),
 	race_name VARCHAR(20) NOT NULL,
+	UNIQUE (race_name),
 	speed INT NOT NULL,
 	CHECK (speed >= 0),
 	race_size VARCHAR(10) NOT NULL,
@@ -144,6 +146,7 @@ CREATE TABLE classes
 	class_id INT NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY(class_id),
 	class_name VARCHAR(20) NOT NULL,
+	UNIQUE (class_name),
 	base_attack VARCHAR(7) NOT NULL,
 	CHECK (base_attack IN ('Good', 'Average', 'Poor')),
 	fort_save VARCHAR(4) NOT NULL,
@@ -175,6 +178,7 @@ CREATE TABLE feats
 	feat_id INT NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY(feat_id),
 	feat_name VARCHAR(20) NOT NULL,
+	UNIQUE (feat_name),
 	description TEXT,
 	prerequisites TEXT
 );
@@ -184,6 +188,7 @@ CREATE TABLE languages
 	language_id INT NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY(language_id),
 	language_name VARCHAR(20) NOT NULL,
+	UNIQUE (language_name),
 	alphabet VARCHAR(10) NOT NULL
 );
 
@@ -213,6 +218,7 @@ CREATE TABLE spells
 	spell_id INT NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY(spell_id),
 	spell_name VARCHAR(20) NOT NULL,
+	UNIQUE (spell_name),
 	spell_type VARCHAR(20) NOT NULL
 );
 
@@ -221,6 +227,7 @@ CREATE TABLE armor
 	armor_id INT NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY(armor_id),
 	armor_name VARCHAR(20) NOT NULL,
+	UNIQUE (armor_name),
 	cost DECIMAL(10, 2) NOT NULL,
 	armor_bonus INT NOT NULL,
 	max_dex INT NOT NULL,
@@ -234,6 +241,7 @@ CREATE TABLE generic_items
 	generic_item_id INT NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY(generic_item_id),
 	generic_item_name VARCHAR(30) NOT NULL,
+	UNIQUE (generic_item_name),
 	cost DECIMAL(10, 2) NOT NULL,
 	weight INT
 );
@@ -242,7 +250,8 @@ CREATE TABLE weapons
 (
 	weapon_id INT NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY(weapon_id),
-	weapons_name VARCHAR(30) NOT NULL,
+	weapon_name VARCHAR(30) NOT NULL,
+	UNIQUE (weapon_name),
 	damage VARCHAR(10) NOT NULL,
 	weapon_range INT,
 	cost DECIMAL(10, 2) NOT NULL,
@@ -333,4 +342,54 @@ CREATE TABLE characters_weapons
 	location VARCHAR(30)
 );
 
-INSERT INTO characters (character_name, character_level, str_attr, dex_attr, con_attr, int_attr, wis_attr, cha_attr, weight, height, age, religion, gender, char_class, race, hit_points, alignment, money, user_id) VALUES ('Akane', 3, 9, 14, 12, 16, 10, 10, 150, 68, 23, 'Boccob', 'Female', (SELECT class_id FROM classes WHERE class_name = 'Wizard'), (SELECT race_id FROM races WHERE race_name = 'Human'), 16, 'LN', 100, (SELECT user_id FROM users WHERE username = 'alexwho314'));
+
+
+
+
+
+INSERT INTO characters (character_id, character_name, character_level, str_attr, dex_attr, con_attr, int_attr, wis_attr, cha_attr, weight, height, age, religion, gender, char_class, race, hit_points, alignment, money, user_id) VALUES (1, 'Akane', 3, 9, 14, 12, 16, 10, 10, 150, 68, 23, 'Boccob', 'Female', (SELECT class_id FROM classes WHERE class_name = 'Wizard'), (SELECT race_id FROM races WHERE race_name = 'Human'), 16, 'LN', 100, (SELECT user_id FROM users WHERE username = 'alexwho314'));
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Appraise'), 0);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Balance'), 0);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Bluff'), 0);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Climb'), 0);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Concentration'), 0);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Craft'), 0);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Decipher Script'), 0);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Diplomacy'), 0);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Disable Device'), 0);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Disguise'), 0);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Escape Artist'), 0);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Forgery'), 0);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Gather Information'), 0);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Handle Animal'), 0);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Heal'), 0);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Hide'), 0);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Intimidate'), 0);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Jump'), 0);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Knowledge (arcana)'), 1);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Knowledge (architecture and engineering)'), 1);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Knowledge (dungeoneering)'), 1);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Knowledge (geography)'), 1);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Knowledge (history)'), 1);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Knowledge (local)'), 1);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Knowledge (nature)'), 1);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Knowledge (nobility and royalty)'), 1);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Knowledge (religion)'), 1);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Knowledge (the planes)'), 0);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Listen'), 0);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Move Silently'), 0);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Open Lock'), 0);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Perform'), 0);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Profession'), 0);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Ride'), 0);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Search'), 0);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Sense Motive'), 0);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Sleight of Hand'), 0);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Speak Language'), 0);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Spellcraft'), 0);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Spot'), 0);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Survival'), 0);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Swim'), 0);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Tumble'), 0);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Use Magic Device'), 0);
+INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Use Rope'), 0);
