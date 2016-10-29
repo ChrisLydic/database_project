@@ -33,16 +33,28 @@ if (!$_SESSION["auth"]) {
 		$skills_table = mysqli_fetch_all($result_skill);
 
 		//get equipped armor
-		$result_armor_on = mysqli_query($con,"SELECT * FROM armors INNER JOIN characters_armors ON characters_armors.armor_id = armors.armor_id WHERE characters_armors.character_id = '$charId' AND characters_armors.location = 'EQUIPED'");
+		$result_armor_on = mysqli_query($con,"SELECT * FROM armors INNER JOIN characters_armors ON characters_armors.armor_id = armors.armor_id WHERE characters_armors.character_id = '$charId' AND characters_armors.location = 'EQUIPPED'");
 		if($result_armor_on) {
-			$armor_on = mysqli_fetch_array($result_armor_on);
+			$armor_res = mysqli_fetch_all($result_armor_on);
+			$armor_on = $armor_res[0];
 		}
 
 		//get equipped weapon
-		$result_weapon_on = mysqli_query($con,"SELECT * FROM weapons INNER JOIN characters_weapons ON characters_weapons.weapon_id = weapons.weapon_id WHERE characters_weapons.character_id = '$charId' AND characters_weapons.location = 'EQUIPED'");
+		$result_weapon_on = mysqli_query($con,"SELECT * FROM weapons INNER JOIN characters_weapons ON characters_weapons.weapon_id = weapons.weapon_id WHERE characters_weapons.character_id = '$charId' AND characters_weapons.location = 'EQUIPPED'");
 		if($result_weapon_on) {
-			$weapon_on = mysqli_fetch_array($result_weapon_on);
+			$weapon_res = mysqli_fetch_all($result_weapon_on);
+			$weapon_on = $weapon_res[0];
 		}
+
+		//get equipped armor
+		$armor_off = mysqli_query($con,"SELECT * FROM armors INNER JOIN characters_armors ON characters_armors.armor_id = armors.armor_id WHERE characters_armors.character_id = '$charId' AND characters_armors.location <> 'EQUIPPED'");
+
+		//get equipped weapon
+		$weapon_off = mysqli_query($con,"SELECT * FROM weapons INNER JOIN characters_weapons ON characters_weapons.weapon_id = weapons.weapon_id WHERE characters_weapons.character_id = '$charId' AND characters_weapons.location <> 'EQUIPPED'");
+
+		//get equipped weapon
+		$generic_items = mysqli_query($con,"SELECT * FROM generic_items INNER JOIN characters_generic_items ON characters_generic_items.generic_item_id = generic_items.generic_item_id WHERE characters_generic_items.character_id = '$charId'");
+
 	} else {
 		header("Location: error.php");
 	}
@@ -223,8 +235,70 @@ if (!$_SESSION["auth"]) {
 		}
 		echo "</ul>";
 		?>
-		
-		
+
+		<h3>Weapons:</h3>
+		<ul>
+			<?php
+				if (!$result_weapon_on) {
+					echo '<li>No Equipped Weapons</li>';
+				} else {
+					echo '<li>Equipped Weapons</li><ul>';
+					foreach ($weapon_res as $row ) {
+						echo "<li><a href='{$row[0]}'>{$row[1]}</a></li>";
+					}
+					echo '</ul>';
+				}
+
+				if (!$weapon_off) {
+					echo '<li>No Unequipped Weapons</li>';
+				} else {
+					echo '<li>Unequipped Weapons</li><ul>';
+					while ($row = mysqli_fetch_array($weapon_off)) {
+						echo "<li><a href='{$row["weapon_id"]}'>{$row["weapon_name"]}</a></li>";
+					}
+					echo '</ul>';
+				}
+			?>
+		</ul>
+
+		<h3>Armor:</h3>
+		<ul>
+			<?php
+			if (!$result_armor_on) {
+				echo '<li>No Equipped Armor</li>';
+			} else {
+				echo '<li>Equipped Armor</li><ul>';
+				while ($row = mysqli_fetch_array($result_armor_on)) {
+					echo "<li><a href='{$row[0]}'>'{$row[1]}'</a></li>";
+				}
+				echo '</ul>';
+			}
+
+			if (!$armor_off) {
+				echo '<li>No Unequipped Armor</li>';
+			} else {
+				echo '<li>Unequipped Armor</li><ul>';
+				while ($row = mysqli_fetch_array($armor_off)) {
+					echo "<li><a href='{$row["armor_id"]}'>'{$row["armor_name"]}'</a></li>";
+				}
+				echo '</ul>';
+			}
+			?>
+		</ul>
+
+		<h3>Items:</h3>
+		<ul>
+			<?php
+				if (!$generic_items) {
+					echo '<li>No Items</li>';
+				} else {
+					while ($row = mysqli_fetch_array($generic_items)) {
+						echo "<li><a href='{$row["generic_item_id"]}'>'{$row["generic_item_name"]}'</a></li>";
+					}
+				}
+			?>
+		</ul>
+
 	</body>
 </html>
 <?php
