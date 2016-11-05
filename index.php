@@ -9,14 +9,14 @@ if (!$_SESSION["auth"]) {
 	header("Location: log_in.php");
 } else {
 	require("db_open.php");
-	$array = array();
+	$allowed = array();
 	$result = mysqli_query($con, "SELECT character_id, character_name FROM characters, users 
-	WHERE username = '{$_SESSION["user"]}' and characters.user_id = users.user_id;");
+	WHERE username = '{$_SESSION["user"]}' AND characters.user_id = users.user_id;");
 	if ($result) {
 		while($row = mysqli_fetch_array($result)) {
-			$array[$row["character_id"]] = $row["character_name"];
+			$allowed[$row["character_id"]] = $row["character_name"];
 		}
-		$_SESSION["allowed"] = $array;
+		$_SESSION["allowed"] = $allowed;
 	}
 ?>
 <!DOCTYPE html>
