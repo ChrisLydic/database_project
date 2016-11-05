@@ -5,25 +5,32 @@ if (!$_SESSION["auth"]) {
 	$_SESSION["auth"] = false;
 	header("Location: log_in.php");
 } else {
-	if (isset($_POST["query"]) && isset($_POST["search_type"])) {
+	if (isset($_POST["query"])) {
 		$query = $_POST["query"];
+	} else {
+		$query = "";
+	}
+	if (isset($_POST["search_type"])) {
 		$search_type = $_POST["search_type"];
+	} else {
+		$search_type = "character";
+	}
 
-		require("db_open.php");
+	require("db_open.php");
 
-		$result = mysqli_query($con, "SELECT character_name, character_id FROM characters WHERE character_name like '%$query%'");
-		if ($result) {
-			$empty_result = false;
-			$results = array();
-			while($row = mysqli_fetch_array($result)) {
-				$results[$row["character_id"]] = $row["character_name"];
-			}
+	$result = mysqli_query($con, "SELECT character_name, character_id FROM characters WHERE character_name like '%$query%'");
+	if ($result) {
+		$empty_result = false;
+		$results = array();
+		while($row = mysqli_fetch_array($result)) {
+			$results[$row["character_id"]] = $row["character_name"];
+		}
 
-			if (sizeof($results) === 0) {
-				$empty_result = true;
-			}
+		if (sizeof($results) === 0) {
+			$empty_result = true;
 		}
 	}
+	
 ?>
 <!DOCTYPE html>
 <html lang="en" xml:lang="en">
@@ -39,7 +46,7 @@ if (!$_SESSION["auth"]) {
 		<h1>Search</h1>
 
 		<form name="form" method="post">
-			<input name="query" type="search" required="required">
+			<input name="query" type="search">
 
 			<select name="search_type">
 				<option value="character">Characters</option>

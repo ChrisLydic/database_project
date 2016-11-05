@@ -447,7 +447,19 @@ CREATE TABLE skills_races
 	PRIMARY KEY (skill_id, race_id)
 );
 
-
+INSERT INTO skills_races(skill_id, race_id, bonus) VALUES ((SELECT skill_id FROM skills WHERE skill_name = 'Listen'), (SELECT race_id FROM races WHERE race_name = 'Elf'), 2);
+INSERT INTO skills_races(skill_id, race_id, bonus) VALUES ((SELECT skill_id FROM skills WHERE skill_name = 'Search'), (SELECT race_id FROM races WHERE race_name = 'Elf'), 2);
+INSERT INTO skills_races(skill_id, race_id, bonus) VALUES ((SELECT skill_id FROM skills WHERE skill_name = 'Spot'), (SELECT race_id FROM races WHERE race_name = 'Elf'), 2);
+INSERT INTO skills_races(skill_id, race_id, bonus) VALUES ((SELECT skill_id FROM skills WHERE skill_name = 'Listen'), (SELECT race_id FROM races WHERE race_name = 'Gnome'), 2);
+INSERT INTO skills_races(skill_id, race_id, bonus) VALUES ((SELECT skill_id FROM skills WHERE skill_name = 'Listen'), (SELECT race_id FROM races WHERE race_name = 'Half-elf'), 1);
+INSERT INTO skills_races(skill_id, race_id, bonus) VALUES ((SELECT skill_id FROM skills WHERE skill_name = 'Search'), (SELECT race_id FROM races WHERE race_name = 'Half-elf'), 1);
+INSERT INTO skills_races(skill_id, race_id, bonus) VALUES ((SELECT skill_id FROM skills WHERE skill_name = 'Spot'), (SELECT race_id FROM races WHERE race_name = 'Half-elf'), 1);
+INSERT INTO skills_races(skill_id, race_id, bonus) VALUES ((SELECT skill_id FROM skills WHERE skill_name = 'Diplomacy'), (SELECT race_id FROM races WHERE race_name = 'Half-elf'), 2);
+INSERT INTO skills_races(skill_id, race_id, bonus) VALUES ((SELECT skill_id FROM skills WHERE skill_name = 'Gather Information'), (SELECT race_id FROM races WHERE race_name = 'Half-elf'), 2);
+INSERT INTO skills_races(skill_id, race_id, bonus) VALUES ((SELECT skill_id FROM skills WHERE skill_name = 'Climb'), (SELECT race_id FROM races WHERE race_name = 'Halfling'), 2);
+INSERT INTO skills_races(skill_id, race_id, bonus) VALUES ((SELECT skill_id FROM skills WHERE skill_name = 'Jump'), (SELECT race_id FROM races WHERE race_name = 'Halfling'), 2);
+INSERT INTO skills_races(skill_id, race_id, bonus) VALUES ((SELECT skill_id FROM skills WHERE skill_name = 'Listen'), (SELECT race_id FROM races WHERE race_name = 'Halfling'), 2);
+INSERT INTO skills_races(skill_id, race_id, bonus) VALUES ((SELECT skill_id FROM skills WHERE skill_name = 'Move Silently'), (SELECT race_id FROM races WHERE race_name = 'Halfling'), 2);
 
 CREATE TABLE skills_classes
 (
@@ -494,6 +506,7 @@ CREATE TABLE characters_armor
 	FOREIGN KEY (armor_id) REFERENCES armors(armor_id),
 	quantity INT NOT NULL,
 	location VARCHAR(30),
+	CHECK (location IN ('EQUIPPED')),
 	PRIMARY KEY (character_id, armor_id)
 );
 
@@ -505,6 +518,7 @@ CREATE TABLE characters_generic_items
 	FOREIGN KEY (generic_item_id) REFERENCES generic_items(generic_item_id),
 	quantity INT NOT NULL,
 	location VARCHAR(30),
+	CHECK (location IN ('EQUIPPED')),
 	PRIMARY KEY (character_id, generic_item_id)
 );
 
@@ -516,6 +530,7 @@ CREATE TABLE characters_weapons
 	FOREIGN KEY (weapon_id) REFERENCES weapons(weapon_id),
 	quantity INT NOT NULL,
 	location VARCHAR(30),
+	CHECK (location IN ('EQUIPPED')),
 	PRIMARY KEY (character_id, weapon_id)
 );
 
@@ -565,3 +580,108 @@ INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (S
 INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Tumble'), 0);
 INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Use Magic Device'), 0);
 INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Use Rope'), 0);
+
+CREATE TABLE r_base_ages
+(
+	race_id INT NOT NULL,
+	FOREIGN KEY (race_id) REFERENCES races(race_id),
+	base_age INT NOT NULL,
+	CHECK (base_age >= 0),
+	PRIMARY KEY (race_id)
+);
+
+INSERT INTO r_base_ages(race_id, base_age) VALUES ((SELECT race_id FROM races WHERE race_name = 'Human'), 15);
+INSERT INTO r_base_ages(race_id, base_age) VALUES ((SELECT race_id FROM races WHERE race_name = 'Dwarf'), 40);
+INSERT INTO r_base_ages(race_id, base_age) VALUES ((SELECT race_id FROM races WHERE race_name = 'Elf'), 110);
+INSERT INTO r_base_ages(race_id, base_age) VALUES ((SELECT race_id FROM races WHERE race_name = 'Gnome'), 40);
+INSERT INTO r_base_ages(race_id, base_age) VALUES ((SELECT race_id FROM races WHERE race_name = 'Half-elf'), 20);
+INSERT INTO r_base_ages(race_id, base_age) VALUES ((SELECT race_id FROM races WHERE race_name = 'Half-orc'), 14);
+INSERT INTO r_base_ages(race_id, base_age) VALUES ((SELECT race_id FROM races WHERE race_name = 'Halfling'), 20);
+
+CREATE TABLE r_class_types
+(
+	class_type_id INT NOT NULL,
+	class_id INT NOT NULL,
+	FOREIGN KEY (class_id) REFERENCES classes(class_id),
+	PRIMARY KEY (class_type_id, class_id)
+);
+
+INSERT INTO r_class_types(class_type_id, class_id) VALUES (1, (SELECT class_id FROM classes WHERE class_name = 'Barbarian'));
+INSERT INTO r_class_types(class_type_id, class_id) VALUES (1, (SELECT class_id FROM classes WHERE class_name = 'Rogue'));
+INSERT INTO r_class_types(class_type_id, class_id) VALUES (1, (SELECT class_id FROM classes WHERE class_name = 'Sorcerer'));
+INSERT INTO r_class_types(class_type_id, class_id) VALUES (2, (SELECT class_id FROM classes WHERE class_name = 'Bard'));
+INSERT INTO r_class_types(class_type_id, class_id) VALUES (2, (SELECT class_id FROM classes WHERE class_name = 'Fighter'));
+INSERT INTO r_class_types(class_type_id, class_id) VALUES (2, (SELECT class_id FROM classes WHERE class_name = 'Paladin'));
+INSERT INTO r_class_types(class_type_id, class_id) VALUES (2, (SELECT class_id FROM classes WHERE class_name = 'Ranger'));
+INSERT INTO r_class_types(class_type_id, class_id) VALUES (3, (SELECT class_id FROM classes WHERE class_name = 'Cleric'));
+INSERT INTO r_class_types(class_type_id, class_id) VALUES (3, (SELECT class_id FROM classes WHERE class_name = 'Druid'));
+INSERT INTO r_class_types(class_type_id, class_id) VALUES (3, (SELECT class_id FROM classes WHERE class_name = 'Monk'));
+INSERT INTO r_class_types(class_type_id, class_id) VALUES (3, (SELECT class_id FROM classes WHERE class_name = 'Wizard'));
+
+CREATE TABLE r_additional_ages
+(
+	race_id INT NOT NULL,
+	FOREIGN KEY (race_id) REFERENCES races(race_id),
+	class_type_id INT NOT NULL,
+	FOREIGN KEY (class_type_id) REFERENCES r_class_types(class_type_id),
+	num_dice INT NOT NULL,
+	CHECK (num_dice > 0),
+	sides_dice INT NOT NULL,
+	CHECK (sides_dice > 0)
+);
+
+INSERT INTO r_additional_ages(race_id, class_type_id, num_dice, sides_dice) VALUES ((SELECT race_id FROM races WHERE race_name = 'Human'), 1, 1, 4);
+INSERT INTO r_additional_ages(race_id, class_type_id, num_dice, sides_dice) VALUES ((SELECT race_id FROM races WHERE race_name = 'Human'), 2, 1, 6);
+INSERT INTO r_additional_ages(race_id, class_type_id, num_dice, sides_dice) VALUES ((SELECT race_id FROM races WHERE race_name = 'Human'), 3, 2, 6);
+INSERT INTO r_additional_ages(race_id, class_type_id, num_dice, sides_dice) VALUES ((SELECT race_id FROM races WHERE race_name = 'Dwarf'), 1, 3, 6);
+INSERT INTO r_additional_ages(race_id, class_type_id, num_dice, sides_dice) VALUES ((SELECT race_id FROM races WHERE race_name = 'Dwarf'), 2, 5, 6);
+INSERT INTO r_additional_ages(race_id, class_type_id, num_dice, sides_dice) VALUES ((SELECT race_id FROM races WHERE race_name = 'Dwarf'), 3, 7, 6);
+INSERT INTO r_additional_ages(race_id, class_type_id, num_dice, sides_dice) VALUES ((SELECT race_id FROM races WHERE race_name = 'Elf'), 1, 4, 6);
+INSERT INTO r_additional_ages(race_id, class_type_id, num_dice, sides_dice) VALUES ((SELECT race_id FROM races WHERE race_name = 'Elf'), 2, 6, 6);
+INSERT INTO r_additional_ages(race_id, class_type_id, num_dice, sides_dice) VALUES ((SELECT race_id FROM races WHERE race_name = 'Elf'), 3, 10, 6);
+INSERT INTO r_additional_ages(race_id, class_type_id, num_dice, sides_dice) VALUES ((SELECT race_id FROM races WHERE race_name = 'Gnome'), 1, 4, 6);
+INSERT INTO r_additional_ages(race_id, class_type_id, num_dice, sides_dice) VALUES ((SELECT race_id FROM races WHERE race_name = 'Gnome'), 2, 6, 6);
+INSERT INTO r_additional_ages(race_id, class_type_id, num_dice, sides_dice) VALUES ((SELECT race_id FROM races WHERE race_name = 'Gnome'), 3, 9, 6);
+INSERT INTO r_additional_ages(race_id, class_type_id, num_dice, sides_dice) VALUES ((SELECT race_id FROM races WHERE race_name = 'Half-elf'), 1, 1, 6);
+INSERT INTO r_additional_ages(race_id, class_type_id, num_dice, sides_dice) VALUES ((SELECT race_id FROM races WHERE race_name = 'Half-elf'), 2, 2, 6);
+INSERT INTO r_additional_ages(race_id, class_type_id, num_dice, sides_dice) VALUES ((SELECT race_id FROM races WHERE race_name = 'Half-elf'), 3, 3, 6);
+INSERT INTO r_additional_ages(race_id, class_type_id, num_dice, sides_dice) VALUES ((SELECT race_id FROM races WHERE race_name = 'Half-orc'), 1, 1, 4);
+INSERT INTO r_additional_ages(race_id, class_type_id, num_dice, sides_dice) VALUES ((SELECT race_id FROM races WHERE race_name = 'Half-orc'), 2, 1, 6);
+INSERT INTO r_additional_ages(race_id, class_type_id, num_dice, sides_dice) VALUES ((SELECT race_id FROM races WHERE race_name = 'Half-orc'), 3, 2, 6);
+INSERT INTO r_additional_ages(race_id, class_type_id, num_dice, sides_dice) VALUES ((SELECT race_id FROM races WHERE race_name = 'Halfling'), 1, 2, 4);
+INSERT INTO r_additional_ages(race_id, class_type_id, num_dice, sides_dice) VALUES ((SELECT race_id FROM races WHERE race_name = 'Halfling'), 2, 3, 6);
+INSERT INTO r_additional_ages(race_id, class_type_id, num_dice, sides_dice) VALUES ((SELECT race_id FROM races WHERE race_name = 'Halfling'), 3, 4, 6);
+
+CREATE TABLE r_heights_weights
+(
+	race_id INT NOT NULL,
+	FOREIGN KEY (race_id) REFERENCES races(race_id),
+	gender VARCHAR(10),
+	base_height INT NOT NULL,
+	CHECK (base_height >= 0),
+	num_dice_height INT NOT NULL,
+	CHECK (num_dice_height > 0),
+	sides_dice_height INT NOT NULL,
+	CHECK (sides_dice_height > 1),
+	base_weight INT NOT NULL,
+	CHECK (base_weight >= 0),
+	num_dice_weight INT NOT NULL,
+	CHECK (num_dice_weight > 0),
+	sides_dice_weight INT NOT NULL,
+	CHECK (sides_dice_weight > 0)
+);
+
+INSERT INTO r_heights_weights(race_id, gender, base_height, num_dice_height, sides_dice_height, base_weight, num_dice_weight, sides_dice_weight) VALUES ((SELECT race_id FROM races WHERE race_name = 'Human'), 'Male', 58, 2, 10, 120, 2, 4);
+INSERT INTO r_heights_weights(race_id, gender, base_height, num_dice_height, sides_dice_height, base_weight, num_dice_weight, sides_dice_weight) VALUES ((SELECT race_id FROM races WHERE race_name = 'Human'), 'Female', 53, 2, 10, 85, 2, 4);
+INSERT INTO r_heights_weights(race_id, gender, base_height, num_dice_height, sides_dice_height, base_weight, num_dice_weight, sides_dice_weight) VALUES ((SELECT race_id FROM races WHERE race_name = 'Dwarf'), 'Male', 45, 2, 4, 130, 2, 6);
+INSERT INTO r_heights_weights(race_id, gender, base_height, num_dice_height, sides_dice_height, base_weight, num_dice_weight, sides_dice_weight) VALUES ((SELECT race_id FROM races WHERE race_name = 'Dwarf'), 'Female', 43, 2, 4, 100, 2, 6);
+INSERT INTO r_heights_weights(race_id, gender, base_height, num_dice_height, sides_dice_height, base_weight, num_dice_weight, sides_dice_weight) VALUES ((SELECT race_id FROM races WHERE race_name = 'Elf'), 'Male', 53, 2, 6, 85, 1, 6);
+INSERT INTO r_heights_weights(race_id, gender, base_height, num_dice_height, sides_dice_height, base_weight, num_dice_weight, sides_dice_weight) VALUES ((SELECT race_id FROM races WHERE race_name = 'Elf'), 'Female', 53, 2, 6, 80, 1, 6);
+INSERT INTO r_heights_weights(race_id, gender, base_height, num_dice_height, sides_dice_height, base_weight, num_dice_weight, sides_dice_weight) VALUES ((SELECT race_id FROM races WHERE race_name = 'Gnome'), 'Male', 36, 2, 4, 40, 1, 1);
+INSERT INTO r_heights_weights(race_id, gender, base_height, num_dice_height, sides_dice_height, base_weight, num_dice_weight, sides_dice_weight) VALUES ((SELECT race_id FROM races WHERE race_name = 'Gnome'), 'Female', 34, 2, 4, 35, 1, 1);
+INSERT INTO r_heights_weights(race_id, gender, base_height, num_dice_height, sides_dice_height, base_weight, num_dice_weight, sides_dice_weight) VALUES ((SELECT race_id FROM races WHERE race_name = 'Half-elf'), 'Male', 55, 2, 8, 100, 2, 4);
+INSERT INTO r_heights_weights(race_id, gender, base_height, num_dice_height, sides_dice_height, base_weight, num_dice_weight, sides_dice_weight) VALUES ((SELECT race_id FROM races WHERE race_name = 'Half-elf'), 'Female', 53, 2, 8, 80, 2, 4);
+INSERT INTO r_heights_weights(race_id, gender, base_height, num_dice_height, sides_dice_height, base_weight, num_dice_weight, sides_dice_weight) VALUES ((SELECT race_id FROM races WHERE race_name = 'Half-orc'), 'Male', 58, 2, 12, 150, 2, 6);
+INSERT INTO r_heights_weights(race_id, gender, base_height, num_dice_height, sides_dice_height, base_weight, num_dice_weight, sides_dice_weight) VALUES ((SELECT race_id FROM races WHERE race_name = 'Half-orc'), 'Female', 53, 2, 12, 110, 2, 6);
+INSERT INTO r_heights_weights(race_id, gender, base_height, num_dice_height, sides_dice_height, base_weight, num_dice_weight, sides_dice_weight) VALUES ((SELECT race_id FROM races WHERE race_name = 'Halfling'), 'Male', 32, 2, 4, 30, 1, 1);
+INSERT INTO r_heights_weights(race_id, gender, base_height, num_dice_height, sides_dice_height, base_weight, num_dice_weight, sides_dice_weight) VALUES ((SELECT race_id FROM races WHERE race_name = 'Halfling'), 'Female', 30, 2, 4, 25, 1, 1);
