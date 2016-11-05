@@ -37,6 +37,13 @@ if ($result_races) {
 	$_SESSION["races"] = $race_array;
 }
 
+$result_skills = mysqli_query($con, "SELECT skill_id, skill_name FROM skills ;");
+if ($result_races) {
+	while ($row = mysqli_fetch_array($result_skills)) {
+		$skill_array[$row["skill_id"]] = $row["skill_name"];
+	}
+	$_SESSION["skills"] = $skill_array;
+}
 // check if all form data exists
 // TODO Either allow nullable fields to be unset or change nullable fields to nonullable fields
 $is_form_full = !empty($_POST["character_name"])
@@ -58,6 +65,16 @@ $is_form_full = !empty($_POST["character_name"])
 	&& !empty($_POST["alignment"])
 	&& isset($_POST["money"]);
 
+/*foreach ($skill_array as $key => $value)
+{
+	if(!isset($_POST["skill_".str_replace(' ','',$value)]))
+	{
+		echo "skill not set: ";
+		echo $value;
+		$is_form_full = false;
+	}
+}//*/
+
 if ($edit)
 {
 	if (isset($_GET["char"])) {
@@ -70,6 +87,9 @@ if ($edit)
 		require("db_open.php");
 		$result = mysqli_query($con, "SELECT * FROM characters WHERE character_id='$charId'");
 		$row = mysqli_fetch_array($result);
+
+		$result_skill = mysqli_query($con,"SELECT * FROM skills INNER JOIN characters_skills ON characters_skills.skill_id = skills.skill_id WHERE characters_skills.character_id = '$charId'");
+		$skills_table = mysqli_fetch_all($result_skill);
 
 		$result_class = mysqli_query($con, "SELECT class_name FROM classes WHERE class_id='{$row["char_class"]}' ;");
 		if ($result_class) {
@@ -128,7 +148,13 @@ if ($is_form_full) {
 				}
 			}
 			mysqli_query($con, "UPDATE characters SET $set_str WHERE character_id=$charId;");
-			
+
+			//update skills
+			//foreach($skill_array as $key=>$value)
+			//{
+			//	$rank = $_POST["skill_".str_replace(' ','',$value)];
+			//	mysqli_query($con,"UPDATE characters_skills SET skill_id=$key,skill_rank=$rank WHERE character_id=$charId");
+			//}
 			header("Location: character.php?" . http_build_query($_GET)); # TODO Fix to not add edit to URL
 		} else
 		{
@@ -144,7 +170,22 @@ if ($is_form_full) {
 					$values_str = $values_str . "'" . $value . "',";
 				}
 			}
-			mysqli_query($con, "$insert_str $values_str;");
+			$newChar = mysqli_multi_query($con, "$insert_str $values_str");
+			//$newChar = mysqli_insert_id($con);//TODO put this into a sql quarry
+			//echo $newChar;
+			#echo "New Char:";
+			#print_r($newChar);
+			//$charId = (int)$newChar;
+			#echo "<br> new char end";
+			//create skills
+			#print_r($charId);
+			//foreach($skill_array as $key=>$value)
+			//{
+			//	#print_r($key);
+			//	$key = (int)$key;
+			//	$rank = (int)($_POST["skill_".str_replace(' ','',$value)]);
+			//	mysqli_query($con,"INSERT INTO characters_skills(character_id, skill_id, skill_rank) VALUES ($charId,$key,$rank);");
+			//}
 			header("Location: index.php");
 		}
 	} # doesn't do anything if invalid because invalid form data would require user to subvert html form
@@ -250,7 +291,6 @@ if ($is_form_full) {
 
 			<label for="money">Money:</label>
 			<input type="number" name="money" required="required" value="<?php echo ($edit ? $row["money"] : 0) ?>" min="0" max="<?php echo PHP_INT_MAX ?>" step="0.01">
-			
 			<input type="submit" value="Submit" />
 
 		</form>
