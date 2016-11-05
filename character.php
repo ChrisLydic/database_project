@@ -249,7 +249,7 @@ if (!$_SESSION["auth"]) {
 					echo '</ul>';
 				}
 
-				if ($weapon_off) {
+				if (!mysqli_num_rows($weapon_off)) {
 					echo '<li>No Unequipped Weapons</li>';
 				} else {
 					echo '<li>Unequipped Weapons</li><ul>';
@@ -274,7 +274,7 @@ if (!$_SESSION["auth"]) {
                     echo '</ul>';
                 }
 
-                if (!$armor_off) {
+                if (!mysqli_num_rows($armor_off)) {
                     echo '<li>No Unequipped Armor</li>';
                 } else {
                     echo '<li>Unequipped Armor</li><ul>';
