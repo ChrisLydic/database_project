@@ -65,7 +65,6 @@ if (!$_SESSION["auth"]) {
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<link href="screen.css" rel="stylesheet" type="text/css" media="screen" />
 		<title><?= $row["character_name"]; ?></title>
-		<meta name="author" content="Alex Hedges" />
 	</head>
 	<body onload="refresh(false);">
 		<?php require("header.php"); ?>
@@ -73,7 +72,9 @@ if (!$_SESSION["auth"]) {
 
 <!--		<a href="item.php?char=--><?php //echo $charId; ?><!--">Add Item</a> |-->
 		<a href="character_form.php?mode=edit&char=<?= $charId; ?>">Edit Character</a> |
-		<a href="delete_character.php?char=<?= $charId; ?>">Delete Character</a>
+		<a href="delete_character.php?char=<?= $charId; ?>">Delete Character</a> |
+		<a href="skills_form.php?char=<?= $charId; ?>">Edit Skills</a> |
+		<a href="add_item.php?char=<?= $charId; ?>">Add Item</a>
 		<?php
 		// basic modifier calculations
 		$str_mod = (floor($row["str_attr"]/2)-5);
