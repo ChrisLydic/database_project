@@ -33,21 +33,21 @@ if (!$_SESSION["auth"]) {
 		$skills_table = mysqli_fetch_all($result_skill);
 
 		//get equipped armor
-		$result_armor_on = mysqli_query($con,"SELECT * FROM armors INNER JOIN characters_armors ON characters_armors.armor_id = armors.armor_id WHERE characters_armors.character_id = '$charId' AND characters_armors.location = 'EQUIPPED'");
-		if($result_armor_on) {
+		$result_armor_on = mysqli_query($con,"SELECT * FROM armor INNER JOIN characters_armor ON characters_armor.armor_id = armor.armor_id WHERE characters_armor.character_id = '$charId' AND characters_armor.location = 'EQUIPPED'");
+		if(mysqli_num_rows($result_armor_on)) {
 			$armor_res = mysqli_fetch_all($result_armor_on);
 			$armor_on = $armor_res[0];
 		}
 
 		//get equipped weapon
 		$result_weapon_on = mysqli_query($con,"SELECT * FROM weapons INNER JOIN characters_weapons ON characters_weapons.weapon_id = weapons.weapon_id WHERE characters_weapons.character_id = '$charId' AND characters_weapons.location = 'EQUIPPED'");
-		if($result_weapon_on) {
+		if(mysqli_num_rows($result_weapon_on)) {
 			$weapon_res = mysqli_fetch_all($result_weapon_on);
 			$weapon_on = $weapon_res[0];
 		}
 
 		//get equipped armor
-		$armor_off = mysqli_query($con,"SELECT * FROM armors INNER JOIN characters_armors ON characters_armors.armor_id = armors.armor_id WHERE characters_armors.character_id = '$charId' AND characters_armors.location <> 'EQUIPPED'");
+		$armor_off = mysqli_query($con,"SELECT * FROM armor INNER JOIN characters_armor ON characters_armor.armor_id = armor.armor_id WHERE characters_armor.character_id = '$charId' AND characters_armor.location <> 'EQUIPPED'");
 
 		//get equipped weapon
 		$weapon_off = mysqli_query($con,"SELECT * FROM weapons INNER JOIN characters_weapons ON characters_weapons.weapon_id = weapons.weapon_id WHERE characters_weapons.character_id = '$charId' AND characters_weapons.location <> 'EQUIPPED'");
@@ -129,7 +129,7 @@ if (!$_SESSION["auth"]) {
 
 		//attack bonus calculation
 		$attack_bonus = $base_attack_bonus + $size_mod;
-		if($result_weapon_on)
+		if(mysqli_num_rows($result_weapon_on))
 		{
 			if($weapon_on["type"] == "Melee")
 			{
@@ -144,7 +144,7 @@ if (!$_SESSION["auth"]) {
 		$grapple_mod = $base_attack_bonus + $str_mod + $size_mod;
 
 		//Calculate armor stuff
-		if($result_armor_on){
+		if(mysqli_num_rows($result_armor_on)) {
 			$armor_class = 10 + $armor_on["armor_bonus"] + /*Shield_bonus +*/ min($dex_mod,$armor_on["max_dex"]) + $size_mod;
 			$touch_armor_class = 10 + $dex_mod + $size_mod;
 			$flat_footed_armor_class = 10 + $armor_on["armor_bonus"] + /*Shield bonus +*/ $size_mod;
@@ -221,7 +221,7 @@ if (!$_SESSION["auth"]) {
 					$mod = 0;
 				}
 				$mod = $value[7]+$mod;
-				if ($result_armor_on) {
+				if (mysqli_num_rows($result_armor_on)) {
 					$mod += $value[3] * $armor_on["armor_check_penalty"];
 				}
 				if ($skills_races) {
@@ -239,7 +239,7 @@ if (!$_SESSION["auth"]) {
 		<h3>Weapons:</h3>
 		<ul>
 			<?php
-				if (!$result_weapon_on) {
+				if (!mysqli_num_rows($result_weapon_on)) {
 					echo '<li>No Equipped Weapons</li>';
 				} else {
 					echo '<li>Equipped Weapons</li><ul>';
@@ -249,7 +249,7 @@ if (!$_SESSION["auth"]) {
 					echo '</ul>';
 				}
 
-				if (!$weapon_off) {
+				if ($weapon_off) {
 					echo '<li>No Unequipped Weapons</li>';
 				} else {
 					echo '<li>Unequipped Weapons</li><ul>';
@@ -264,32 +264,32 @@ if (!$_SESSION["auth"]) {
 		<h3>Armor:</h3>
 		<ul>
 			<?php
-			if (!$result_armor_on) {
-				echo '<li>No Equipped Armor</li>';
-			} else {
-				echo '<li>Equipped Armor</li><ul>';
-				while ($row = mysqli_fetch_array($result_armor_on)) {
-					echo "<li><a href='{$row[0]}'>'{$row[1]}'</a></li>";
-				}
-				echo '</ul>';
-			}
+                if (!mysqli_num_rows($result_armor_on)) {
+                    echo '<li>No Equipped Armor</li>';
+                } else {
+                    echo '<li>Equipped Armor</li><ul>';
+                    while ($row = mysqli_fetch_array($result_armor_on)) {
+                        echo "<li><a href='{$row[0]}'>'{$row[1]}'</a></li>";
+                    }
+                    echo '</ul>';
+                }
 
-			if (!$armor_off) {
-				echo '<li>No Unequipped Armor</li>';
-			} else {
-				echo '<li>Unequipped Armor</li><ul>';
-				while ($row = mysqli_fetch_array($armor_off)) {
-					echo "<li><a href='{$row["armor_id"]}'>'{$row["armor_name"]}'</a></li>";
-				}
-				echo '</ul>';
-			}
+                if (!$armor_off) {
+                    echo '<li>No Unequipped Armor</li>';
+                } else {
+                    echo '<li>Unequipped Armor</li><ul>';
+                    while ($row = mysqli_fetch_array($armor_off)) {
+                        echo "<li><a href='{$row["armor_id"]}'>'{$row["armor_name"]}'</a></li>";
+                    }
+                    echo '</ul>';
+                }
 			?>
 		</ul>
 
 		<h3>Items:</h3>
 		<ul>
 			<?php
-				if (!$generic_items) {
+				if (!mysqli_num_rows($generic_items)) {
 					echo '<li>No Items</li>';
 				} else {
 					while ($row = mysqli_fetch_array($generic_items)) {
