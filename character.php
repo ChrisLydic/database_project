@@ -72,7 +72,7 @@ if (!$_SESSION["auth"]) {
 
 		<!--<a href="item.php?char=--><?php //echo $charId; ?><!--">Add Item</a> |-->
 		<a href="character_form.php?mode=edit&char=<?= $charId; ?>">Edit Character</a> |
-		<a href="delete_character.php?char=<?= $charId; ?>" onclick="return confirm('Are you sure? you want to delete this character?')">Delete Character</a>
+		<a href="delete_character.php?char=<?= $charId; ?>" onclick="return confirm('Are you sure? you want to delete this character?')">Delete Character</a> |
 		<a href="skills_form.php?char=<?= $charId; ?>">Edit Skills</a> |
 		<a href="add_item.php?char=<?= $charId; ?>">Add Item</a>
 		<?php

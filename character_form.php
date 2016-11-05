@@ -149,12 +149,6 @@ if ($is_form_full) {
 			}
 			mysqli_query($con, "UPDATE characters SET $set_str WHERE character_id=$charId;");
 
-			//update skills
-			//foreach($skill_array as $key=>$value)
-			//{
-			//	$rank = $_POST["skill_".str_replace(' ','',$value)];
-			//	mysqli_query($con,"UPDATE characters_skills SET skill_id=$key,skill_rank=$rank WHERE character_id=$charId");
-			//}
 			header("Location: character.php?" . http_build_query($_GET)); # TODO Fix to not add edit to URL
 		} else
 		{

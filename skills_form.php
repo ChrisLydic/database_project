@@ -9,76 +9,56 @@ if (!$_SESSION["auth"]) {
     header("Location: log_in.php");
 }
 
-$edit = true;
-
 require("db_open.php");
 require("character_utils.php");
 
-$result_skills = mysqli_query($con, "SELECT skill_id, skill_name FROM skills ;");
-if ($result_skills) {
-    while ($row = mysqli_fetch_array($result_skills)) {
-        $skill_array[$row["skill_id"]] = $row["skill_name"];
-    }
-    $_SESSION["skills"] = $skill_array;
+if (isset($_GET["char"])) {
+	$char_id = $_GET["char"];
+} else {
+	header("Location: error.php");
 }
-// check if all form data exists
-// TODO Either allow nullable fields to be unset or change nullable fields to nonullable fields
-$is_form_full = true;
 
-foreach ($skill_array as $key => $value)
-{
-    if(!isset($_POST["skill_".str_replace(' ','',$value)]))
+if (!isset($_SESSION["allowed"][$char_id])) {
+	header("Location: error.php");
+}
+
+// Extract character name
+$result = mysqli_query($con, "SELECT * FROM characters WHERE character_id='$char_id'");
+$character_name = mysqli_fetch_array($result)["character_name"];
+
+// Initializes skills to rank 0 if skill relationship does not already exist
+$skills = mysqli_query($con,"SELECT * FROM skills");
+while ($skill_id = mysqli_fetch_array($skills, MYSQLI_ASSOC)["skill_id"]) {
+	$skill = mysqli_fetch_array(mysqli_query($con,"SELECT * FROM characters_skills WHERE characters_skills.character_id = '$char_id' AND characters_skills.skill_id = '$skill_id'"), MYSQLI_ASSOC);
+	if ($skill == NULL)
+	{
+		mysqli_query($con,"INSERT INTO characters_skills(skill_id, character_id, skill_rank) VALUES ($skill_id, $char_id, 0)");
+	}
+}
+
+// Create list of skills with ranks for the character
+$result_skills = mysqli_query($con,"SELECT skill_name, skill_rank FROM skills INNER JOIN characters_skills ON characters_skills.skill_id = skills.skill_id WHERE characters_skills.character_id = '$char_id'");
+//$skills_table = mysqli_fetch_all($result_skill);
+
+// Checks to ensure all input is exists
+$is_form_full = true;
+$skills = mysqli_query($con,"SELECT * FROM skills");
+while ($row = mysqli_fetch_array($skills, MYSQLI_ASSOC)) {
+    if(!isset($_POST["skill_".str_replace(' ','',$row["skill_name"])]))
     {
-        echo "skill not set: ";
-        echo $value;
         $is_form_full = false;
     }
 }
 
-if ($edit)
-{
-    if (isset($_GET["char"])) {
-        $charId = $_GET["char"];
-    } else {
-        header("Location: error.php");
-    }
-
-    if (isset($_SESSION["allowed"][$charId])) {
-        require("db_open.php");
-        $result = mysqli_query($con, "SELECT * FROM characters WHERE character_id='$charId'");
-        $row = mysqli_fetch_array($result);
-
-        $result_skill = mysqli_query($con,"SELECT * FROM skills INNER JOIN characters_skills ON characters_skills.skill_id = skills.skill_id WHERE characters_skills.character_id = '$charId'");
-        $skills_table = mysqli_fetch_all($result_skill);
-    } else {
-        header("Location: error.php");
-    }
-}
-
+// If input exists, then store in database and go back to main page for character
 if ($is_form_full) {
-    $form_array = array();
-
-    $res = mysqli_query($con, "SELECT user_id FROM users WHERE username = '{$_SESSION["user"]}' ;");
-    if ($res) {
-        $row = mysqli_fetch_array($res);
-        $form_array["user_id"] = $row["user_id"];
-    } else {
-        header("Location: index.php");
-    }
-
-    if (true) {
-        if ($edit)
-        {
-            //update skills
-            foreach($skill_array as $key=>$value)
-            {
-                $rank = $_POST["skill_".str_replace(' ','',$value)];
-                mysqli_query($con,"DELETE FROM `characters_skills` WHERE character_id=$charId AND skill_id=$key");
-                mysqli_query($con,"INSERT INTO characters_skills(character_id, skill_id, skill_rank) VALUES ($charId,$key,$rank);");
-            }
-            header("Location: character.php?" . http_build_query($_GET)); # TODO Fix to not add edit to URL
-        }
-    } # doesn't do anything if invalid because invalid form data would require user to subvert html form
+	$skills = mysqli_query($con,"SELECT * FROM skills");
+	while ($row = mysqli_fetch_array($skills, MYSQLI_ASSOC)) {
+		$skill_id = $row["skill_id"];
+		$rank = $_POST["skill_".str_replace(' ','',$row["skill_name"])];
+		mysqli_query($con,"UPDATE  characters_skills SET skill_rank = $rank WHERE character_id = $char_id AND skill_id = $skill_id;");
+	}
+	header("Location: character.php?" . http_build_query($_GET)); # TODO Fix to not add edit to URL
 }
 ?>
     <!DOCTYPE html>
@@ -86,7 +66,7 @@ if ($is_form_full) {
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <link href="screen.css" rel="stylesheet" type="text/css" media="screen" />
-        <title><?php echo ($edit ? "Edit " . $row["character_name"] : "Create Character") ?></title>
+        <title><?php echo ("Edit Skills of " . $character_name) ?></title>
         <script type="text/javascript">
             //<![CDATA[
             //			function validateForm() {
@@ -96,20 +76,17 @@ if ($is_form_full) {
     </head>
     <body>
     <?php require("header.php"); ?>
-    <h1><?php echo ("Edit Skills of " . $row["character_name"]) ?></h1>
+    <h1><?php echo ("Edit Skills of " . $character_name) ?></h1>
 
     <form name="form" method="post">
         <?php
-        $array = $_SESSION["skills"];
-        echo "<h3>Skills:</h3>";
         echo "<ul>";
-        foreach($array as $key => $value){
-            echo "<label for='skill_";
-            echo $value;
-            echo "'>";
-            echo $value;
+		while ($row = mysqli_fetch_array($result_skills, MYSQLI_ASSOC)) {
+			$skill_name_parsed = "skill_".str_replace(' ','',$row["skill_name"]);
+            echo "<label for='$skill_name_parsed'>";
+            echo $row["skill_name"];
             echo ": </label>"?>
-            <input type="number" name="<?= "skill_".str_replace(' ','',$value) ?>" required="required" value="<?php echo (array_key_exists($key,$skills_table) ? $skills_table[$key] : 0) ?>" min="<?php echo PHP_INT_MIN ?>" max="<?php echo PHP_INT_MAX ?>">
+            <input type="number" name="<?= $skill_name_parsed ?>" required="required" value="<?php echo ($row["skill_rank"]) ?>" min="0" max="<?php echo PHP_INT_MAX ?>">
             <?php echo "";
         }
         echo "</ul>";
