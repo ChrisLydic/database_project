@@ -1,6 +1,6 @@
 DROP DATABASE IF EXISTS rpg;
 
-CREATE DATABASE IF NOT EXISTS rpg DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE DATABASE rpg DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE rpg;
 
 CREATE USER IF NOT EXISTS 'rpg_user'@'localhost' IDENTIFIED BY 'This_is_a_passphrase!';
@@ -262,7 +262,7 @@ CREATE TABLE generic_items
 	generic_item_name VARCHAR(30) NOT NULL,
 	UNIQUE (generic_item_name),
 	cost DECIMAL(10, 2) NOT NULL,
-	weight INT # TODO Maybe make decimal
+	weight DECIMAL(10, 1)
 );
 
 # Adventuring gear
@@ -367,6 +367,29 @@ INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Thieves\' to
 INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Tool, masterwork', 50, 1);
 INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Water clock', 1000, 200);
 
+# Clothing
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Artisan\'s outfit', 1, 4);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Cleric\'s vestments', 5, 6);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Cold weather outfit', 8, 7);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Courtier\'s outfit', 30, 6);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Entertainer\'s outfit', 3, 4);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Explorer\'s outfit', 10, 8);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Monk\'s outfit', 5, 2);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Noble\'s outfit', 75, 10);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Peasant\'s outfit', .1, 2);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Royal outfit', 200, 15);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Scholar\'s outfit', 5, 6);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Traveler\'s outfit', 1, 5);
+
+# Food, drink, and lodging
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Ale, gallon', .2, 8);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Ale, mug', .04, 1);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Bread, loaf of', .02, .5);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Cheese, hunk of', .1, .5);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Meat, chunk of', .3, .5);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Wine, common (pitcher)', .2, 6);
+INSERT INTO generic_items(generic_item_name, cost, weight) VALUES ('Wine, fine (bottle)', 10, 1.5);
+
 CREATE TABLE weapons
 (
 	weapon_id INT NOT NULL AUTO_INCREMENT,
@@ -424,6 +447,8 @@ CREATE TABLE skills_races
 	PRIMARY KEY (skill_id, race_id)
 );
 
+
+
 CREATE TABLE skills_classes
 (
 	skill_id INT NOT NULL,
@@ -461,7 +486,7 @@ CREATE TABLE characters_spells
 	PRIMARY KEY (character_id, spell_id)
 );
 
-CREATE TABLE characters_armors
+CREATE TABLE characters_armor
 (
 	character_id INT NOT NULL,
 	FOREIGN KEY (character_id) REFERENCES characters(character_id),

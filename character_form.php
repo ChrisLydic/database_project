@@ -193,10 +193,10 @@ if ($is_form_full) {
 			<label for="cha_attr">Charisma:</label>
 			<input type="number" name="cha_attr" required="required" value="<?php echo ($edit ? $row["cha_attr"] : 0) ?>" min="0" max="<?php echo PHP_INT_MAX ?>">
 			
-			<label for="weight">Weight:</label>
+			<label for="weight">Weight (pounds):</label>
 			<input type="number" name="weight" value="<?php echo ($edit ? $row["weight"] : 0) ?>" min="0" max="<?php echo PHP_INT_MAX ?>">
 			
-			<label for="height">Height:</label>
+			<label for="height">Height (inches):</label>
 			<input type="number" name="height" value="<?php echo ($edit ? $row["height"] : 0) ?>" min="1" max="<?php echo PHP_INT_MAX ?>">
 			
 			<label for="age">Age:</label>
