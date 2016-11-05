@@ -48,11 +48,12 @@ if (!$_SESSION["auth"]) {
 	<h1>Add Items | <?= $char_row["character_name"]; ?></h1>
 
 	<form name="form" method="post">
-s		<select name="search_type">
-			<option value="item">Generic Items</option>
-			<option value="weapon">Weapons</option>
-			<option value="armor">Armor</option>
-		</select>
+		<input name="amount" type="number" value="1">
+<!--s		<select name="equip">-->
+<!--			<option value="item">Generic Items</option>-->
+<!--			<option value="weapon">Weapons</option>-->
+<!--			<option value="armor">Armor</option>-->
+<!--		</select>-->
 
 		<input type="submit" value="Search">
 	</form>
