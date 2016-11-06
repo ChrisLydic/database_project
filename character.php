@@ -25,7 +25,7 @@ if (!$_SESSION["auth"]) {
 		$result_race = mysqli_query($con, "SELECT race_name FROM races WHERE race_id='{$row["race"]}' ;");
 		if ($result_race) {
 			$race_row = mysqli_fetch_array($result_race);
-			$_SESSION["race"] =  $race_row["race_name"];
+			$_SESSION["race"] = $race_row["race_name"];
 		}
 
 		//get skills in 2D array
