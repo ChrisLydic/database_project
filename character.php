@@ -16,7 +16,7 @@ if (!$_SESSION["auth"]) {
 		$result = mysqli_query($con, "SELECT * FROM characters WHERE character_id='$charId'");
 		$row = mysqli_fetch_array($result);
 
-		$result_class = mysqli_query($con, "SELECT class_name,base_attack,fort_save,ref_save,will_save FROM classes WHERE class_id='{$row["char_class"]}' ;");
+		$result_class = mysqli_query($con, "SELECT class_name, base_attack, fort_save, ref_save, will_save FROM classes WHERE class_id='{$row["char_class"]}' ;");
 		if ($result_class) {
 			$class_row = mysqli_fetch_array($result_class);
 			$_SESSION["class"] = $class_row["class_name"];
@@ -30,7 +30,7 @@ if (!$_SESSION["auth"]) {
 
 		//get skills in 2D array
 		$result_skill = mysqli_query($con,"SELECT * FROM skills INNER JOIN characters_skills ON characters_skills.skill_id = skills.skill_id WHERE characters_skills.character_id = '$charId'");
-		$skills_table = mysqli_fetch_all($result_skill);
+		$skills_table = mysqli_fetch_all($result_skill, MYSQLI_ASSOC);
 
 		//get equipped armor
 		$result_armor_on = mysqli_query($con,"SELECT * FROM armor INNER JOIN characters_armor ON characters_armor.armor_id = armor.armor_id WHERE characters_armor.character_id = '$charId' AND characters_armor.location = 'EQUIPPED'");
@@ -41,10 +41,10 @@ if (!$_SESSION["auth"]) {
 
 		//get equipped weapon
 		$result_weapon_on = mysqli_query($con,"SELECT * FROM weapons INNER JOIN characters_weapons ON characters_weapons.weapon_id = weapons.weapon_id WHERE characters_weapons.character_id = '$charId' AND characters_weapons.location = 'EQUIPPED'");
-		if(mysqli_num_rows($result_weapon_on)) {
+		/*if(mysqli_num_rows($result_weapon_on)) {
 			$weapon_res = mysqli_fetch_all($result_weapon_on);
 			$weapon_on = $weapon_res[0];
-		}
+		}*/
 
 		//get equipped armor
 		$armor_off = mysqli_query($con,"SELECT * FROM armor INNER JOIN characters_armor ON characters_armor.armor_id = armor.armor_id WHERE characters_armor.character_id = '$charId' AND characters_armor.location <> 'EQUIPPED'");
@@ -129,17 +129,17 @@ if (!$_SESSION["auth"]) {
 		$size_mod = 0;
 
 		//attack bonus calculation
-		$attack_bonus = $base_attack_bonus + $size_mod;
+		/*$attack_bonus = $base_attack_bonus + $size_mod;
 		if(mysqli_num_rows($result_weapon_on))
 		{
-			if($weapon_on[7] == "Melee") ///////////////////////////////////////////////////////////////something needs fixed here, changed from type -> damage_type -> the index of damage_type
+			if($weapon_on[7] == "Melee") //////////TODO something needs fixed here, changed from type -> damage_type -> the index of damage_type
 			{
 				$attack_bonus += $str_mod;
 			}else if($weapon_on[7] == "Ranged")
 			{
 				$attack_bonus += $dex_mod;
 			}
-		}
+		}*/
 
 		//grapple_mod calc
 		$grapple_mod = $base_attack_bonus + $str_mod + $size_mod;
@@ -191,39 +191,36 @@ if (!$_SESSION["auth"]) {
 		<p>Reflex save modifier: <?= $ref_save_mod?></p>
 		<p>Will save modifier: <?= $will_save_mod?></p>
 
+		<h3>Skills:</h3><ul>
 		<?php
 		//calculate mods from skills
-		echo "<h3>Skills:</h3><ul>";
 		foreach ($skills_table as $value){
-			echo "<li><b>";
-			echo $value[1]; // TODO Replace numbers with human-readable values
-			echo "</b>: ";
-			if($value[7] == 0 && $value[4] == 0){
+			echo "<li><b>{$value["skill_name"]}</b>: ";
+			if($value["skill_rank"] == 0 && $value["untrained"] == 0) {
 				//skill has no effect
 				unset($mod);
-			}else
-			{
-				$result_skills_races = mysqli_query($con,"SELECT * FROM skills_races WHERE skill_id = '$value[0]' and race_id = '$row[15]'");
+			}else {
+				$result_skills_races = mysqli_query($con,"SELECT * FROM skills_races WHERE skill_id = '{$value["skill_id"]}' and race_id = '{$row["race"]}'");
 				$skills_races = mysqli_fetch_array($result_skills_races);
 				print_r($skills_races);
-				if ($value[2] == "INT") {
+				if ($value["attribute"] == "INT") {
 					$mod = $int_mod;
-				} elseif ($value[2] == "DEX") {
+				} elseif ($value["attribute"] == "DEX") {
 					$mod = $dex_mod;
-				} elseif ($value[2] == "CON") {
+				} elseif ($value["attribute"] == "CON") {
 					$mod = $con_mod;
-				} elseif ($value[2] == "STR") {
+				} elseif ($value["attribute"] == "STR") {
 					$mod = $str_mod;
-				} elseif ($value[2] == "WIS") {
+				} elseif ($value["attribute"] == "WIS") {
 					$mod = $wis_mod;
-				} elseif ($value[2] == "CHA") {
+				} elseif ($value["attribute"] == "CHA") {
 					$mod = $cha_mod;
-				} elseif ($value[2] == "NON") {
+				} elseif ($value["attribute"] == "NON") {
 					$mod = 0;
 				}
-				$mod = $value[7]+$mod;
+				$mod = $value["skill_rank"]+$mod;
 				if (mysqli_num_rows($result_armor_on)) {
-					$mod += $value[3] * $armor_on[5];
+					$mod += $value["armor_penalty"] * $armor_on[5];
 				}
 				if ($skills_races) {
 					$mod += $skills_races["bonus"];
@@ -234,9 +231,8 @@ if (!$_SESSION["auth"]) {
 			echo isset($mod) ? $mod : "n/a";
 			echo "</li>";
 		}
-		echo "</ul>";
 		?>
-
+		</ul>
 		<h3>Weapons:</h3>
 		<ul>
 			<?php
@@ -244,10 +240,8 @@ if (!$_SESSION["auth"]) {
 					echo '<li>No Equipped Weapons</li>';
 				} else {
 					echo '<li>Equipped Weapons</li><ul>';
-					foreach ($weapon_res as $row) {
-						//amount is coerced to float when sql->array conversion happens, cast it to int
-						$amount = (int)$row[2];
-						echo "<li>$row[1] ($amount) | <a href='equip_item.php?char=$charId&weapon=$row[0]&equip=false'>Unequip</a> | <a href='drop_item.php?char=$charId&weapon={$row[0]}'>Remove</a></li>";
+					foreach ($result_weapon_on as $weapon_row) {
+						echo "<li>{$weapon_row["weapon_name"]} ({$weapon_row["quantity"]}) | <a href='equip_item.php?char=$charId&weapon={$weapon_row["weapon_id"]}&equip=false'>Unequip</a> | <a href='drop_item.php?char=$charId&weapon={$weapon_row["weapon_id"]}'>Remove</a></li>";
 					}
 					echo '</ul>';
 				}
@@ -256,8 +250,8 @@ if (!$_SESSION["auth"]) {
 					echo '<li>No Unequipped Weapons</li>';
 				} else {
 					echo '<li>Unequipped Weapons</li><ul>';
-					while ($row = mysqli_fetch_array($weapon_off)) {
-						echo "<li>{$row["weapon_name"]} ({$row["quantity"]}) | <a href='equip_item.php?char=$charId&weapon={$row["weapon_id"]}&equip=true'>Equip</a> | <a href='drop_item.php?char=$charId&weapon={$row["weapon_id"]}'>Remove</a></li>";
+					while ($weapon_row = mysqli_fetch_array($weapon_off)) {
+						echo "<li>{$weapon_row["weapon_name"]} ({$weapon_row["quantity"]}) | <a href='equip_item.php?char=$charId&weapon={$weapon_row["weapon_id"]}&equip=true'>Equip</a> | <a href='drop_item.php?char=$charId&weapon={$weapon_row["weapon_id"]}'>Remove</a></li>";
 					}
 					echo '</ul>';
 				}

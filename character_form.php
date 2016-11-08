@@ -38,7 +38,7 @@ if ($result_races) {
 }
 
 $result_skills = mysqli_query($con, "SELECT skill_id, skill_name FROM skills ;");
-if ($result_races) {
+if ($result_skills) {
 	while ($row = mysqli_fetch_array($result_skills)) {
 		$skill_array[$row["skill_id"]] = $row["skill_name"];
 	}
@@ -65,18 +65,7 @@ $is_form_full = !empty($_POST["character_name"])
 	&& !empty($_POST["alignment"])
 	&& isset($_POST["money"]);
 
-/*foreach ($skill_array as $key => $value)
-{
-	if(!isset($_POST["skill_".str_replace(' ','',$value)]))
-	{
-		echo "skill not set: ";
-		echo $value;
-		$is_form_full = false;
-	}
-}//*/
-
-if ($edit)
-{
+if ($edit) {
 	if (isset($_GET["char"])) {
 		$charId = $_GET["char"];
 	} else {
@@ -87,9 +76,6 @@ if ($edit)
 		require("db_open.php");
 		$result = mysqli_query($con, "SELECT * FROM characters WHERE character_id='$charId'");
 		$row = mysqli_fetch_array($result);
-
-		$result_skill = mysqli_query($con,"SELECT * FROM skills INNER JOIN characters_skills ON characters_skills.skill_id = skills.skill_id WHERE characters_skills.character_id = '$charId'");
-		$skills_table = mysqli_fetch_all($result_skill);
 
 		$result_class = mysqli_query($con, "SELECT class_name FROM classes WHERE class_id='{$row["char_class"]}' ;");
 		if ($result_class) {
@@ -110,23 +96,23 @@ if ($edit)
 if ($is_form_full) {
 	$form_array = array();
 	$form_array["character_name"] = mysqli_real_escape_string($con, $_POST["character_name"]);
-	$form_array["character_level"] = $_POST["character_level"];
-	$form_array["str_attr"] = $_POST["str_attr"];
-	$form_array["int_attr"] = $_POST["int_attr"];
-	$form_array["cha_attr"] = $_POST["cha_attr"];
-	$form_array["con_attr"] = $_POST["con_attr"];
-	$form_array["dex_attr"] = $_POST["dex_attr"];
-	$form_array["wis_attr"] = $_POST["wis_attr"];
-	$form_array["weight"] = $_POST["weight"];
-	$form_array["height"] = $_POST["height"];
-	$form_array["age"] = $_POST["age"];
+	$form_array["character_level"] = intval($_POST["character_level"]);
+	$form_array["str_attr"] = intval($_POST["str_attr"]);
+	$form_array["int_attr"] = intval($_POST["int_attr"]);
+	$form_array["cha_attr"] = intval($_POST["cha_attr"]);
+	$form_array["con_attr"] = intval($_POST["con_attr"]);
+	$form_array["dex_attr"] = intval($_POST["dex_attr"]);
+	$form_array["wis_attr"] = intval($_POST["wis_attr"]);
+	$form_array["weight"] = intval($_POST["weight"]);
+	$form_array["height"] = intval($_POST["height"]);
+	$form_array["age"] = intval($_POST["age"]);
 	$form_array["religion"] = mysqli_real_escape_string($con, $_POST["religion"]);
 	$form_array["gender"] = mysqli_real_escape_string($con, $_POST["gender"]);
-	$form_array["char_class"] = $_POST["char_class"];
-	$form_array["race"] = $_POST["race"];
-	$form_array["hit_points"] = $_POST["hit_points"];
+	$form_array["char_class"] = intval($_POST["char_class"]);
+	$form_array["race"] = intval($_POST["race"]);
+	$form_array["hit_points"] = intval($_POST["hit_points"]);
 	$form_array["alignment"] = mysqli_real_escape_string($con, $_POST["alignment"]);
-	$form_array["money"] = $_POST["money"];
+	$form_array["money"] = floatval($_POST["money"]);
 
 	$res = mysqli_query($con, "SELECT user_id FROM users WHERE username = '{$_SESSION["user"]}' ;");
 	if ($res) {
@@ -148,10 +134,8 @@ if ($is_form_full) {
 				}
 			}
 			mysqli_query($con, "UPDATE characters SET $set_str WHERE character_id=$charId;");
-
 			header("Location: character.php?" . http_build_query($_GET)); # TODO Fix to not add edit to URL
-		} else
-		{
+		} else {
 			$insert_str = "INSERT INTO characters (";
 			$values_str = "VALUES (";
 
@@ -165,21 +149,6 @@ if ($is_form_full) {
 				}
 			}
 			$newChar = mysqli_multi_query($con, "$insert_str $values_str");
-			//$newChar = mysqli_insert_id($con);//TODO put this into a sql quarry
-			//echo $newChar;
-			#echo "New Char:";
-			#print_r($newChar);
-			//$charId = (int)$newChar;
-			#echo "<br> new char end";
-			//create skills
-			#print_r($charId);
-			//foreach($skill_array as $key=>$value)
-			//{
-			//	#print_r($key);
-			//	$key = (int)$key;
-			//	$rank = (int)($_POST["skill_".str_replace(' ','',$value)]);
-			//	mysqli_query($con,"INSERT INTO characters_skills(character_id, skill_id, skill_rank) VALUES ($charId,$key,$rank);");
-			//}
 			header("Location: index.php");
 		}
 	} # doesn't do anything if invalid because invalid form data would require user to subvert html form
@@ -223,16 +192,16 @@ if ($is_form_full) {
 			<input type="number" name="int_attr" value="<?php echo ($edit ? $row["int_attr"] : 0) ?>" min="0" max="<?php echo PHP_INT_MAX ?>">
 			
 			<label for="wis_attr">Wisdom:</label>
-			<input type="number" name="wis_attr" required="required" value="<?php echo ($edit ? $row["wis_attr"] : 0) ?>" min="0" max="<?php echo PHP_INT_MAX ?>">
+			<input type="number" name="wis_attr" required="required" value="<?php echo ($edit ? $row["wis_attr"] : 1) ?>" min="1" max="<?php echo PHP_INT_MAX ?>">
 			
 			<label for="cha_attr">Charisma:</label>
-			<input type="number" name="cha_attr" required="required" value="<?php echo ($edit ? $row["cha_attr"] : 0) ?>" min="0" max="<?php echo PHP_INT_MAX ?>">
+			<input type="number" name="cha_attr" required="required" value="<?php echo ($edit ? $row["cha_attr"] : 1) ?>" min="1" max="<?php echo PHP_INT_MAX ?>">
 			
 			<label for="weight">Weight (pounds):</label>
 			<input type="number" name="weight" value="<?php echo ($edit ? $row["weight"] : 0) ?>" min="0" max="<?php echo PHP_INT_MAX ?>">
 			
 			<label for="height">Height (inches):</label>
-			<input type="number" name="height" value="<?php echo ($edit ? $row["height"] : 0) ?>" min="1" max="<?php echo PHP_INT_MAX ?>">
+			<input type="number" name="height" value="<?php echo ($edit ? $row["height"] : 0) ?>" min="0" max="<?php echo PHP_INT_MAX ?>">
 			
 			<label for="age">Age:</label>
 			<input type="number" name="age" value="<?php echo ($edit ? $row["age"] : 0) ?>" min="0" max="<?php echo PHP_INT_MAX ?>">

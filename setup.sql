@@ -28,13 +28,13 @@ CREATE TABLE characters
 	character_level INT NOT NULL, # include XP too?
 	CHECK (character_level > 0),
 	str_attr INT, # No NOT NULL because not needed to be a creature (e.g. non-corporeal)
-	CHECK (str_attr > 0),
+	CHECK (str_attr >= 0),
 	dex_attr INT,
-	CHECK (dex_attr > 0),
+	CHECK (dex_attr >= 0),
 	con_attr INT,
-	CHECK (con_attr > 0),
+	CHECK (con_attr >= 0),
 	int_attr INT,
-	CHECK (int_attr > 0),
+	CHECK (int_attr >= 0),
 	wis_attr INT NOT NULL, # Required in order to be considered a creature
 	CHECK (wis_attr > 0),
 	cha_attr INT NOT NULL, # Required in order to be considered a creature
@@ -42,7 +42,7 @@ CREATE TABLE characters
 	weight INT, # Non-corporeal can be massless
 	CHECK (weight >= 0),
 	height INT,
-	CHECK (height > 0),
+	CHECK (height >= 0),
 	age INT,
 	CHECK (age >= 0),
 	religion VARCHAR(20),

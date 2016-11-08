@@ -6,7 +6,7 @@ if (!$_SESSION["auth"]) {
 	header("Location: log_in.php");
 } else {
 	if (isset($_GET["char"]) && isset($_GET["equip"])) {
-		$char_id = $_GET["char"];
+		$char_id = intval($_GET["char"]);
 		$equip = $_GET["equip"];
 	} else {
 		header("Location: error.php");
@@ -15,7 +15,7 @@ if (!$_SESSION["auth"]) {
 	require("db_open.php");
 
 	if (isset($_GET["weapon"])) {
-		$weapon = $_GET["weapon"];
+		$weapon = intval($_GET["weapon"]);
 
 		if ($equip === 'true') {
 			mysqli_query($con, "UPDATE characters_weapons SET location='EQUIPPED' WHERE character_id=$char_id AND weapon_id=$weapon");

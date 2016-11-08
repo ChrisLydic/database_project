@@ -38,7 +38,6 @@ if (!$_SESSION["auth"]) {
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<link href="screen.css" rel="stylesheet" type="text/css" media="screen" />
 		<title>Search</title>
-		<meta name="author" content="Alex Hedges" />
 	</head>
 	<body onload="refresh(false);">
 		<?php require("header.php"); ?>

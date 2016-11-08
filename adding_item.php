@@ -56,7 +56,7 @@ if (!$_SESSION["auth"]) {
 
 	<form name="form" method="post">
 		<label for="amount">Amount:</label>
-		<input name="amount" type="number" value="1">
+		<input name="amount" type="number" value="1" min="0" max="<?php echo PHP_INT_MAX ?>" >
 
 <!--		<label for="equip">Equip:</label>-->
 <!--s		<select name="equip">-->
