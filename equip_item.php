@@ -24,7 +24,7 @@ if (!$_SESSION["auth"]) {
 		}
 
 	} elseif (isset($_GET["armor"])) {
-		$weapon = $_GET["armor"];
+		$armor = $_GET["armor"];
 
 		if ($equip === 'true') {
 			mysqli_query($con, "UPDATE characters_armor SET location='EQUIPPED' WHERE character_id=$char_id AND armor_id=$armor");
