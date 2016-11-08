@@ -247,7 +247,7 @@ if (!$_SESSION["auth"]) {
 					foreach ($weapon_res as $row) {
 						//amount is coerced to float when sql->array conversion happens, cast it to int
 						$amount = (int)$row[2];
-						echo "<li>$row[1] ($amount) | <a href='equip_item.php?char=$charId&weapon=$row[0]&equip=false'>Unequip</a></li>";
+						echo "<li>$row[1] ($amount) | <a href='equip_item.php?char=$charId&weapon=$row[0]&equip=false'>Unequip</a> | <a href='drop_item.php?char=$charId&weapon={$row[0]}'>Remove</a></li>";
 					}
 					echo '</ul>';
 				}
@@ -257,7 +257,7 @@ if (!$_SESSION["auth"]) {
 				} else {
 					echo '<li>Unequipped Weapons</li><ul>';
 					while ($row = mysqli_fetch_array($weapon_off)) {
-						echo "<li>{$row["weapon_name"]} ({$row["quantity"]}) | <a href='equip_item.php?char=$charId&weapon={$row["weapon_id"]}&equip=true'>Equip</a></li>";
+						echo "<li>{$row["weapon_name"]} ({$row["quantity"]}) | <a href='equip_item.php?char=$charId&weapon={$row["weapon_id"]}&equip=true'>Equip</a> | <a href='drop_item.php?char=$charId&weapon={$row["weapon_id"]}'>Remove</a></li>";
 					}
 					echo '</ul>';
 				}
@@ -274,7 +274,7 @@ if (!$_SESSION["auth"]) {
 					foreach ($armor_res as $row) {
 						//amount is coerced to float when sql->array conversion happens, cast it to int
 						$amount = (int)$row[2];
-                        echo "<li>$row[1] ($amount) | <a href='equip_item.php?char=$charId&armor=$row[0]&equip=false'>Unequip</a></li>";
+                        echo "<li>$row[1] ($amount) | <a href='equip_item.php?char=$charId&armor=$row[0]&equip=false'>Unequip</a> | <a href='drop_item.php?char=$charId&armor={$row[0]}'>Remove</a></li>";
                     }
                     echo '</ul>';
                 }
@@ -284,7 +284,7 @@ if (!$_SESSION["auth"]) {
                 } else {
                     echo '<li>Unequipped Armor</li><ul>';
                     while ($row = mysqli_fetch_array($armor_off)) {
-                        echo "<li>{$row["armor_name"]} ({$row["quantity"]}) | <a href='equip_item.php?char=$charId&armor={$row["armor_id"]}&equip=true'>Equip</a></li>";
+                        echo "<li>{$row["armor_name"]} ({$row["quantity"]}) | <a href='equip_item.php?char=$charId&armor={$row["armor_id"]}&equip=true'>Equip</a> | <a href='drop_item.php?char=$charId&armor={$row["armor_id"]}'>Remove</a></li>";
                     }
                     echo '</ul>';
                 }
@@ -298,7 +298,7 @@ if (!$_SESSION["auth"]) {
 					echo '<li>No Items</li>';
 				} else {
 					while ($row = mysqli_fetch_array($generic_items)) {
-						echo "<li>{$row["generic_item_name"]} ({$row["quantity"]})</li>";
+						echo "<li>{$row["generic_item_name"]} ({$row["quantity"]}) | <a href='drop_item.php?char=$charId&item={$row["generic_item_id"]}'>Remove</a></li>";
 					}
 				}
 			?>
