@@ -13,6 +13,7 @@ if (!$_SESSION["auth"]) {
 
 	if (isset($_SESSION["allowed"][$charId])) {
 		require("db_open.php");
+		require("character_utils.php");
 		$result = mysqli_query($con, "SELECT * FROM characters WHERE character_id='$charId'");
 		$row = mysqli_fetch_array($result);
 
@@ -77,12 +78,12 @@ if (!$_SESSION["auth"]) {
 		<a href="add_item.php?char=<?= $charId; ?>">Add Item</a>
 		<?php
 		// basic modifier calculations
-		$str_mod = (floor($row["str_attr"]/2)-5);
-		$dex_mod = (floor($row["dex_attr"]/2)-5);
-		$con_mod = (floor($row["con_attr"]/2)-5);
-		$int_mod = (floor($row["int_attr"]/2)-5);
-		$wis_mod = (floor($row["wis_attr"]/2)-5);
-		$cha_mod = (floor($row["cha_attr"]/2)-5);
+		$str_mod = attr_modifier($row["str_attr"]);
+		$dex_mod = attr_modifier($row["dex_attr"]);
+		$con_mod = attr_modifier($row["con_attr"]);
+		$int_mod = attr_modifier($row["int_attr"]);
+		$wis_mod = attr_modifier($row["wis_attr"]);
+		$cha_mod = attr_modifier($row["cha_attr"]);
 
 		?>
 

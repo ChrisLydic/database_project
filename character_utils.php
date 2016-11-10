@@ -59,3 +59,9 @@ function is_valid($con, $form) {
 	// All constraints are satisfied
 	return true;
 }
+
+function attr_modifier($attr) {
+	return floor($attr/2)-5;
+}
+
+?>
