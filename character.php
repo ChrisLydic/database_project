@@ -86,7 +86,8 @@ if (!$_SESSION["auth"]) {
 			   onclick="return confirm('Are you sure you want to delete this character?')">Delete Character</a> |
 			<a href="skills_form.php?char=<?= $charId; ?>">Edit Skills</a> |
 			<a href="languages_form.php?char=<?= $charId; ?>">Edit Languages</a> |
-			<a href="add_item.php?char=<?= $charId; ?>">Add Item</a>
+			<a href="add_item.php?char=<?= $charId; ?>">Add Item</a> |
+				<a href="upload_image.php?char=<?= $charId; ?>">Upload Image</a>
 		<?php
 			}
 		// basic modifier calculations
@@ -98,7 +99,17 @@ if (!$_SESSION["auth"]) {
 		$cha_mod = attr_modifier($row["cha_attr"]);
 
 		?>
-
+		<br>
+		<?php
+		if ($row["image_path"] != "") {
+			$dir = "charImages/";
+			$full_path = $dir . $row["image_path"];
+			echo "<img src=$full_path alt='image currently not set'>";
+		}else
+		{
+			echo "no image uploaded for this character<br>";
+		}
+		?>
 
 		<p>Level: <?= $row["character_level"]; ?></p>
 		<p>Strength: <?= $row["str_attr"]; ?></p>

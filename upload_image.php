@@ -44,9 +44,9 @@ if (!$_SESSION["auth"]) {
                 if (!file_exists($dir)) {
                     mkdir($dir);
                 }
-                $path = $charId . $file_ext;
+                $path = $charId.".".$file_ext;
                 move_uploaded_file($_FILES["image"]['tmp_name'], $dir . $path);
-                mysqli_query($con, "UPDATE  characters SET image_path = $path WHERE character_id = $charId;");
+                mysqli_query($con, "UPDATE  characters SET image_path = '$path' WHERE character_id = $charId;");
                 $row["image_path"] = $path;
             } else {
 
