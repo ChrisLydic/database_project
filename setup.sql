@@ -1,4 +1,4 @@
-DROP DATABASE IF EXISTS rpg;
+﻿DROP DATABASE IF EXISTS rpg;
 
 CREATE DATABASE rpg DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE rpg;
@@ -57,6 +57,7 @@ CREATE TABLE characters
 	CHECK (alignment IN ('LG', 'NG', 'CG', 'LN', 'N', 'CN', 'LE', 'NE', 'CE')),
 	money DECIMAL(10, 2) NOT NULL DEFAULT 0,
 	CHECK (money >= 0),
+	image_path VARCHAR(20) DEFAULT "",
 	user_id INT NOT NULL,
 	FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
