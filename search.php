@@ -39,7 +39,7 @@ if (!$_SESSION["auth"]) {
 		<link href="screen.css" rel="stylesheet" type="text/css" media="screen" />
 		<title>Search</title>
 	</head>
-	<body onload="refresh(false);">
+	<body>
 		<?php require("header.php"); ?>
 
 		<h1>Search</h1>

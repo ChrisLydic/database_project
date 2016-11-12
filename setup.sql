@@ -1,4 +1,4 @@
-﻿DROP DATABASE IF EXISTS rpg;
+DROP DATABASE IF EXISTS rpg;
 
 CREATE DATABASE rpg DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE rpg;
@@ -564,6 +564,8 @@ INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (S
 INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Tumble'), 0);
 INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Use Magic Device'), 0);
 INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Use Rope'), 0);
+INSERT INTO characters_languages (character_id, language_id) VALUES (1, (SELECT language_id FROM languages WHERE language_name = 'Common'));
+INSERT INTO characters_languages (character_id, language_id) VALUES (1, (SELECT language_id FROM languages WHERE language_name = 'Draconic'));
 
 CREATE TABLE r_base_ages
 (

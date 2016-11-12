@@ -65,7 +65,7 @@ if (isset($_POST["languages"])) {
     <?php require("header.php"); ?>
     <h1><?= ("Edit Languages of " . $character_name) ?></h1>
     <form name="form" method="post">
-		<label for="languages[]">Languages:</label>
+		<label>Languages:</label>
 			<select name="languages[]" multiple="multiple">
 				<?php
 					foreach ($language_array as $key => $value) {

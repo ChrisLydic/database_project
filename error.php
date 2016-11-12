@@ -13,7 +13,7 @@ if (!$_SESSION["auth"]) {
 		<link href="screen.css" rel="stylesheet" type="text/css" media="screen" />
 		<title>Error!</title>
 	</head>
-	<body onload="refresh(false);">
+	<body>
 		<?php require("header.php"); ?>
 		<h1>Error!</h1>
 		<p>The character you requested is either nonexistent or you lack the permission to access it.</p>

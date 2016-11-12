@@ -53,7 +53,7 @@ if (!$_SESSION["auth"]) {
 		<link href="screen.css" rel="stylesheet" type="text/css" media="screen" />
 		<title><?= $item_row["name"]; ?></title>
 	</head>
-	<body onload="refresh(false);">
+	<body>
 	<?php require("header.php"); ?>
 
 	<h1>Add <?= $item_row["name"]; ?> to <?= $char_row["character_name"]; ?></h1>

@@ -148,47 +148,48 @@ if ($is_form_full) {
 
 		<form name="form" method="post">
 
-			<label for="character_name">Name:</label>
+			<label>Name:</label>
 			<input type="text" name="character_name" placeholder="Name" maxlength="50" required="required" value="<?php echo ($edit ? $row["character_name"] : "") ?>">
 			
-			<label for="character_level">Level:</label>
+			<label>Level:</label>
 			<input type="number" name="character_level" required="required" value="<?php echo ($edit ? $row["character_level"] : 1) ?>" min="1" max="<?php echo PHP_INT_MAX ?>">
 			
-			<label for="str_attr">Strength:</label>
+			<label>Strength:</label>
 			<input type="number" name="str_attr" value="<?php echo ($edit ? $row["str_attr"] : 0) ?>" min="0" max="<?php echo PHP_INT_MAX ?>">
 			
-			<label for="dex_attr">Dexterity:</label>
+			<label>Dexterity:</label>
 			<input type="number" name="dex_attr" value="<?php echo ($edit ? $row["dex_attr"] : 0) ?>" min="0" max="<?php echo PHP_INT_MAX ?>">
 			
-			<label for="con_attr">Constitution:</label>
+			<label>Constitution:</label>
 			<input type="number" name="con_attr" value="<?php echo ($edit ? $row["con_attr"] : 0) ?>" min="0" max="<?php echo PHP_INT_MAX ?>">
 			
-			<label for="int_attr">Intelligence:</label>
+			<label>Intelligence:</label>
 			<input type="number" name="int_attr" value="<?php echo ($edit ? $row["int_attr"] : 0) ?>" min="0" max="<?php echo PHP_INT_MAX ?>">
 			
-			<label for="wis_attr">Wisdom:</label>
+			<label>Wisdom:</label>
 			<input type="number" name="wis_attr" required="required" value="<?php echo ($edit ? $row["wis_attr"] : 1) ?>" min="1" max="<?php echo PHP_INT_MAX ?>">
 			
-			<label for="cha_attr">Charisma:</label>
+			<label>Charisma:</label>
 			<input type="number" name="cha_attr" required="required" value="<?php echo ($edit ? $row["cha_attr"] : 1) ?>" min="1" max="<?php echo PHP_INT_MAX ?>">
 			
-			<label for="weight">Weight (pounds):</label>
+			<label>Weight (pounds):</label>
 			<input type="number" name="weight" value="<?php echo ($edit ? $row["weight"] : 0) ?>" min="0" max="<?php echo PHP_INT_MAX ?>">
 			
-			<label for="height">Height (inches):</label>
+			<label>Height (inches):</label>
 			<input type="number" name="height" value="<?php echo ($edit ? $row["height"] : 0) ?>" min="0" max="<?php echo PHP_INT_MAX ?>">
 			
-			<label for="age">Age:</label>
+			<label>Age:</label>
 			<input type="number" name="age" value="<?php echo ($edit ? $row["age"] : 0) ?>" min="0" max="<?php echo PHP_INT_MAX ?>">
 			
-			<label for="religion">Religion:</label>
-			<input type="text" name="religion" placeholder="Religion" maxlength="20" required="true" value="<?php echo ($edit ? $row["religion"] : "") ?>">
+			<label>Religion:</label>
+			<input type="text" name="religion" placeholder="Religion" maxlength="20" required="required" value="<?php echo ($edit ? $row["religion"] : "") ?>">
 
-			<label for="gender">Gender:</label>
-			<input type="text" name="gender" placeholder="Gender" maxlength="10" required="true" value="<?php echo ($edit ? $row["gender"] : "") ?>">
+			<label>Gender:</label>
+			<input type="text" name="gender" placeholder="Gender" maxlength="10" required="required" value="<?php echo ($edit ? $row["gender"] : "") ?>">
 
-			<label for="char_class">Class:</label>
+			<label>Class:</label>
 			<select name="char_class" required="required">
+				<option value="">-----</option>
 				<?php
 					foreach ($class_array as $key => $value) {
 				?>
@@ -198,8 +199,9 @@ if ($is_form_full) {
 				?>
 			</select>
 
-			<label for="race">Race:</label>
+			<label>Race:</label>
 			<select name="race" required="required">
+				<option value="">-----</option>
 				<?php
 					foreach ($race_array as $key => $value) {
 				?>
@@ -209,11 +211,12 @@ if ($is_form_full) {
 				?>
 			</select>
 
-			<label for="hit_points">Hit Points:</label>
+			<label>Hit Points:</label>
 			<input type="number" name="hit_points" required="required" value="<?php echo ($edit ? $row["hit_points"] : 0) ?>" min="<?php echo PHP_INT_MIN ?>" max="<?php echo PHP_INT_MAX ?>">
 
-			<label for="alignment">Alignment:</label>
+			<label>Alignment:</label>
 			<select name="alignment" required="required">
+				<option value="">-----</option>
 				<option value="LG" <?= (isset($row["alignment"]) && "LG" == $row["alignment"]) ? "selected=\"selected\"" : "" ?>>Lawful Good</option>
 				<option value="NG" <?= (isset($row["alignment"]) && "NG" == $row["alignment"]) ? "selected=\"selected\"" : "" ?>>Neutral Good</option>
 				<option value="CG" <?= (isset($row["alignment"]) && "CG" == $row["alignment"]) ? "selected=\"selected\"" : "" ?>>Chaotic Good</option>
@@ -225,10 +228,9 @@ if ($is_form_full) {
 				<option value="CE" <?= (isset($row["alignment"]) && "CE" == $row["alignment"]) ? "selected=\"selected\"" : "" ?>>Chaotic Evil</option>
 			</select>
 
-			<label for="money">Money:</label>
+			<label>Money:</label>
 			<input type="number" name="money" required="required" value="<?php echo ($edit ? $row["money"] : 0) ?>" min="0" max="<?php echo PHP_INT_MAX ?>" step="0.01">
 			<input type="submit" value="Submit" />
-
 		</form>
 	</body>
 </html>

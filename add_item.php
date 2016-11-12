@@ -49,12 +49,12 @@ if (!$_SESSION["auth"]) {
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<link href="screen.css" rel="stylesheet" type="text/css" media="screen" />
-		<title><?= $row["character_name"]; ?></title>
+		<title>Add Items for <?= $char_row["character_name"]; ?></title>
 	</head>
-	<body onload="refresh(false);">
+	<body>
 		<?php require("header.php"); ?>
 
-		<h1>Add Items | <?= $char_row["character_name"]; ?></h1>
+		<h1>Add Items for <?= $char_row["character_name"]; ?></h1>
 
 		<form name="form" method="post">
 			<select name="search_type">
