@@ -11,54 +11,56 @@ if (!$_SESSION["auth"]) {
 		header("Location: error.php");
 	}
 
+	$is_owner = false;
+
 	if (isset($_SESSION["allowed"][$charId])) {
-		require("db_open.php");
-		require("character_utils.php");
-		$result = mysqli_query($con, "SELECT * FROM characters WHERE character_id='$charId'");
-		$row = mysqli_fetch_array($result);
-
-		$result_class = mysqli_query($con, "SELECT class_name, base_attack, fort_save, ref_save, will_save FROM classes WHERE class_id='{$row["char_class"]}' ;");
-		if ($result_class) {
-			$class_row = mysqli_fetch_array($result_class);
-			$_SESSION["class"] = $class_row["class_name"];
-		}
-
-		$result_race = mysqli_query($con, "SELECT race_name FROM races WHERE race_id='{$row["race"]}' ;");
-		if ($result_race) {
-			$race_row = mysqli_fetch_array($result_race);
-			$_SESSION["race"] = $race_row["race_name"];
-		}
-
-		//get skills in 2D array
-		$result_skill = mysqli_query($con,"SELECT * FROM skills INNER JOIN characters_skills ON characters_skills.skill_id = skills.skill_id WHERE characters_skills.character_id = '$charId'");
-		$skills_table = mysqli_fetch_all($result_skill, MYSQLI_ASSOC);
-
-		//get equipped armor
-		$result_armor_on = mysqli_query($con,"SELECT * FROM armor INNER JOIN characters_armor ON characters_armor.armor_id = armor.armor_id WHERE characters_armor.character_id = '$charId' AND characters_armor.location = 'EQUIPPED'");
-		if(mysqli_num_rows($result_armor_on)) {
-			$armor_res = mysqli_fetch_all($result_armor_on);
-			$armor_on = $armor_res[0];
-		}
-
-		//get equipped weapon
-		$result_weapon_on = mysqli_query($con,"SELECT * FROM weapons INNER JOIN characters_weapons ON characters_weapons.weapon_id = weapons.weapon_id WHERE characters_weapons.character_id = '$charId' AND characters_weapons.location = 'EQUIPPED'");
-		/*if(mysqli_num_rows($result_weapon_on)) {
-			$weapon_res = mysqli_fetch_all($result_weapon_on);
-			$weapon_on = $weapon_res[0];
-		}*/
-
-		//get equipped armor
-		$armor_off = mysqli_query($con,"SELECT * FROM armor INNER JOIN characters_armor ON characters_armor.armor_id = armor.armor_id WHERE characters_armor.character_id = '$charId' AND characters_armor.location <> 'EQUIPPED'");
-
-		//get equipped weapon
-		$weapon_off = mysqli_query($con,"SELECT * FROM weapons INNER JOIN characters_weapons ON characters_weapons.weapon_id = weapons.weapon_id WHERE characters_weapons.character_id = '$charId' AND characters_weapons.location <> 'EQUIPPED'");
-
-		//get equipped weapon
-		$generic_items = mysqli_query($con,"SELECT * FROM generic_items INNER JOIN characters_generic_items ON characters_generic_items.generic_item_id = generic_items.generic_item_id WHERE characters_generic_items.character_id = '$charId'");
-
-	} else {
-		header("Location: error.php");
+		$is_owner = true;
 	}
+
+	require("db_open.php");
+	require("character_utils.php");
+	$result = mysqli_query($con, "SELECT * FROM characters WHERE character_id='$charId'");
+	$row = mysqli_fetch_array($result);
+
+	$result_class = mysqli_query($con, "SELECT class_name, base_attack, fort_save, ref_save, will_save FROM classes WHERE class_id='{$row["char_class"]}' ;");
+	if ($result_class) {
+		$class_row = mysqli_fetch_array($result_class);
+		$_SESSION["class"] = $class_row["class_name"];
+	}
+
+	$result_race = mysqli_query($con, "SELECT race_name FROM races WHERE race_id='{$row["race"]}' ;");
+	if ($result_race) {
+		$race_row = mysqli_fetch_array($result_race);
+		$_SESSION["race"] = $race_row["race_name"];
+	}
+
+	//get skills in 2D array
+	$result_skill = mysqli_query($con,"SELECT * FROM skills INNER JOIN characters_skills ON characters_skills.skill_id = skills.skill_id WHERE characters_skills.character_id = '$charId'");
+	$skills_table = mysqli_fetch_all($result_skill, MYSQLI_ASSOC);
+
+	//get equipped armor
+	$result_armor_on = mysqli_query($con,"SELECT * FROM armor INNER JOIN characters_armor ON characters_armor.armor_id = armor.armor_id WHERE characters_armor.character_id = '$charId' AND characters_armor.location = 'EQUIPPED'");
+	if(mysqli_num_rows($result_armor_on)) {
+		$armor_res = mysqli_fetch_all($result_armor_on);
+		$armor_on = $armor_res[0];
+	}
+
+	//get equipped weapon
+	$result_weapon_on = mysqli_query($con,"SELECT * FROM weapons INNER JOIN characters_weapons ON characters_weapons.weapon_id = weapons.weapon_id WHERE characters_weapons.character_id = '$charId' AND characters_weapons.location = 'EQUIPPED'");
+	/*if(mysqli_num_rows($result_weapon_on)) {
+		$weapon_res = mysqli_fetch_all($result_weapon_on);
+		$weapon_on = $weapon_res[0];
+	}*/
+
+	//get equipped armor
+	$armor_off = mysqli_query($con,"SELECT * FROM armor INNER JOIN characters_armor ON characters_armor.armor_id = armor.armor_id WHERE characters_armor.character_id = '$charId' AND characters_armor.location <> 'EQUIPPED'");
+
+	//get equipped weapon
+	$weapon_off = mysqli_query($con,"SELECT * FROM weapons INNER JOIN characters_weapons ON characters_weapons.weapon_id = weapons.weapon_id WHERE characters_weapons.character_id = '$charId' AND characters_weapons.location <> 'EQUIPPED'");
+
+	//get equipped weapon
+	$generic_items = mysqli_query($con,"SELECT * FROM generic_items INNER JOIN characters_generic_items ON characters_generic_items.generic_item_id = generic_items.generic_item_id WHERE characters_generic_items.character_id = '$charId'");
+
 ?>
 <!DOCTYPE html>
 <html lang="en" xml:lang="en">
@@ -71,12 +73,16 @@ if (!$_SESSION["auth"]) {
 		<?php require("header.php"); ?>
 		<h1><?= $row["character_name"]; ?></h1>
 
-		<!--<a href="item.php?char=--><?php //echo $charId; ?><!--">Add Item</a> |-->
-		<a href="character_form.php?mode=edit&char=<?= $charId; ?>">Edit Character</a> |
-		<a href="delete_character.php?char=<?= $charId; ?>" onclick="return confirm('Are you sure you want to delete this character?')">Delete Character</a> |
-		<a href="skills_form.php?char=<?= $charId; ?>">Edit Skills</a> |
-		<a href="add_item.php?char=<?= $charId; ?>">Add Item</a>
 		<?php
+			if ($is_owner) {
+		?>
+			<a href="character_form.php?mode=edit&char=<?= $charId; ?>">Edit Character</a> |
+			<a href="delete_character.php?char=<?= $charId; ?>"
+			   onclick="return confirm('Are you sure you want to delete this character?')">Delete Character</a> |
+			<a href="skills_form.php?char=<?= $charId; ?>">Edit Skills</a> |
+			<a href="add_item.php?char=<?= $charId; ?>">Add Item</a>
+		<?php
+			}
 		// basic modifier calculations
 		$str_mod = attr_modifier($row["str_attr"]);
 		$dex_mod = attr_modifier($row["dex_attr"]);
@@ -242,7 +248,11 @@ if (!$_SESSION["auth"]) {
 				} else {
 					echo '<li>Equipped Weapons</li><ul>';
 					foreach ($result_weapon_on as $weapon_row) {
-						echo "<li>{$weapon_row["weapon_name"]} ({$weapon_row["quantity"]}) | <a href='equip_item.php?char=$charId&weapon={$weapon_row["weapon_id"]}&equip=false'>Unequip</a> | <a href='drop_item.php?char=$charId&weapon={$weapon_row["weapon_id"]}'>Remove</a></li>";
+						if ($is_owner) {
+							echo "<li>{$weapon_row["weapon_name"]} ({$weapon_row["quantity"]}) | <a href='equip_item.php?char=$charId&weapon={$weapon_row["weapon_id"]}&equip=false'>Unequip</a> | <a href='drop_item.php?char=$charId&weapon={$weapon_row["weapon_id"]}'>Remove</a></li>";
+						} else {
+							echo "<li>{$weapon_row["weapon_name"]} ({$weapon_row["quantity"]})</li>";
+						}
 					}
 					echo '</ul>';
 				}
@@ -252,7 +262,11 @@ if (!$_SESSION["auth"]) {
 				} else {
 					echo '<li>Unequipped Weapons</li><ul>';
 					while ($weapon_row = mysqli_fetch_array($weapon_off)) {
-						echo "<li>{$weapon_row["weapon_name"]} ({$weapon_row["quantity"]}) | <a href='equip_item.php?char=$charId&weapon={$weapon_row["weapon_id"]}&equip=true'>Equip</a> | <a href='drop_item.php?char=$charId&weapon={$weapon_row["weapon_id"]}'>Remove</a></li>";
+						if ($is_owner) {
+							echo "<li>{$weapon_row["weapon_name"]} ({$weapon_row["quantity"]}) | <a href='equip_item.php?char=$charId&weapon={$weapon_row["weapon_id"]}&equip=true'>Equip</a> | <a href='drop_item.php?char=$charId&weapon={$weapon_row["weapon_id"]}'>Remove</a></li>";
+						} else {
+							echo "<li>{$weapon_row["weapon_name"]} ({$weapon_row["quantity"]})</li>";
+						}
 					}
 					echo '</ul>';
 				}
@@ -269,8 +283,12 @@ if (!$_SESSION["auth"]) {
 					foreach ($armor_res as $row) {
 						//amount is coerced to float when sql->array conversion happens, cast it to int
 						$amount = (int)$row[2];
-                        echo "<li>$row[1] ($amount) | <a href='equip_item.php?char=$charId&armor=$row[0]&equip=false'>Unequip</a> | <a href='drop_item.php?char=$charId&armor={$row[0]}'>Remove</a></li>";
-                    }
+						if ($is_owner) {
+                        	echo "<li>$row[1] ($amount) | <a href='equip_item.php?char=$charId&armor=$row[0]&equip=false'>Unequip</a> | <a href='drop_item.php?char=$charId&armor={$row[0]}'>Remove</a></li>";
+                    	} else {
+							echo "<li>$row[1] ($amount)</li>";
+						}
+					}
                     echo '</ul>';
                 }
 
@@ -279,7 +297,11 @@ if (!$_SESSION["auth"]) {
                 } else {
                     echo '<li>Unequipped Armor</li><ul>';
                     while ($row = mysqli_fetch_array($armor_off)) {
-                        echo "<li>{$row["armor_name"]} ({$row["quantity"]}) | <a href='equip_item.php?char=$charId&armor={$row["armor_id"]}&equip=true'>Equip</a> | <a href='drop_item.php?char=$charId&armor={$row["armor_id"]}'>Remove</a></li>";
+                    	if ($is_owner) {
+                        	echo "<li>{$row["armor_name"]} ({$row["quantity"]}) | <a href='equip_item.php?char=$charId&armor={$row["armor_id"]}&equip=true'>Equip</a> | <a href='drop_item.php?char=$charId&armor={$row["armor_id"]}'>Remove</a></li>";
+                    	} else {
+							echo "<li>{$row["armor_name"]} ({$row["quantity"]})</li>";
+						}
                     }
                     echo '</ul>';
                 }
@@ -293,7 +315,11 @@ if (!$_SESSION["auth"]) {
 					echo '<li>No Items</li>';
 				} else {
 					while ($row = mysqli_fetch_array($generic_items)) {
-						echo "<li>{$row["generic_item_name"]} ({$row["quantity"]}) | <a href='drop_item.php?char=$charId&item={$row["generic_item_id"]}'>Remove</a></li>";
+						if ($is_owner) {
+							echo "<li>{$row["generic_item_name"]} ({$row["quantity"]}) | <a href='drop_item.php?char=$charId&item={$row["generic_item_id"]}'>Remove</a></li>";
+						} else {
+							echo "<li>{$row["generic_item_name"]} ({$row["quantity"]})</li>";
+						}
 					}
 				}
 			?>
