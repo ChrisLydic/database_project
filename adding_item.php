@@ -58,13 +58,6 @@ if (!$_SESSION["auth"]) {
 		<label for="amount">Amount:</label>
 		<input name="amount" type="number" value="1" min="0" max="<?php echo PHP_INT_MAX ?>" >
 
-<!--		<label for="equip">Equip:</label>-->
-<!--s		<select name="equip">-->
-<!--			<option value="item">Generic Items</option>-->
-<!--			<option value="weapon">Weapons</option>-->
-<!--			<option value="armor">Armor</option>-->
-<!--		</select>-->
-
 		<input type="submit" value="Add Item">
 	</form>
 

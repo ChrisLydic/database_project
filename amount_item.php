@@ -22,11 +22,11 @@ if (!$_SESSION["auth"]) {
 		$amount = $_POST["amount"];
 
 		if ($item_type === "weapon") {
-			mysqli_query($con, "INSERT INTO characters_weapons (character_id, weapon_id, quantity, location) VALUES ($char_id, $item_id, $amount, \"UNEQUIPPED\")");
+			mysqli_query($con, "UPDATE characters_weapons SET quantity=$amount WHERE character_id=$char_id AND weapon_id=$item_id");
 		} elseif ($item_type === "armor") {
-			mysqli_query($con, "INSERT INTO characters_armor (character_id, armor_id, quantity, location) VALUES ($char_id, $item_id, $amount, \"UNEQUIPPED\")");
+			mysqli_query($con, "UPDATE characters_armor SET quantity=$amount WHERE character_id=$char_id AND armor_id=$item_id");
 		} else {
-			mysqli_query($con, "INSERT INTO characters_generic_items (character_id, generic_item_id, quantity, location) VALUES ($char_id, $item_id, $amount, \"UNEQUIPPED\")");
+			mysqli_query($con, "UPDATE characters_generic_items SET quantity=$amount WHERE character_id=$char_id AND generic_item_id=$item_id");
 		}
 
 		header("Location: character.php?char=$char_id");
@@ -34,12 +34,16 @@ if (!$_SESSION["auth"]) {
 	} else {
 		if ($item_type === "weapon") {
 			$item_result = mysqli_query($con, "SELECT weapon_name as name FROM weapons WHERE weapon_id='$item_id'");
+			$item_amt = mysqli_query($con, "SELECT quantity FROM characters_weapons WHERE weapon_id='$item_id'");
 		} elseif ($item_type === "armor") {
 			$item_result = mysqli_query($con, "SELECT armor_name as name FROM armor WHERE armor_id='$item_id'");
+			$item_amt = mysqli_query($con, "SELECT quantity FROM characters_armor WHERE armor_id='$item_id'");
 		} else {
 			$item_result = mysqli_query($con, "SELECT generic_item_name as name FROM generic_items WHERE generic_item_id='$item_id'");
+			$item_amt = mysqli_query($con, "SELECT quantity FROM characters_generic_items WHERE generic_item_id='$item_id'");
 		}
 		$item_row = mysqli_fetch_array($item_result);
+		$item_amt = mysqli_fetch_array($item_amt);
 	}
 	?>
 <!DOCTYPE html>
@@ -47,7 +51,7 @@ if (!$_SESSION["auth"]) {
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<link href="screen.css" rel="stylesheet" type="text/css" media="screen" />
-		<title><?= $row["character_name"]; ?></title>
+		<title><?= $item_row["name"]; ?></title>
 	</head>
 	<body onload="refresh(false);">
 	<?php require("header.php"); ?>
@@ -56,9 +60,9 @@ if (!$_SESSION["auth"]) {
 
 	<form name="form" method="post">
 		<label for="amount">Amount:</label>
-		<input name="amount" type="number" value="1" min="0" max="<?php echo PHP_INT_MAX ?>" >
+		<input name="amount" type="number" value="<?php echo $item_amt['quantity'] ?>" min="0" max="<?php echo PHP_INT_MAX ?>" >
 
-		<input type="submit" value="Add Item">
+		<input type="submit" value="Update Item">
 	</form>
 
 	</body>
