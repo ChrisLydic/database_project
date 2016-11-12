@@ -3,8 +3,9 @@ DROP DATABASE IF EXISTS rpg;
 CREATE DATABASE rpg DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE rpg;
 
-CREATE USER IF NOT EXISTS 'rpg_user'@'localhost' IDENTIFIED BY 'This_is_a_passphrase!';
-GRANT ALL PRIVILEGES ON rpg.* TO 'rpg_user'@'localhost'; # TODO Might want to restrict permissions later
+DROP USER IF EXISTS 'rpg_user'@'localhost';
+CREATE USER 'rpg_user'@'localhost' IDENTIFIED BY 'This_is_a_passphrase!';
+GRANT SELECT, INSERT, UPDATE, DELETE ON rpg.* TO 'rpg_user'@'localhost';
 
 CREATE TABLE users
 (
@@ -426,17 +427,6 @@ INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, d
 # INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('', , '', '', , , '');
 # Possibly add more than simple weapons
 
-CREATE TABLE characters_skills  # TODO Add some sort of on-delete cascade; aso add official primary keys
-(
-	character_id INT NOT NULL,
-	FOREIGN KEY (character_id) REFERENCES characters(character_id),
-	skill_id INT NOT NULL,
-	FOREIGN KEY (skill_id) REFERENCES skills(skill_id),
-	skill_rank INT NOT NULL,
-	CHECK (bonus >= 0),
-	PRIMARY KEY (character_id, skill_id)
-);
-
 CREATE TABLE skills_races
 (
 	skill_id INT NOT NULL,
@@ -471,10 +461,21 @@ CREATE TABLE skills_classes
 	PRIMARY KEY (skill_id, class_id)
 );
 
+CREATE TABLE characters_skills
+(
+	character_id INT NOT NULL,
+	FOREIGN KEY (character_id) REFERENCES characters(character_id) ON DELETE CASCADE,
+	skill_id INT NOT NULL,
+	FOREIGN KEY (skill_id) REFERENCES skills(skill_id),
+	skill_rank INT NOT NULL,
+	CHECK (bonus >= 0),
+	PRIMARY KEY (character_id, skill_id)
+);
+
 CREATE TABLE characters_feats
 (
 	character_id INT NOT NULL,
-	FOREIGN KEY (character_id) REFERENCES characters(character_id),
+	FOREIGN KEY (character_id) REFERENCES characters(character_id) ON DELETE CASCADE,
 	feat_id INT NOT NULL,
 	FOREIGN KEY (feat_id) REFERENCES feats(feat_id),
 	PRIMARY KEY (character_id, feat_id)
@@ -483,7 +484,7 @@ CREATE TABLE characters_feats
 CREATE TABLE characters_languages
 (
 	character_id INT NOT NULL,
-	FOREIGN KEY (character_id) REFERENCES characters(character_id),
+	FOREIGN KEY (character_id) REFERENCES characters(character_id) ON DELETE CASCADE,
 	language_id INT NOT NULL,
 	FOREIGN KEY (language_id) REFERENCES languages(language_id),
 	PRIMARY KEY (character_id, language_id)
@@ -492,7 +493,7 @@ CREATE TABLE characters_languages
 CREATE TABLE characters_spells
 (
 	character_id INT NOT NULL,
-	FOREIGN KEY (character_id) REFERENCES characters(character_id),
+	FOREIGN KEY (character_id) REFERENCES characters(character_id) ON DELETE CASCADE,
 	spell_id INT NOT NULL,
 	FOREIGN KEY (spell_id) REFERENCES spells(spell_id),
 	PRIMARY KEY (character_id, spell_id)
@@ -501,7 +502,7 @@ CREATE TABLE characters_spells
 CREATE TABLE characters_armor
 (
 	character_id INT NOT NULL,
-	FOREIGN KEY (character_id) REFERENCES characters(character_id),
+	FOREIGN KEY (character_id) REFERENCES characters(character_id) ON DELETE CASCADE,
 	armor_id INT NOT NULL,
 	FOREIGN KEY (armor_id) REFERENCES armors(armor_id),
 	quantity INT NOT NULL,
@@ -513,7 +514,7 @@ CREATE TABLE characters_armor
 CREATE TABLE characters_generic_items
 (
 	character_id INT NOT NULL,
-	FOREIGN KEY (character_id) REFERENCES characters(character_id),
+	FOREIGN KEY (character_id) REFERENCES characters(character_id) ON DELETE CASCADE,
 	generic_item_id INT NOT NULL,
 	FOREIGN KEY (generic_item_id) REFERENCES generic_items(generic_item_id),
 	quantity INT NOT NULL,
@@ -525,7 +526,7 @@ CREATE TABLE characters_generic_items
 CREATE TABLE characters_weapons
 (
 	character_id INT NOT NULL,
-	FOREIGN KEY (character_id) REFERENCES characters(character_id),
+	FOREIGN KEY (character_id) REFERENCES characters(character_id) ON DELETE CASCADE,
 	weapon_id INT NOT NULL,
 	FOREIGN KEY (weapon_id) REFERENCES weapons(weapon_id),
 	quantity INT NOT NULL,

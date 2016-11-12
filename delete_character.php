@@ -20,8 +20,14 @@ if (isset($_GET["char"])) {
 
 if (isset($_SESSION["allowed"][$charId])) {
 	require("db_open.php");
-	$result = mysqli_query($con, "DELETE FROM characters WHERE character_id='$charId'");
-	$row = mysqli_fetch_array($result);
+	mysqli_query($con, "DELETE FROM characters_armor WHERE character_id='$charId'");
+	mysqli_query($con, "DELETE FROM characters_feats WHERE character_id='$charId'");
+	mysqli_query($con, "DELETE FROM characters_generic_items WHERE character_id='$charId'");
+	mysqli_query($con, "DELETE FROM characters_languages WHERE character_id='$charId'");
+	mysqli_query($con, "DELETE FROM characters_skills WHERE character_id='$charId'");
+	mysqli_query($con, "DELETE FROM characters_spells WHERE character_id='$charId'");
+	mysqli_query($con, "DELETE FROM characters_weapons WHERE character_id='$charId'");
+	mysqli_query($con, "DELETE FROM characters WHERE character_id='$charId'");
 	header("Location: index.php");
 } else {
 	header("Location: error.php");
