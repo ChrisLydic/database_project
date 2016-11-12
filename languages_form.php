@@ -29,18 +29,23 @@ $character_int = attr_modifier($char_result["int_attr"]);
 
 $language_array = mysqli_fetch_all(mysqli_query($con, "SELECT language_id, language_name, alphabet FROM languages;"), MYSQLI_ASSOC);
 
-// Create list of skills with ranks for the character
-$result_skills = mysqli_query($con,"SELECT skill_name, skill_rank FROM skills INNER JOIN characters_skills ON characters_skills.skill_id = skills.skill_id WHERE characters_skills.character_id = '$char_id'");
-
-
+// Create list of languages for the character
+$result_languages = mysqli_query($con, "SELECT languages.language_id FROM characters_languages INNER JOIN languages ON characters_languages.language_id = languages.language_id WHERE characters_languages.character_id = '$char_id';");
+if ($result_languages) {
+	$char_languages_array = mysqli_fetch_all($result_languages, MYSQLI_ASSOC);
+	$char_languages = array();
+	foreach ( $char_languages_array as $key => $value ) {
+		array_push($char_languages, $value["language_id"]);
+	}
+}
 
 // If input exists, then store in database and go back to main page for character
-if (isset($_POST["languages[]"])) {
-	$languages = $_POST["languages[]"];
-	foreach ( $skills_array as $key => $value ) {
-		$skill_id = $value["skill_id"];
-		$rank = intval($_POST["skill_".str_replace(' ','',$value["skill_name"])]);
-		mysqli_query($con,"UPDATE  characters_skills SET skill_rank = $rank WHERE character_id = $char_id AND skill_id = $skill_id;");
+if (isset($_POST["languages"])) {
+	$languages = $_POST["languages"];
+	mysqli_query($con,"DELETE FROM characters_languages WHERE character_id='$char_id';");
+	foreach ( $languages as $key => $value ) {
+		$language_id = intval($value);
+		mysqli_query($con,"INSERT INTO characters_languages(character_id, language_id) VALUES ($char_id, $language_id);");
 	}
 	header("Location: character.php?" . http_build_query($_GET));
 }
@@ -65,7 +70,7 @@ if (isset($_POST["languages[]"])) {
 				<?php
 					foreach ($language_array as $key => $value) {
 				?>
-					<option value="<?php echo $value["language_id"]; ?>" <?= (isset($row["char_class"]) && $value["language_id"] == $row["race"]) ? "selected=\"selected\"" : "" ?>><?php echo $value["language_name"]; ?></option>
+					<option value="<?php echo $value["language_id"]; ?>" <?= (isset($char_languages) && in_array($value["language_id"], $char_languages)) ? "selected=\"selected\"" : "" ?>><?php echo $value["language_name"]; ?></option>
 				<?php
 					}
 				?>

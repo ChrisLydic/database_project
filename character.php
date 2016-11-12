@@ -19,47 +19,52 @@ if (!$_SESSION["auth"]) {
 
 	require("db_open.php");
 	require("character_utils.php");
-	$result = mysqli_query($con, "SELECT * FROM characters WHERE character_id='$charId'");
+	$result = mysqli_query($con, "SELECT * FROM characters WHERE character_id='$charId';");
 	$row = mysqli_fetch_array($result);
 
-	$result_class = mysqli_query($con, "SELECT class_name, base_attack, fort_save, ref_save, will_save FROM classes WHERE class_id='{$row["char_class"]}' ;");
+	$result_class = mysqli_query($con, "SELECT class_name, base_attack, fort_save, ref_save, will_save FROM classes WHERE class_id='{$row["char_class"]}';");
 	if ($result_class) {
 		$class_row = mysqli_fetch_array($result_class);
 		$_SESSION["class"] = $class_row["class_name"];
 	}
 
-	$result_race = mysqli_query($con, "SELECT race_name FROM races WHERE race_id='{$row["race"]}' ;");
+	$result_race = mysqli_query($con, "SELECT race_name FROM races WHERE race_id='{$row["race"]}';");
 	if ($result_race) {
 		$race_row = mysqli_fetch_array($result_race);
 		$_SESSION["race"] = $race_row["race_name"];
 	}
+	
+	$result_languages = mysqli_query($con, "SELECT language_name FROM characters_languages INNER JOIN languages ON characters_languages.language_id = languages.language_id WHERE characters_languages.character_id = '$charId';");
+	if ($result_languages) {
+		$languages = mysqli_fetch_all($result_languages, MYSQLI_ASSOC);
+	}
 
 	//get skills in 2D array
-	$result_skill = mysqli_query($con,"SELECT * FROM skills INNER JOIN characters_skills ON characters_skills.skill_id = skills.skill_id WHERE characters_skills.character_id = '$charId'");
+	$result_skill = mysqli_query($con,"SELECT * FROM skills INNER JOIN characters_skills ON characters_skills.skill_id = skills.skill_id WHERE characters_skills.character_id = '$charId';");
 	$skills_table = mysqli_fetch_all($result_skill, MYSQLI_ASSOC);
 
 	//get equipped armor
-	$result_armor_on = mysqli_query($con,"SELECT * FROM armor INNER JOIN characters_armor ON characters_armor.armor_id = armor.armor_id WHERE characters_armor.character_id = '$charId' AND characters_armor.location = 'EQUIPPED'");
+	$result_armor_on = mysqli_query($con,"SELECT * FROM armor INNER JOIN characters_armor ON characters_armor.armor_id = armor.armor_id WHERE characters_armor.character_id = '$charId' AND characters_armor.location = 'EQUIPPED';");
 	if(mysqli_num_rows($result_armor_on)) {
 		$armor_res = mysqli_fetch_all($result_armor_on);
 		$armor_on = $armor_res[0];
 	}
 
 	//get equipped weapon
-	$result_weapon_on = mysqli_query($con,"SELECT * FROM weapons INNER JOIN characters_weapons ON characters_weapons.weapon_id = weapons.weapon_id WHERE characters_weapons.character_id = '$charId' AND characters_weapons.location = 'EQUIPPED'");
+	$result_weapon_on = mysqli_query($con,"SELECT * FROM weapons INNER JOIN characters_weapons ON characters_weapons.weapon_id = weapons.weapon_id WHERE characters_weapons.character_id = '$charId' AND characters_weapons.location = 'EQUIPPED';");
 	/*if(mysqli_num_rows($result_weapon_on)) {
 		$weapon_res = mysqli_fetch_all($result_weapon_on);
 		$weapon_on = $weapon_res[0];
 	}*/
 
 	//get equipped armor
-	$armor_off = mysqli_query($con,"SELECT * FROM armor INNER JOIN characters_armor ON characters_armor.armor_id = armor.armor_id WHERE characters_armor.character_id = '$charId' AND characters_armor.location <> 'EQUIPPED'");
+	$armor_off = mysqli_query($con,"SELECT * FROM armor INNER JOIN characters_armor ON characters_armor.armor_id = armor.armor_id WHERE characters_armor.character_id = '$charId' AND characters_armor.location <> 'EQUIPPED';");
 
 	//get equipped weapon
-	$weapon_off = mysqli_query($con,"SELECT * FROM weapons INNER JOIN characters_weapons ON characters_weapons.weapon_id = weapons.weapon_id WHERE characters_weapons.character_id = '$charId' AND characters_weapons.location <> 'EQUIPPED'");
+	$weapon_off = mysqli_query($con,"SELECT * FROM weapons INNER JOIN characters_weapons ON characters_weapons.weapon_id = weapons.weapon_id WHERE characters_weapons.character_id = '$charId' AND characters_weapons.location <> 'EQUIPPED';");
 
 	//get equipped weapon
-	$generic_items = mysqli_query($con,"SELECT * FROM generic_items INNER JOIN characters_generic_items ON characters_generic_items.generic_item_id = generic_items.generic_item_id WHERE characters_generic_items.character_id = '$charId'");
+	$generic_items = mysqli_query($con,"SELECT * FROM generic_items INNER JOIN characters_generic_items ON characters_generic_items.generic_item_id = generic_items.generic_item_id WHERE characters_generic_items.character_id = '$charId';");
 
 ?>
 <!DOCTYPE html>
@@ -80,6 +85,7 @@ if (!$_SESSION["auth"]) {
 			<a href="delete_character.php?char=<?= $charId; ?>"
 			   onclick="return confirm('Are you sure you want to delete this character?')">Delete Character</a> |
 			<a href="skills_form.php?char=<?= $charId; ?>">Edit Skills</a> |
+			<a href="languages_form.php?char=<?= $charId; ?>">Edit Languages</a> |
 			<a href="add_item.php?char=<?= $charId; ?>">Add Item</a>
 		<?php
 			}
@@ -237,6 +243,18 @@ if (!$_SESSION["auth"]) {
 			}
 			echo isset($mod) ? $mod : "n/a";
 			echo "</li>";
+		}
+		?>
+		</ul>
+		<h3>Languages:</h3>
+		<ul>
+		<?php
+		if (isset($languages)) {
+			foreach ($languages as $value){
+				echo "<li>{$value["language_name"]}</li>";
+			}
+		} else {
+			echo "<li>No languages selected</li>";
 		}
 		?>
 		</ul>
