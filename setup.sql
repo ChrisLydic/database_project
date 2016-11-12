@@ -214,15 +214,6 @@ INSERT INTO languages(language_name, alphabet) VALUES ('Sylvan', 'Elven');
 INSERT INTO languages(language_name, alphabet) VALUES ('Terran', 'Dwarven');
 INSERT INTO languages(language_name, alphabet) VALUES ('Undercommon', 'Elven');
 
-CREATE TABLE spells
-(
-	spell_id INT NOT NULL AUTO_INCREMENT,
-	PRIMARY KEY(spell_id),
-	spell_name VARCHAR(20) NOT NULL,
-	UNIQUE (spell_name),
-	spell_type VARCHAR(20) NOT NULL
-);
-
 CREATE TABLE armor
 (
 	armor_id INT NOT NULL AUTO_INCREMENT,
@@ -488,15 +479,6 @@ CREATE TABLE characters_languages
 	language_id INT NOT NULL,
 	FOREIGN KEY (language_id) REFERENCES languages(language_id),
 	PRIMARY KEY (character_id, language_id)
-);
-
-CREATE TABLE characters_spells
-(
-	character_id INT NOT NULL,
-	FOREIGN KEY (character_id) REFERENCES characters(character_id) ON DELETE CASCADE,
-	spell_id INT NOT NULL,
-	FOREIGN KEY (spell_id) REFERENCES spells(spell_id),
-	PRIMARY KEY (character_id, spell_id)
 );
 
 CREATE TABLE characters_armor

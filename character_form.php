@@ -18,32 +18,9 @@ if (isset($_GET["mode"]) && $_GET["mode"] == "edit")
 require("db_open.php");
 require("character_utils.php");
 
-$class_array = array();
-$race_array = array();
+$class_array = mysqli_fetch_all(mysqli_query($con, "SELECT class_id, class_name FROM classes;"), MYSQLI_ASSOC);
+$race_array = mysqli_fetch_all(mysqli_query($con, "SELECT race_id, race_name FROM races;"), MYSQLI_ASSOC);
 
-$result_classes = mysqli_query($con, "SELECT class_id, class_name FROM classes ;");
-if ($result_classes) {
-	while ($row = mysqli_fetch_array($result_classes)) {
-		$class_array[$row["class_id"]] = $row["class_name"];
-	}
-	$_SESSION["classes"] = $class_array;
-}
-
-$result_races = mysqli_query($con, "SELECT race_id, race_name FROM races ;");
-if ($result_races) {
-	while ($row = mysqli_fetch_array($result_races)) {
-		$race_array[$row["race_id"]] = $row["race_name"];
-	}
-	$_SESSION["races"] = $race_array;
-}
-
-$result_skills = mysqli_query($con, "SELECT skill_id, skill_name FROM skills ;");
-if ($result_skills) {
-	while ($row = mysqli_fetch_array($result_skills)) {
-		$skill_array[$row["skill_id"]] = $row["skill_name"];
-	}
-	$_SESSION["skills"] = $skill_array;
-}
 // check if all form data exists
 // TODO Either allow nullable fields to be unset or change nullable fields to nonullable fields
 $is_form_full = !empty($_POST["character_name"])
@@ -162,8 +139,6 @@ if ($is_form_full) {
 		<title><?php echo ($edit ? "Edit " . $row["character_name"] : "Create Character") ?></title>
 		<script type="text/javascript">
 		//<![CDATA[
-//			function validateForm() {
-//			}
 		//]]>
 		</script>
 	</head>
@@ -215,10 +190,9 @@ if ($is_form_full) {
 			<label for="char_class">Class:</label>
 			<select name="char_class" required="required">
 				<?php
-					$array = $_SESSION["classes"];
-					foreach ($array as $key => $value) {
+					foreach ($class_array as $key => $value) {
 				?>
-					<option value="<?php echo $key; ?>" <?php echo ($key == $row["char_class"] ? "selected=\"selected\"" : "") ?>><?php echo $value; ?></option>
+					<option value="<?php echo $value["class_id"]; ?>" <?= (isset($row["char_class"]) && $value["class_id"] == $row["char_class"]) ? "selected=\"selected\"" : "" ?>><?php echo $value["class_name"]; ?></option>
 				<?php
 					}
 				?>
@@ -227,10 +201,9 @@ if ($is_form_full) {
 			<label for="race">Race:</label>
 			<select name="race" required="required">
 				<?php
-					$array = $_SESSION["races"];
-					foreach ($array as $key => $value) {
+					foreach ($race_array as $key => $value) {
 				?>
-					<option value="<?php echo $key; ?>" <?php echo ($key == $row["race"] ? "selected=\"selected\"" : "") ?>><?php echo $value; ?></option>
+					<option value="<?php echo $value["race_id"]; ?>" <?= (isset($row["race"]) && $value["race_id"] == $row["race"]) ? "selected=\"selected\"" : "" ?>><?php echo $value["race_name"]; ?></option>
 				<?php
 					}
 				?>
@@ -241,15 +214,15 @@ if ($is_form_full) {
 
 			<label for="alignment">Alignment:</label>
 			<select name="alignment" required="required">
-				<option value="LG" <?php echo ("LG" == $row["alignment"] ? "selected=\"selected\"" : "") ?>>Lawful Good</option>
-				<option value="NG" <?php echo ("NG" == $row["alignment"] ? "selected=\"selected\"" : "") ?>>Neutral Good</option>
-				<option value="CG" <?php echo ("CG" == $row["alignment"] ? "selected=\"selected\"" : "") ?>>Chaotic Good</option>
-				<option value="LN" <?php echo ("LN" == $row["alignment"] ? "selected=\"selected\"" : "") ?>>Lawful Neutral</option>
-				<option value="N" <?php echo ("N" == $row["alignment"] ? "selected=\"selected\"" : "") ?>>Neutral</option>
-				<option value="CN" <?php echo ("CN" == $row["alignment"] ? "selected=\"selected\"" : "") ?>>Chaotic Neutral</option>
-				<option value="LE" <?php echo ("LE" == $row["alignment"] ? "selected=\"selected\"" : "") ?>>Lawful Evil</option>
-				<option value="NE" <?php echo ("NE" == $row["alignment"] ? "selected=\"selected\"" : "") ?>>Neutral Evil</option>
-				<option value="CE" <?php echo ("CE" == $row["alignment"] ? "selected=\"selected\"" : "") ?>>Chaotic Evil</option>
+				<option value="LG" <?= (isset($row["alignment"]) && "LG" == $row["alignment"]) ? "selected=\"selected\"" : "" ?>>Lawful Good</option>
+				<option value="NG" <?= (isset($row["alignment"]) && "NG" == $row["alignment"]) ? "selected=\"selected\"" : "" ?>>Neutral Good</option>
+				<option value="CG" <?= (isset($row["alignment"]) && "CG" == $row["alignment"]) ? "selected=\"selected\"" : "" ?>>Chaotic Good</option>
+				<option value="LN" <?= (isset($row["alignment"]) && "LN" == $row["alignment"]) ? "selected=\"selected\"" : "" ?>>Lawful Neutral</option>
+				<option value="N" <?= (isset($row["alignment"]) && "N" == $row["alignment"]) ? "selected=\"selected\"" : "" ?>>Neutral</option>
+				<option value="CN" <?= (isset($row["alignment"]) && "CN" == $row["alignment"]) ? "selected=\"selected\"" : "" ?>>Chaotic Neutral</option>
+				<option value="LE" <?= (isset($row["alignment"]) && "LE" == $row["alignment"]) ? "selected=\"selected\"" : "" ?>>Lawful Evil</option>
+				<option value="NE" <?= (isset($row["alignment"]) && "NE" == $row["alignment"]) ? "selected=\"selected\"" : "" ?>>Neutral Evil</option>
+				<option value="CE" <?= (isset($row["alignment"]) && "CE" == $row["alignment"]) ? "selected=\"selected\"" : "" ?>>Chaotic Evil</option>
 			</select>
 
 			<label for="money">Money:</label>
