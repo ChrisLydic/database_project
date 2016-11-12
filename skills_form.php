@@ -38,6 +38,7 @@ foreach ( $skills_array as $key => $value ) {
 	$skill = mysqli_fetch_array(mysqli_query($con,"SELECT * FROM characters_skills WHERE characters_skills.character_id = '$char_id' AND characters_skills.skill_id = '{$value["skill_id"]}'"), MYSQLI_ASSOC);
 	if ($skill == NULL)
 	{
+	    $skill_id = $value["skill_id"];
 		mysqli_query($con,"INSERT INTO characters_skills(skill_id, character_id, skill_rank) VALUES ($skill_id, $char_id, 0)");
 	}
 }
