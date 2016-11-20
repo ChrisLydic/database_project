@@ -65,16 +65,13 @@ if (isset($_POST["languages"])) {
     <?php require("header.php"); ?>
     <h1><?= ("Edit Languages of " . $character_name) ?></h1>
     <form name="form" method="post">
-		<label>Languages:</label>
-			<select name="languages[]" multiple="multiple">
-				<?php
-					foreach ($language_array as $key => $value) {
-				?>
-					<option value="<?php echo $value["language_id"]; ?>" <?= (isset($char_languages) && in_array($value["language_id"], $char_languages)) ? "selected=\"selected\"" : "" ?>><?php echo $value["language_name"]; ?></option>
-				<?php
-					}
-				?>
-			</select>
+		<?php
+			foreach ($language_array as $key => $value) {
+		?>
+			<label><input type="checkbox" name="languages[]" value="<?php echo $value["language_id"]; ?>" <?= (isset($char_languages) && in_array($value["language_id"], $char_languages)) ? "checked=\"checked\"" : "" ?> style="display:inline;"/> <?php echo $value["language_name"]; ?></label>
+		<?php
+			}
+		?>
         <input type="submit" value="Submit" />
     </form>
     </body>

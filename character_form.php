@@ -18,8 +18,8 @@ if (isset($_GET["mode"]) && $_GET["mode"] == "edit")
 require("db_open.php");
 require("character_utils.php");
 
-$class_array = mysqli_fetch_all(mysqli_query($con, "SELECT class_id, class_name FROM classes;"), MYSQLI_ASSOC);
-$race_array = mysqli_fetch_all(mysqli_query($con, "SELECT race_id, race_name FROM races;"), MYSQLI_ASSOC);
+$class_array = mysqli_fetch_all(mysqli_query($con, "SELECT class_id, class_name FROM classes ORDER BY class_name;"), MYSQLI_ASSOC);
+$race_array = mysqli_fetch_all(mysqli_query($con, "SELECT race_id, race_name FROM races ORDER BY race_name;"), MYSQLI_ASSOC);
 
 // check if all form data exists
 // TODO Either allow nullable fields to be unset or change nullable fields to nonullable fields
@@ -125,7 +125,7 @@ if ($is_form_full) {
 					$values_str = $values_str . "'" . $value . "',";
 				}
 			}
-			$newChar = mysqli_multi_query($con, "$insert_str $values_str");
+			$newChar = mysqli_query($con, "$insert_str $values_str");
 			header("Location: index.php");
 		}
 	} # doesn't do anything if invalid because invalid form data would require user to subvert html form

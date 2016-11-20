@@ -179,11 +179,127 @@ CREATE TABLE feats
 (
 	feat_id INT NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY(feat_id),
-	feat_name VARCHAR(20) NOT NULL,
+	feat_name VARCHAR(30) NOT NULL,
 	UNIQUE (feat_name),
-	description TEXT,
-	prerequisites TEXT
+	prerequisites TEXT,
+	description TEXT
 );
+
+# General feats
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Acrobatic', '', '+2 bonus on Jump and Tumble checks');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Agile', '', '+2 bonus on Balance and Escape Artist checks');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Alertness', '', '+2 bonus on Listen and Spot checks');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Animal Affinity', '', '+2 bonus on Handle Animal and Ride checks');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Armor Proficiency (light)', '', 'No armor check penalty on attack rolls');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Armor Proficiency (medium)', 'Armor Proficiency (light)', 'No armor check penalty on attack rolls');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Armor Proficiency (heavy)', 'Armor Proficiency (medium)', 'No armor check penalty on attack rolls');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Athletic', '', '+2 bonus on Climb and Swim checks');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Augment Summoning', 'Spell Focus (conjuration)', 'Summoned creatures gain +4 Str, +4 Con');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Blind-Fight', '', 'Reroll miss chance for concealment');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Combat Casting', '', '+4 bonus on Concentration checks for defensive casting');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Combat Expertise', 'Int 13', 'Trade attack bonus for AC (max 5 points)');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Improved Disarm', 'Combat Expertise', '+4 bonus on disarm attempts; no attack of opportunity');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Improved Feint', 'Combat Expertise', 'Feint in combat as move action');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Improved Trip', 'Combat Expertise', '+4 bonus on trip attempts; no attack of opportunity');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Whirlwind Attack', 'Dex 13, Combat Expertise, Dodge, Mobility, Spring Attack, base attack bonus +4', 'One melee attack against each opponent within reach');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Combat Reflexes', '', 'Additional attacks of opportunity');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Deceitful', '', '+2 bonus on Disguise and Forgery checks');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Deft Hands', '', '+2 bonus on Sleight of Hand and Use Rope checks');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Diligent', '', '+2 bonus on Appraise and Decipher Script checks');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Dodge', 'Dex 13', '+1 dodge bonus to AC against selected target');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Mobility', 'Dodge', '+4 dodge bonus to AC against some attacks of opportunity');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Spring Attack', 'Mobility, base attack bonus +4', 'Move before and after melee attack');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Endurance', '', '+4 bonus on checks or saves to resist nonlethal damage');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Diehard', 'Endurance', 'Remain conscious at –1 to –9 hp');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Eschew Materials', '', 'Cast spells without material components');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Exotic Weapon Proficiency', 'Base attack bonus +1', 'No penalty on attacks with specific exotic weapon');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Extra Turning', 'Ability to turn or rebuke creatures', 'Can turn or rebuke 4 more times per day');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Great Fortitude', '', '+2 bonus on Fortitude saves');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Improved Counterspell', '', 'Counterspell with spell of same school');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Improved Critical', 'Proficient with weapon, base attack bonus +8', 'Double threat range of weapon');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Improved Initiative', '', '+4 bonus on initiative checks');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Improved Turning', 'Ability to turn or rebuke creatures', '+1 level for turning checks');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Improved Unarmed Strike', '', 'Considered armed even when unarmed');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Improved Grapple', 'Dex 13, Improved Unarmed Strike', '+4 bonus on grapple checks; no attack of opportunity');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Deflect Arrows', 'Dex 13, Improved Unarmed Strike', 'Deflect one ranged attack per round');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Snatch Arrows', 'Dex 15, Deflect Arrows, Improved Unarmed Strike', 'Catch a deflected ranged attack');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Stunning Fist', 'Dex 13, Wis 13, Improved Unarmed Strike, base attack bonus +8', 'Stun opponent with unarmed strike');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Investigator', '', '+2 bonus on Gather Information and Search checks');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Iron Will', '', '+2 bonus on Will saves');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Leadership', 'Character Level 6th', 'Attract cohort and followers');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Lightning Reflexes', '', '+2 bonus on Reflex saves');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Magical Aptitude', '', '+2 bonus on Spellcraft and Use Magic Device checks');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Martial Weapon Proficiency', '', 'No penalty on attacks with specific martial weapon');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Mounted Combat', 'Ride 1 rank', 'Negate hits on mount with Ride check');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Mounted Archery', 'Mounted Combat', 'Half penalty for ranged attacks while mounted');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Ride-By Attack', 'Mounted Combat', 'Move before and after a mounted charge');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Spirited Charge', 'Mounted Combat, Ride-By Attack', 'Double damage with mounted charge');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Trample', 'Mounted Combat', 'Target cannot avoid mounted overrun');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Natural Spell', 'Wis 13, Ability to use wild shape', 'Cast spells while in wild shape');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Negotiator', '', '+2 bonus on Diplomacy and Sense Motive checks');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Nimble Fingers', '', '+2 bonus on Disable Device and Open Lock checks');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Persuasive', '', '+2 bonus on Bluff checks and Intimidate checks');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Point Blank Shot', '', '+1 bonus on ranged attack and damage within 30 ft.');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Far Shot', 'Point Blank Shot', 'Increase range increment by 50% or 100%');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Precise Shot', 'Point Blank Shot', 'No –4 penalty for shooting into melee');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Rapid Shot', 'Dex 13, Point Blank Shot', 'One extra ranged attack each round');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Manyshot', 'Dex 17, Point Blank Shot, Rapid Shot, base attack bonus +6', 'Shoot two or more arrows simultaneously');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Shot on the Run', 'Dex 13, Dodge, Mobility, Point Blank Shot, base attack bonus +4', 'Move before and after ranged attack');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Improved Precise Shot', 'Dex 19, Point Blank Shot, Precise Shot, base attack bonus +11', 'Ignore less than total cover/concealment on ranged attack');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Power Attack', 'Str 13', 'Trade attack bonus for damage (up to base attack bonus)');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Cleave', 'Power Attack', 'Extra melee attack after dropping target');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Great Cleave', 'Cleave, Power Attack, base attack bonus +4', 'No limit to cleave attacks each round');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Improved Bull Rush', 'Power Attack', '+4 bonus on bull rush attempts; no attack of opportunity');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Improved Overrun', 'Power Attack', '+4 bonus on overrun attempts; no attack of opportunity');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Improved Sunder', 'Power Attack', '+4 bonus on sunder attempts; no attack of opportunity');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Quick Draw', 'Base attack bonus +1', 'Draw weapon as free weapon');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Rapid Reload', 'Weapon Proficiency with crossbow', 'Reload crossbow more quickly');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Run', '', 'Run 5 times normal speed, +4 bonus on Jump checks
+Made after a running start');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Self-Sufficient', '', '+2 bonus on Heal and Survival checks');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Shield Proficiency', '', 'No armor check penalty on attack rolls');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Improved Shield Bash', 'Shield Proficiency', 'Retain shield bonus to AC when shield bashing');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Tower Shield Proficiency', 'Shield Proficiency', 'No armor check penalty on attack rolls');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Simple Weapon Proficiency', '', 'No –4 penalty on attack rolls with simple weapons');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Skill Focus', '', '+3 bonus on checks with selected skill');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Spell Focus', '', '+1 bonus on save DCs against specific school of magic');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Greater Spell Focus', '', '+1 bonus on save DCs against specific school of magic');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Spell Mastery', 'Wizard level 1st', 'Can prepare some spells without spellbook');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Spell Penetration', '', '+2 bonus on caster level checks to defeat spell resistance');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Greater Spell Penetration', 'Spell Penetration', '+4 to caster level checks to defeat spell resistance');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Stealthy', '', '+2 bonus on Hide and Move Silently checks');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Toughness', '', '+3 hit points');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Track', '', 'Use Survival skill to track');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Two-Weapon Fighting', 'Dex 15', 'Reduce two-weapon fighting penalties by 2');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Two-Weapon Defense', 'Two-Weapon Fighting', 'Off-hand weapon grants +1 shield bonus to AC');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Improved Two-Weapon Fighting', 'Dex 17, Two-Weapon Fighting, base attack bonus +6', 'Gain second off-hand attack');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Greater Two-Weapon Fighting ', 'Dex 19, Improved Two-Weapon Fighting, Two-Weapon Fighting, base attack bonus +11', 'Gain third off-hand attack');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Weapon Finesse', 'Proficiency with weapon, base attack bonus +1', 'Use Dex modifier instead of Str modifier on attack rolls with light melee weapons');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Weapon Focus', 'Proficiency with weapon, base attack bonus +1', '+1 bonus on attack rolls with selected weapon');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Weapon Specialization', 'Proficiency with weapon, Weapon Focus with weapon, fighter level 4th', '+2 bonus on damage rolls with selected weapon');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Greater Weapon Focus', 'Proficiency with weapon, Weapon Focus with weapon, fighter level 8th', '+2 bonus on attack rolls with selected weapon');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Greater Weapon Specialization', 'Proficiency with weapon, Greater Weapon Focus with weapon, Weapon Focus with weapon, Weapon Specialization with weapon, fighter level 12th', '+4 bonus on damage rolls with selected weapon');
+
+# Item creation feats
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Brew Potion', 'Spellcaster level 3rd', 'Create magic potions');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Craft Magic Arms and Armor', 'Spellcaster level 5th', 'Create magic weapons, armor, and shields');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Craft Rod', 'Spellcaster level 9th', 'Create magic rods');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Craft Staff', 'Spellcaster level 12th', 'Create magic staffs');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Craft Wand', 'Spellcaster level 5th', 'Create magic wands');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Craft Wondrous Item', 'Spellcaster level 3rd', 'Create magic wondrous items');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Forge Ring', 'Spellcaster level 12th', 'Create magic rings');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Scribe Scroll', 'Spellcaster level 1st', 'Create magic scrolls');
+
+# Metamagic feats
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Empower Spell', '', 'Increase spell’s variable, numeric effects by 50%');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Enlarge Spell', '', 'Double spell’s range');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Extend Spell', '', 'Double spell’s duration');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Heighten Spell', '', 'Cast spells as higher level');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Maximize Spell', '', 'Maximize spell’s variable, numeric effects');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Quicken Spell', '', 'Cast spells as free action');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Silent Spell', '', 'Cast spells without verbal components');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Still Spell', '', 'Cast spells without somatic components');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Widen Spell', '', 'Double spell’s area');
 
 CREATE TABLE languages
 (
@@ -397,6 +513,7 @@ CREATE TABLE weapons
 	damage_type VARCHAR(3) NOT NULL
 );
 
+# Simple weapons
 INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Gauntlet', 2, '1d3', 'x2', NULL, 1, 'B');
 INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Unarmed strike', 0, '1d3', 'x2', NULL, 0, 'B');
 INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Dagger', 2, '1d4', '19-20/x2', 10, 1, 'PS');

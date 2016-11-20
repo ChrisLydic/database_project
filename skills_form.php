@@ -44,7 +44,7 @@ foreach ( $skills_array as $key => $value ) {
 }
 
 // Create list of skills with ranks for the character
-$result_skills = mysqli_query($con,"SELECT skill_name, skill_rank FROM skills INNER JOIN characters_skills ON characters_skills.skill_id = skills.skill_id WHERE characters_skills.character_id = '$char_id'");
+$result_skills = mysqli_query($con,"SELECT skill_name, skill_rank FROM skills INNER JOIN characters_skills ON characters_skills.skill_id = skills.skill_id WHERE characters_skills.character_id = '$char_id' ORDER BY skill_name");
 
 // Checks to ensure all input is exists
 $is_form_full = true;

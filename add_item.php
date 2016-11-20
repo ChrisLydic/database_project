@@ -20,16 +20,16 @@ if (!$_SESSION["auth"]) {
 		$search_type = $_POST["search_type"];
 
 		if ($search_type === "weapon") {
-			$result = mysqli_query($con, "SELECT weapon_id as id, weapon_name as name FROM weapons");
+			$result = mysqli_query($con, "SELECT weapon_id AS id, weapon_name AS name FROM weapons ORDER BY weapon_name");
 		} elseif ($search_type === "armor") {
-			$result = mysqli_query($con, "SELECT armor_id as id, armor_name as name FROM armor");
+			$result = mysqli_query($con, "SELECT armor_id AS id, armor_name AS name FROM armor ORDER BY armor_name");
 		} else {
-			$result = mysqli_query($con, "SELECT generic_item_id as id, generic_item_name as name FROM generic_items");
+			$result = mysqli_query($con, "SELECT generic_item_id AS id, generic_item_name AS name FROM generic_items ORDER BY generic_item_name");
 		}
 
 	} else {
 		$search_type = "item";
-		$result = mysqli_query($con, "SELECT generic_item_id as id, generic_item_name as name FROM generic_items");
+		$result = mysqli_query($con, "SELECT generic_item_id AS id, generic_item_name AS name FROM generic_items ORDER BY generic_item_name");
 	}
 
 	if ($result) {

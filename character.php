@@ -34,13 +34,18 @@ if (!$_SESSION["auth"]) {
 		$_SESSION["race"] = $race_row["race_name"];
 	}
 	
-	$result_languages = mysqli_query($con, "SELECT language_name FROM characters_languages INNER JOIN languages ON characters_languages.language_id = languages.language_id WHERE characters_languages.character_id = '$char_id';");
+	$result_languages = mysqli_query($con, "SELECT language_name FROM characters_languages INNER JOIN languages ON characters_languages.language_id = languages.language_id WHERE characters_languages.character_id = '$char_id' ORDER BY language_name;");
 	if ($result_languages) {
 		$languages = mysqli_fetch_all($result_languages, MYSQLI_ASSOC);
 	}
+	
+	$result_feats = mysqli_query($con, "SELECT feat_name, prerequisites, description FROM characters_feats INNER JOIN feats ON characters_feats.feat_id = feats.feat_id WHERE characters_feats.character_id = '$char_id' ORDER BY feat_name;");
+	if ($result_feats) {
+		$feats = mysqli_fetch_all($result_feats, MYSQLI_ASSOC);
+	}
 
 	//get skills in 2D array
-	$result_skill = mysqli_query($con,"SELECT * FROM skills INNER JOIN characters_skills ON characters_skills.skill_id = skills.skill_id WHERE characters_skills.character_id = '$char_id';");
+	$result_skill = mysqli_query($con,"SELECT * FROM skills INNER JOIN characters_skills ON characters_skills.skill_id = skills.skill_id WHERE characters_skills.character_id = '$char_id' ORDER BY skill_name;");
 	$skills_table = mysqli_fetch_all($result_skill, MYSQLI_ASSOC);
 
 	//get equipped armor
@@ -84,6 +89,7 @@ if (!$_SESSION["auth"]) {
 			<a href="character_form.php?mode=edit&char=<?= $char_id; ?>">Edit Character</a> |
 			<a href="skills_form.php?char=<?= $char_id; ?>">Edit Skills</a> |
 			<a href="languages_form.php?char=<?= $char_id; ?>">Edit Languages</a> |
+			<a href="feats_form.php?char=<?= $char_id; ?>">Edit Feats</a> |
 			<a href="add_item.php?char=<?= $char_id; ?>">Add Item</a> |
 			<a href="upload_image.php?char=<?= $char_id; ?>">Upload Image</a> |
 			<a href="delete_character.php?char=<?= $char_id; ?>"
@@ -249,7 +255,7 @@ if (!$_SESSION["auth"]) {
 				
 			}
 			echo isset($mod) ? $mod : "n/a";
-			echo "</li>";
+			echo "</li>\n";
 		}
 		?>
 		</ul>
@@ -258,10 +264,22 @@ if (!$_SESSION["auth"]) {
 		<?php
 		if (isset($languages)) {
 			foreach ($languages as $value){
-				echo "<li>{$value["language_name"]}</li>";
+				echo "<li>{$value["language_name"]}</li>\n";
 			}
 		} else {
 			echo "<li>No languages selected</li>";
+		}
+		?>
+		</ul>
+		<h3>Feats:</h3>
+		<ul>
+		<?php
+		if (isset($feats)) {
+			foreach ($feats as $value){
+				echo "<li>{$value["feat_name"]}</li>\n";
+			}
+		} else {
+			echo "<li>No feats selected</li>";
 		}
 		?>
 		</ul>
