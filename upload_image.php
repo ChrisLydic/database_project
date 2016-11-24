@@ -44,8 +44,26 @@ if (!$_SESSION["auth"]) {
                 if (!file_exists($dir)) {
                     mkdir($dir);
                 }
-                $path = $char_id.".".$file_ext;
-                move_uploaded_file($_FILES["image"]['tmp_name'], $dir . $path);
+                $path = $char_id.".png";
+
+                $fn = $_FILES['image']['tmp_name'];
+                $size = getimagesize($fn);
+                $ratio = $size[0]/$size[1]; // width/height
+                if( $ratio > 1) {
+                    $width = 500;
+                    $height = 500/$ratio;
+                }
+                else {
+                    $width = 500*$ratio;
+                    $height = 500;
+                }
+                $src = imagecreatefromstring(file_get_contents($fn));
+                $dst = imagecreatetruecolor($width,$height);
+                imagecopyresampled($dst,$src,0,0,0,0,$width,$height,$size[0],$size[1]);
+                imagedestroy($src);
+                imagepng($dst,$dir . $path);
+                imagedestroy($dst);
+
                 mysqli_query($con, "UPDATE  characters SET image_path = '$path' WHERE character_id = $char_id;");
                 $row["image_path"] = $path;
 				header("Location: character.php?char=$char_id");
