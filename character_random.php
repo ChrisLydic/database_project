@@ -79,6 +79,15 @@ $race_length = count($race_array);
 // Level
 $level = 1;
 
+// Roll the given number of dice with a given dice type. Return the total.
+function roll_dice($numDice, $diceType){
+	$total = 0;
+	for($i = 0; $i < $numDice; $i++){
+		$total += rand(1, $diceType);
+	}
+	return $total
+}
+
 // Stats
 // Roll the stats by rolling 4d6 and dropping the lowest.
 function roll_stats(){
@@ -87,9 +96,9 @@ function roll_stats(){
 	// Roll 4d6
 	for($i = 0; $i < 4; $i++)
 	{
-		$array[i] = rand(1, 6);
+		$array[$i] = rand(1, 6);
 		// Add to the sum
-		$sum += $array[i];
+		$sum += $array[$i];
 	}
 	// Drop the lowest
 	$sum -= min($array);
@@ -101,7 +110,7 @@ $str = roll_stats();
 // Dexterity
 $dex = roll_stats();
 // Constitution
-$con = roll_stats();
+$cons = roll_stats();
 // Intelligence
 $int = roll_stats();
 // Wisdom
@@ -116,8 +125,10 @@ $religion_array = file("heities.txt", FILE_IGNORE_NEW_LINES);
 $rand_index = rand(0, count($religion_array));
 $religion = $religion_array[$rand_index];
 
+
 // Gender
 $rand_index = rand(0, 1);
+$gender = "";
 if($rand_index == 0){
 	// Male
 	$gender = "Male";
@@ -128,62 +139,119 @@ if($rand_index == 0){
 
 // Class
 // Grab a random class from the array
-$rand_index = rand(0, $class_length);
+$class_id = rand(0, $class_length);
 $class = class_array[$rand_index];
 
 // Race
 // Grab a random class from the array
-$rand_index = rand(0, $race_length);
+$race_id = rand(0, $race_length);
 $race = race_array[$rand_index];
 
 // Name - may be a bit difficult
+$name = "Noname";
+
+// Weight - based on race and gender
+$w_h_result = mysqli_query($con, "SELECT * FROM r_heights_weights WHERE race_id='$race_id' AND gender='$gender'");
+$w_h_info = mysqli_fetch_array($w_h_result, MYSQLI_NUM);
+// 0		1		2		3		4			5		6		7
+// race_id	gender	base_h	#dice_h	d_type_h	base_w	#dice_w	d_type_w
+
+$weight = $w_h_info[5] + roll_dice($w_h_info[6], w_h_info[7]);
+
+// Height - based on race and gender
+$height = $w_h_info[2] + roll_dice($w_h_info[3], w_h_info[4]);
+
+// Age - based on race and class
+$base_age = mysqli_query($con, "SELECT base_age FROM r_base_ages WHERE race_id='$race_id'");
+$class_type = mysqli_query($con, "SELECT class_type_id FROM r_class_types WHERE class_id='$class_id'");
+$age_info = mysqli_fetch_array(mysqli_query($con, "SELECT * from r_additional_ages WHERE race_id='$race_id' AND class_id='$class_id'"),MYSQLI_NUM);
+$age = $base_age + roll_dice($age_info[2], $age_info[3]);
+
+// Hit Points - based on class, add const modifier
 
 
-// Weight
+// Alignment - random.
+// Function to take care of setting the alignment
+function set_alignment{
+	$align_num = rand(0, 8);
+	$alignment = "";
+	// set the alignment based on the number rolled
+	switch($align_num){
+		case 0:
+			$alignment = "Lawful Good";
+		break;
+		case 1:
+			$alignment = "Neutral Good";
+		break;
+		case 2:
+			$alignment = "Chaotic Good";
+		break;
+		case 3:
+			$alignment = "Lawful Neutral";
+		break;
+		case 4:
+			$alignment = "Neutral";
+		break;
+		case 5:
+			$alignment = "Chaotic Neutral";
+		break;
+		case 6:
+			$alignment = "Lawful Evil";
+		break;
+		case 7:
+			$alignment = "Neutral Evil";
+		break;
+		case 8:
+			$alignment = "Chaotic Evil";
+		break;
+	}
+}
+$alignment = set_alignment();
+// Later, if we add restrictions to the alignment based on class/race, it can
+// be reset until it has the correct alignment.
 
 
-// Height
+// Money - Based on class.
+$money = 0;
+switch ($class){
+	// Barbarian 	4d4 x 10
+	// Bard			4d4 x 10
+	case "Barbarian": case "Bard":
+		$money = roll_dice(4, 4);
+	break;
+	// Cleric		5d4 x 10
+	// Monk			5d4	
+	// Rogue		5d4 x 10
+	case "Cleric": case "Monk": case "Rogue":
+		$money = roll_dice(5, 4);
+	break;
+	// Druid		2d4 x 10
+	case "Druid":
+		$money = roll_dice(2, 4);
+	break;
+	// Fighter		6d4 x 10
+	// Paladin		6d4 x 10
+	// Ranger		6d4 x 10
+	case "Fighter": case "Paladin": case "Ranger":
+		$money = roll_dice(6, 4);
+	break;
+	// Sorcerer		3d4 x 10
+	// Wizard		3d4 x 10
+	case "Sorcerer": case "Wizard":
+		$money = roll_dice(3, 4);
+	break;
+}
+// All but monk are multiplied by 10
+if($class != "Monk"){
+	$money *= 10;
+}
+	
+	
 
 
-// Age
-
-
-// Hit Points
-
-
-// Alignment
-
-
-// Money
 
 
 
-
-
-
-
-
-
-// check if all form data exists
-// TODO Either allow nullable fields to be unset or change nullable fields to nonullable fields
-$is_form_full = !empty($_POST["character_name"])
-	&& isset($_POST["character_level"])
-	&& isset($_POST["str_attr"])
-	&& isset($_POST["int_attr"])
-	&& isset($_POST["cha_attr"])
-	&& isset($_POST["con_attr"])
-	&& isset($_POST["dex_attr"])
-	&& isset($_POST["wis_attr"])
-	&& isset($_POST["weight"])
-	&& isset($_POST["height"])
-	&& isset($_POST["age"])
-	&& !empty($_POST["religion"])
-	&& !empty($_POST["gender"])
-	&& isset($_POST["char_class"])
-	&& isset($_POST["race"])
-	&& isset($_POST["hit_points"])
-	&& !empty($_POST["alignment"])
-	&& isset($_POST["money"]);
 
 if ($edit) {
 	if (isset($_GET["char"])) {
