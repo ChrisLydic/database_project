@@ -515,27 +515,93 @@ CREATE TABLE weapons
 );
 
 # Simple weapons
+# Unarmed attacks
 INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Gauntlet', 2, '1d3', 'x2', NULL, 1, 'B');
 INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Unarmed strike', 0, '1d3', 'x2', NULL, 0, 'B');
+# Light melee weapons
 INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Dagger', 2, '1d4', '19-20/x2', 10, 1, 'PS');
 INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Dagger, punching', 2, '1d4', 'x3', NULL, 1, 'P');
 INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Gauntlet, spiked', 5, '1d4', 'x2', NULL, 1, 'P');
 INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Mace, light', 5, '1d6', 'x2', NULL, 4, 'B');
 INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Sickle', 6, '1d6', 'x2', NULL, 2, 'S');
+# One-handed melee weapons
 INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Club', 0, '1d6', 'x2', 10, 3, 'B');
 INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Mace, heavy', 12, '1d8', 'x2', NULL, 8, 'B');
 INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Morningstar', 8, '1d8', 'x2', NULL, 6, 'BP');
 INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Shortspear', 1, '1d6', 'x2', 20, 3, 'P');
+# Long-handed melee weapons
 INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Longspear', 5, '1d8', 'x3', NULL, 9, 'P');
 INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Quarterstaff', 0, '1d6/1d6', 'x2', NULL, 4, 'B');
 INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Spear', 2, '1d8', 'x3', 20, 6, 'P');
+# Ranged weapons
 INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Crossbow, heavy', 50, '1d10', '19-20/x2', 120, 8, 'P');
 INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Crossbow, light', 35, '1d8', '19-20/x2', 80, 4, 'P');
 INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Dart', .5, '1d4', 'x2', 20, .5, 'P');
 INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Javelin', 1, '1d6', 'x2', 30, 2, 'P');
 INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Sling', 0, '1d4', 'x2', 50, 0, 'B');
-# INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('', , '', '', , , '');
-# Possibly add more than simple weapons
+
+# Martial weapons
+# Light melee weapons
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Axe, throwing', 8, '1d6', 'x2', 10, 2, 'S');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Hammer, light', 1, '1d4', 'x2', 20, 2, 'B');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Handaxe', 6, '1d6', 'x3', NULL, 3, 'S');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Kukri', 8, '1d4', '18-20/x2', NULL, 2, 'S');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Pick, light', 4, '1d4', 'x4', NULL, 2, 'S');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Sap', 1, '1d6', 'x2', NULL, 2, 'B');
+# Not including shield and armor here
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Sword, short', 10, '1d6', '19-20/x2', NULL, 2, 'P');
+# One-handed melee weapons
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Battleaxe', 10, '1d8', 'x3', NULL, 6, 'S');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Flail', 8, '1d8', 'x2', NULL, 5, 'B');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Longsword', 15, '1d8', '19-20/x2', NULL, 4, 'S');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Pick, heavy', 8, '1d6', 'x4', NULL, 6, 'P');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Rapier', 20, '1d6', '18-20/x2', NULL, 2, 'P');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Scimitar', 15, '1d6', '18-20/x2', NULL, 4, 'S');
+# Not including shield and armor here
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Trident', 15, '1d8', 'x2', 10, 4, 'P');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Warhammer', 12, '1d8', 'x3', NULL, 5, 'B');
+# Two-handed melee weapons
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Falchion', 75, '2d4', '18-20/x2', NULL, 8, 'S');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Glaive', 8, '1d10', 'x3', NULL, 10, 'S');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Greataxe', 20, '1d12', 'x3', NULL, 12, 'S');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Greatclub', 5, '1d10', 'x2', NULL, 8, 'B');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Flail, heavy', 15, '1d10', '19-20/x2', NULL, 10, 'B');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Greatsword', 50, '2d6', '19-20/x2', NULL, 8, 'S');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Guisarme', 9, '2d4', 'x3', NULL, 12, 'S');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Halberd', 10, '1d10', 'x3', NULL, 12, 'PS');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Lance', 10, '1d8', 'x3', NULL, 10, 'P');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Ranseur', 10, '2d4', 'x3', NULL, 12, 'P');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Scythe', 18, '2d4', 'x4', NULL, 10, 'PS');
+# Ranged weapons
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Longbow', 75, '1d8', 'x3', 100, 3, 'P');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Longbow, composite', 100, '1d8', 'x3', 110, 3, 'P');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Shortbow', 30, '1d6', 'x3', 60, 2, 'P');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Shortbow, composite', 75, '1d6', 'x3', 70, 2, 'P');
+
+# Exotic weapons
+# Light melee weapons
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Kama', 2, '1d6', 'x2', NULL, 2, 'S');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Nunchaku', 2, '1d6', 'x2', NULL, 2, 'B');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Sai', 1, '1d4', 'x2', 10, 1, 'B');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Siangham', 3, '1d6', 'x2', NULL, 1, 'P');
+# One-handed melee weapons
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Sword, bastard', 35, '1d10', '19-20/x2', NULL, 6, 'S');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Waraxe, dwarven', 30, '1d10', 'x3', NULL, 8, 'S');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Whip', 1, '1d3', 'x2', NULL, 2, 'S');
+# Two-handed melee weapons
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Axe, orc double', 60, '1d8/1d8', 'x3', NULL, 15, 'S');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Chain, spiked', 25, '2d4', 'x2', NULL, 10, 'P');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Flail, dire', 90, '1d8/1d8', 'x2', NULL, 10, 'B');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Hammer, gnome hooked', 20, '1d8/1d8', 'x3/x4', NULL, 6, 'BP');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Sword, two-bladed', 100, '1d8/1d8', '19-20/x2', NULL, 10, 'S');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Urgrosh, dwarven', 50, '1d8/1d6', 'x3', NULL, 12, 'SP');
+# Ranged weapons
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Bolas', 5, '1d4', 'x2', 10, 2, 'B');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Crossbow, hand', 100, '1d4', '19-20/x2', 30, 2, 'P');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Crossbow, repeating heavy', 400, '1d10', '19-20/x2', 120, 12, 'P');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Crossbow, repeating light', 250, '1d8', '19-20/x2', 80, 6, 'P');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Net', 20, '', '', 10, 6, '');
+INSERT INTO weapons(weapon_name, cost, damage, critical, weapon_range, weight, damage_type) VALUES ('Shuriken', .2, '1d2', 'x2', 10, .1, 'P');
 
 CREATE TABLE skills_races
 (
@@ -560,16 +626,6 @@ INSERT INTO skills_races(skill_id, race_id, bonus) VALUES ((SELECT skill_id FROM
 INSERT INTO skills_races(skill_id, race_id, bonus) VALUES ((SELECT skill_id FROM skills WHERE skill_name = 'Jump'), (SELECT race_id FROM races WHERE race_name = 'Halfling'), 2);
 INSERT INTO skills_races(skill_id, race_id, bonus) VALUES ((SELECT skill_id FROM skills WHERE skill_name = 'Listen'), (SELECT race_id FROM races WHERE race_name = 'Halfling'), 2);
 INSERT INTO skills_races(skill_id, race_id, bonus) VALUES ((SELECT skill_id FROM skills WHERE skill_name = 'Move Silently'), (SELECT race_id FROM races WHERE race_name = 'Halfling'), 2);
-
-CREATE TABLE skills_classes
-(
-	skill_id INT NOT NULL,
-	FOREIGN KEY (skill_id) REFERENCES skills(skill_id),
-	class_id INT NOT NULL,
-	FOREIGN KEY (class_id) REFERENCES classes(class_id),
-	cross_class BOOLEAN NOT NULL,
-	PRIMARY KEY (skill_id, class_id)
-);
 
 CREATE TABLE characters_skills
 (
@@ -684,6 +740,28 @@ INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (S
 INSERT INTO characters_skills (character_id, skill_id, skill_rank) VALUES (1, (SELECT skill_id FROM skills WHERE skill_name = 'Use Rope'), 0);
 INSERT INTO characters_languages (character_id, language_id) VALUES (1, (SELECT language_id FROM languages WHERE language_name = 'Common'));
 INSERT INTO characters_languages (character_id, language_id) VALUES (1, (SELECT language_id FROM languages WHERE language_name = 'Draconic'));
+INSERT INTO characters_feats (character_id, feat_id) VALUES (1, (SELECT feat_id FROM feats WHERE feat_name = 'Toughness'));
+INSERT INTO characters_weapons (character_id, weapon_id, quantity, location) VALUES (1, (SELECT weapon_id FROM weapons WHERE weapon_name = 'Dagger'), 1, "EQUIPPED");
+INSERT INTO characters_weapons (character_id, weapon_id, quantity, location) VALUES (1, (SELECT weapon_id FROM weapons WHERE weapon_name = 'Quarterstaff'), 1, "UNEQUIPPED");
+INSERT INTO characters_weapons (character_id, weapon_id, quantity, location) VALUES (1, (SELECT weapon_id FROM weapons WHERE weapon_name = 'Crossbow, light'), 1, "UNEQUIPPED");
+INSERT INTO characters_generic_items (character_id, generic_item_id, quantity, location) VALUES (1, (SELECT generic_item_id FROM generic_items WHERE generic_item_name = 'Explorer\'s outfit'), 1, "EQUIPPED");
+INSERT INTO characters_generic_items (character_id, generic_item_id, quantity, location) VALUES (1, (SELECT generic_item_id FROM generic_items WHERE generic_item_name = 'Backpack (empty)'), 1, "EQUIPPED");
+INSERT INTO characters_generic_items (character_id, generic_item_id, quantity, location) VALUES (1, (SELECT generic_item_id FROM generic_items WHERE generic_item_name = 'Bedroll'), 1, "UNEQUIPPED");
+INSERT INTO characters_generic_items (character_id, generic_item_id, quantity, location) VALUES (1, (SELECT generic_item_id FROM generic_items WHERE generic_item_name = 'Chalk, 1 piece'), 1, "UNEQUIPPED");
+INSERT INTO characters_generic_items (character_id, generic_item_id, quantity, location) VALUES (1, (SELECT generic_item_id FROM generic_items WHERE generic_item_name = 'Crowbar'), 1, "UNEQUIPPED");
+INSERT INTO characters_generic_items (character_id, generic_item_id, quantity, location) VALUES (1, (SELECT generic_item_id FROM generic_items WHERE generic_item_name = 'Everburing torch'), 1, "EQUIPPED");
+INSERT INTO characters_generic_items (character_id, generic_item_id, quantity, location) VALUES (1, (SELECT generic_item_id FROM generic_items WHERE generic_item_name = 'Flask (empty)'), 3, "UNEQUIPPED");
+INSERT INTO characters_generic_items (character_id, generic_item_id, quantity, location) VALUES (1, (SELECT generic_item_id FROM generic_items WHERE generic_item_name = 'Flint and steel'), 1, "UNEQUIPPED");
+INSERT INTO characters_generic_items (character_id, generic_item_id, quantity, location) VALUES (1, (SELECT generic_item_id FROM generic_items WHERE generic_item_name = 'Ink (1 oz. vial)'), 1, "UNEQUIPPED");
+INSERT INTO characters_generic_items (character_id, generic_item_id, quantity, location) VALUES (1, (SELECT generic_item_id FROM generic_items WHERE generic_item_name = 'Inkpen'), 1, "UNEQUIPPED");
+INSERT INTO characters_generic_items (character_id, generic_item_id, quantity, location) VALUES (1, (SELECT generic_item_id FROM generic_items WHERE generic_item_name = 'Paper (sheet)'), 20, "UNEQUIPPED");
+INSERT INTO characters_generic_items (character_id, generic_item_id, quantity, location) VALUES (1, (SELECT generic_item_id FROM generic_items WHERE generic_item_name = 'Rations, trail (per day)'), 10, "UNEQUIPPED");
+INSERT INTO characters_generic_items (character_id, generic_item_id, quantity, location) VALUES (1, (SELECT generic_item_id FROM generic_items WHERE generic_item_name = 'Rope, slk (50 ft.)'), 1, "UNEQUIPPED");
+INSERT INTO characters_generic_items (character_id, generic_item_id, quantity, location) VALUES (1, (SELECT generic_item_id FROM generic_items WHERE generic_item_name = 'Spell component pouch'), 1, "UNEQUIPPED");
+INSERT INTO characters_generic_items (character_id, generic_item_id, quantity, location) VALUES (1, (SELECT generic_item_id FROM generic_items WHERE generic_item_name = 'Spellbook, wizard\'s (blank)'), 1, "UNEQUIPPED");
+INSERT INTO characters_generic_items (character_id, generic_item_id, quantity, location) VALUES (1, (SELECT generic_item_id FROM generic_items WHERE generic_item_name = 'Tent'), 1, "UNEQUIPPED");
+INSERT INTO characters_generic_items (character_id, generic_item_id, quantity, location) VALUES (1, (SELECT generic_item_id FROM generic_items WHERE generic_item_name = 'Vial, ink or potion'), 5, "UNEQUIPPED");
+INSERT INTO characters_generic_items (character_id, generic_item_id, quantity, location) VALUES (1, (SELECT generic_item_id FROM generic_items WHERE generic_item_name = 'Waterskin'), 1, "UNEQUIPPED");
 
 CREATE TABLE r_base_ages
 (
