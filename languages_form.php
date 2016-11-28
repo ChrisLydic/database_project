@@ -27,7 +27,7 @@ $char_result = mysqli_fetch_array(mysqli_query($con, "SELECT character_name, int
 $character_name = $char_result["character_name"];
 $character_int = attr_modifier($char_result["int_attr"]);
 
-$language_array = mysqli_fetch_all(mysqli_query($con, "SELECT language_id, language_name, alphabet FROM languages;"), MYSQLI_ASSOC);
+$language_array = mysqli_fetch_all(mysqli_query($con, "SELECT language_id, language_name, alphabet FROM languages ORDER BY language_name;"), MYSQLI_ASSOC);
 
 // Create list of languages for the character
 $result_languages = mysqli_query($con, "SELECT languages.language_id FROM characters_languages INNER JOIN languages ON characters_languages.language_id = languages.language_id WHERE characters_languages.character_id = '$char_id';");
@@ -40,7 +40,7 @@ if ($result_languages) {
 }
 
 // If input exists, then store in database and go back to main page for character
-if (isset($_POST["languages"])) {
+if (isset($_POST["submitted"])) {
 	$languages = $_POST["languages"];
 	mysqli_query($con,"DELETE FROM characters_languages WHERE character_id='$char_id';");
 	foreach ( $languages as $key => $value ) {
@@ -72,6 +72,7 @@ if (isset($_POST["languages"])) {
 		<?php
 			}
 		?>
+		<input type="hidden" name="submitted" value="1" />
         <input type="submit" value="Submit" />
     </form>
     </body>

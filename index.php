@@ -11,7 +11,7 @@ if (!$_SESSION["auth"]) {
 	require("db_open.php");
 	$allowed = array();
 	$result = mysqli_query($con, "SELECT character_id, character_name FROM characters, users 
-	WHERE username = '{$_SESSION["user"]}' AND characters.user_id = users.user_id;");
+	WHERE username = '{$_SESSION["user"]}' AND characters.user_id = users.user_id ORDER BY character_name;");
 	if ($result) {
 		while($row = mysqli_fetch_array($result)) {
 			$allowed[$row["character_id"]] = $row["character_name"];

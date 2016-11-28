@@ -27,7 +27,13 @@ if (!$_SESSION["auth"]) {
 
     if(isset($_FILES["image"]) and $char_id > 0) {
         if ($_FILES["image"]["error"] > 0) {
-            echo "Return Code: " . $_FILES["file"]["error"] . "<br />";
+			if ($_FILES["image"]["error"] == UPLOAD_ERR_NO_FILE)
+			{
+				mysqli_query($con, "UPDATE  characters SET image_path = '' WHERE character_id = $char_id;");
+				header("Location: character.php?char=$char_id");
+			} else {
+				echo "Return Code: " . $_FILES["image"]["error"] . "<br />";
+			}
         } else {
             $file = $_FILES["image"];
             $file_name = $file['name'];
@@ -91,10 +97,11 @@ if (!$_SESSION["auth"]) {
 		<form action="upload_image.php" method="post" enctype="multipart/form-data">
 			<label for="image">Image</label>
 			<input type="file" class="form-control-file" id="image" name="image" aria-describedby="fileHelp2">
-			<small id="fileHelp2" class="form-text text-muted">This is some placeholder</small>
-			<?php  echo "<input type='hidden' name='char' value=$char_id />" ?>
+			<small id="fileHelp2" class="form-text text-muted">Select no file to clear stored image.</small>
+			<?= "<input type='hidden' name='char' value=$char_id />" ?>
 			<input type="submit" value="Upload Image" name="submit">
 		</form>
+		<p><a href="character.php?char=<?= $char_id ?>">Main Character Page</a></p>
 	</body>
 </html>
 <?php

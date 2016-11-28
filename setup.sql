@@ -291,15 +291,15 @@ INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Forge Ring', 
 INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Scribe Scroll', 'Spellcaster level 1st', 'Create magic scrolls');
 
 # Metamagic feats
-INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Empower Spell', '', 'Increase spell’s variable, numeric effects by 50%');
-INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Enlarge Spell', '', 'Double spell’s range');
-INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Extend Spell', '', 'Double spell’s duration');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Empower Spell', '', 'Increase spell\'s variable, numeric effects by 50%');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Enlarge Spell', '', 'Double spell\'s range');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Extend Spell', '', 'Double spell\'s duration');
 INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Heighten Spell', '', 'Cast spells as higher level');
-INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Maximize Spell', '', 'Maximize spell’s variable, numeric effects');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Maximize Spell', '', 'Maximize spell\'s variable, numeric effects');
 INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Quicken Spell', '', 'Cast spells as free action');
 INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Silent Spell', '', 'Cast spells without verbal components');
 INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Still Spell', '', 'Cast spells without somatic components');
-INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Widen Spell', '', 'Double spell’s area');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Widen Spell', '', 'Double spell\'s area');
 
 CREATE TABLE languages
 (

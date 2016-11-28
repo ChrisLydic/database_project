@@ -39,7 +39,7 @@ if (!$_SESSION["auth"]) {
 		$languages = mysqli_fetch_all($result_languages, MYSQLI_ASSOC);
 	}
 	
-	$result_feats = mysqli_query($con, "SELECT feat_name, prerequisites, description FROM characters_feats INNER JOIN feats ON characters_feats.feat_id = feats.feat_id WHERE characters_feats.character_id = '$char_id' ORDER BY feat_name;");
+	$result_feats = mysqli_query($con, "SELECT feat_name, description FROM characters_feats INNER JOIN feats ON characters_feats.feat_id = feats.feat_id WHERE characters_feats.character_id = '$char_id' ORDER BY feat_name;");
 	if ($result_feats) {
 		$feats = mysqli_fetch_all($result_feats, MYSQLI_ASSOC);
 	}
@@ -49,27 +49,27 @@ if (!$_SESSION["auth"]) {
 	$skills_table = mysqli_fetch_all($result_skill, MYSQLI_ASSOC);
 
 	//get equipped armor
-	$result_armor_on = mysqli_query($con,"SELECT * FROM armor INNER JOIN characters_armor ON characters_armor.armor_id = armor.armor_id WHERE characters_armor.character_id = '$char_id' AND characters_armor.location = 'EQUIPPED';");
+	$result_armor_on = mysqli_query($con,"SELECT * FROM armor INNER JOIN characters_armor ON characters_armor.armor_id = armor.armor_id WHERE characters_armor.character_id = '$char_id' AND characters_armor.location = 'EQUIPPED' ORDER BY armor_name;");
 	if(mysqli_num_rows($result_armor_on)) {
 		$armor_res = mysqli_fetch_all($result_armor_on);
 		$armor_on = $armor_res[0];
 	}
 
 	//get equipped weapon
-	$result_weapon_on = mysqli_query($con,"SELECT * FROM weapons INNER JOIN characters_weapons ON characters_weapons.weapon_id = weapons.weapon_id WHERE characters_weapons.character_id = '$char_id' AND characters_weapons.location = 'EQUIPPED';");
+	$result_weapon_on = mysqli_query($con,"SELECT * FROM weapons INNER JOIN characters_weapons ON characters_weapons.weapon_id = weapons.weapon_id WHERE characters_weapons.character_id = '$char_id' AND characters_weapons.location = 'EQUIPPED' ORDER BY weapon_name;");
 	if(mysqli_num_rows($result_weapon_on)) {
 		$weapon_res = mysqli_fetch_all($result_weapon_on);
 		$weapon_on = $weapon_res[0];
 	}
 
 	//get equipped armor
-	$armor_off = mysqli_query($con,"SELECT * FROM armor INNER JOIN characters_armor ON characters_armor.armor_id = armor.armor_id WHERE characters_armor.character_id = '$char_id' AND characters_armor.location <> 'EQUIPPED';");
+	$armor_off = mysqli_query($con,"SELECT * FROM armor INNER JOIN characters_armor ON characters_armor.armor_id = armor.armor_id WHERE characters_armor.character_id = '$char_id' AND characters_armor.location <> 'EQUIPPED' ORDER BY armor_name;");
 
 	//get equipped weapon
-	$weapon_off = mysqli_query($con,"SELECT * FROM weapons INNER JOIN characters_weapons ON characters_weapons.weapon_id = weapons.weapon_id WHERE characters_weapons.character_id = '$char_id' AND characters_weapons.location <> 'EQUIPPED';");
+	$weapon_off = mysqli_query($con,"SELECT * FROM weapons INNER JOIN characters_weapons ON characters_weapons.weapon_id = weapons.weapon_id WHERE characters_weapons.character_id = '$char_id' AND characters_weapons.location <> 'EQUIPPED' ORDER BY weapon_name;");
 
-	//get equipped weapon
-	$generic_items = mysqli_query($con,"SELECT * FROM generic_items INNER JOIN characters_generic_items ON characters_generic_items.generic_item_id = generic_items.generic_item_id WHERE characters_generic_items.character_id = '$char_id';");
+	//get generic items
+	$generic_items = mysqli_query($con,"SELECT * FROM generic_items INNER JOIN characters_generic_items ON characters_generic_items.generic_item_id = generic_items.generic_item_id WHERE characters_generic_items.character_id = '$char_id' ORDER BY generic_item_name;");
 
 ?>
 <!DOCTYPE html>
@@ -94,7 +94,8 @@ if (!$_SESSION["auth"]) {
 			<a href="upload_image.php?char=<?= $char_id; ?>">Upload Image</a> |
 			<a href="delete_character.php?char=<?= $char_id; ?>"
 			   onclick="return confirm('Are you sure you want to delete this character?')">Delete Character</a>
-		<?php
+			   
+		<p style="float:right;"><?php
 			}
 		// basic modifier calculations
 		$str_mod = attr_modifier($row["str_attr"]);
@@ -109,9 +110,9 @@ if (!$_SESSION["auth"]) {
 			$full_path = $dir . $row["image_path"];
 			echo "<img src=\"$full_path\" alt=\"Image of character\">";
 		} else {
-			echo "<p>No image uploaded for this character</p>";
+			echo "No image uploaded for this character";
 		}
-		?>
+		?></p>
 
 		<p>Level: <?= $row["character_level"]; ?></p>
 		<p>Strength: <?= $row["str_attr"]; ?></p>
@@ -267,22 +268,22 @@ if (!$_SESSION["auth"]) {
 				echo "<li>{$value["language_name"]}</li>\n";
 			}
 		} else {
-			echo "<li>No languages selected</li>";
+			echo "<li>No Languages Selected</li>";
 		}
 		?>
 		</ul>
 		<h3>Feats:</h3>
-		<ul>
+		<dl>
 		<?php
-		if (isset($feats)) {
+		if (!empty($feats)) {
 			foreach ($feats as $value){
-				echo "<li>{$value["feat_name"]}</li>\n";
+				echo "<dt class=\"exists\">{$value["feat_name"]}</dt><dd class=\"exists\">{$value["description"]}</dd>\n";
 			}
 		} else {
-			echo "<li>No feats selected</li>";
+			echo "<dt>No Feats Selected</dt>\n";
 		}
 		?>
-		</ul>
+		</dl>
 		<h3>Weapons:</h3>
 		<ul>
 			<?php

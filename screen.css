@@ -25,6 +25,24 @@ label {
 	margin: 0 0 5px 0;
 }
 
+dt {
+	display: list-item;
+    list-style-type: disc;
+	margin-left: 2.5em;
+}
+
+dt.exists {
+    font-weight: bold;
+}
+
+dt.exists:after {
+    content: ":";
+}
+
+dd.exists {
+    margin-left: 5em;
+}
+
 #header {
 	float: right;
 }

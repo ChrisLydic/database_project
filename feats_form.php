@@ -39,7 +39,7 @@ if ($result_feats) {
 }
 
 // If input exists, then store in database and go back to main page for character
-if (isset($_POST["feats"])) {
+if (isset($_POST["submitted"])) {
 	$feats = $_POST["feats"];
 	mysqli_query($con,"DELETE FROM characters_feats WHERE character_id='$char_id';");
 	foreach ( $feats as $key => $value ) {
@@ -54,7 +54,7 @@ if (isset($_POST["feats"])) {
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <link href="screen.css" rel="stylesheet" type="text/css" media="screen" />
-        <title><?= ("Edit feats of " . $character_name) ?></title>
+        <title>Edit Feats of <?= $character_name ?></title>
         <script type="text/javascript">
             //<![CDATA[
             //]]>
@@ -62,7 +62,7 @@ if (isset($_POST["feats"])) {
     </head>
     <body>
     <?php require("header.php"); ?>
-    <h1><?= ("Edit feats of " . $character_name) ?></h1>
+    <h1>Edit Feats of <?= $character_name ?></h1>
     <form name="form" method="post">
 		<?php
 			foreach ($feat_array as $key => $value) {
@@ -71,6 +71,7 @@ if (isset($_POST["feats"])) {
 		<?php
 			}
 		?>
+		<input type="hidden" name="submitted" value="1" />
         <input type="submit" value="Submit" />
     </form>
     </body>

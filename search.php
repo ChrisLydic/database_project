@@ -10,15 +10,10 @@ if (!$_SESSION["auth"]) {
 	} else {
 		$query = "";
 	}
-	if (isset($_POST["search_type"])) {
-		$search_type = $_POST["search_type"];
-	} else {
-		$search_type = "character";
-	}
-
+	
 	require("db_open.php");
 
-	$result = mysqli_query($con, "SELECT character_name, character_id FROM characters WHERE character_name like '%$query%'");
+	$result = mysqli_query($con, "SELECT character_name, character_id FROM characters WHERE character_name like '%$query%' ORDER BY character_name");
 	if ($result) {
 		$empty_result = false;
 		$results = array();
@@ -45,13 +40,7 @@ if (!$_SESSION["auth"]) {
 		<h1>Search</h1>
 
 		<form name="form" method="post">
-			<input name="query" type="search">
-
-			<select name="search_type">
-				<option value="character">Characters</option>
-				<option value="item">Items</option>
-			</select>
-
+			<input name="query" type="search" value="<?= isset($_POST["query"]) ? $_POST["query"] : ""?>">
 			<input type="submit" value="Search">
 		</form>
 
