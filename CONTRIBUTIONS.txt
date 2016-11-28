@@ -1,0 +1,4 @@
+Alex Hedges: database contents; skills; feats; languages; AJAX search
+Christopher Lydic: character creation and editing; search; adding, equiping, modifying, and removing items; 
+Pushpinder Singh: character display; skills; image support
+Rebecca Brown: random character generation; some formatting

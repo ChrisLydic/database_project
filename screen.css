@@ -5,6 +5,7 @@
 	being too spread out and centered it.
 */
 body {
+	background-color: #F1E1B1; /* Base color: variation of wheat */
 	width: 90%;
 	max-width: 1000px;
 	margin-left: auto;

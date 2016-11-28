@@ -59,6 +59,19 @@ if (isset($_POST["submitted"])) {
             //<![CDATA[
             //]]>
         </script>
+		<style>
+			input {
+				margin: 0;
+				display: inline;
+			}
+			.description {
+				margin: 0;
+			}
+			.prerequisites {
+				margin: 0;
+				margin-bottom: 1.5em;
+			}
+		</style>
     </head>
     <body>
     <?php require("header.php"); ?>
@@ -67,7 +80,9 @@ if (isset($_POST["submitted"])) {
 		<?php
 			foreach ($feat_array as $key => $value) {
 		?>
-			<label><input type="checkbox" name="feats[]" value="<?php echo $value["feat_id"]; ?>" <?= (isset($char_feats) && in_array($value["feat_id"], $char_feats)) ? "checked=\"checked\"" : "" ?> style="display:inline;"/> <?php echo $value["feat_name"]; ?></label>
+			<label><input type="checkbox" name="feats[]" value="<?= $value["feat_id"] ?>" <?= (isset($char_feats) && in_array($value["feat_id"], $char_feats)) ? "checked=\"checked\"" : "" ?>/> <?= $value["feat_name"] ?></label>
+			<p class="description">Description: <?= $value["description"] ?></p>
+			<p class="prerequisites">Prerequisites: <?= !empty($value["prerequisites"]) ? $value["prerequisites"] : "None" ?></p>
 		<?php
 			}
 		?>

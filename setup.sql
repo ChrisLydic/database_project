@@ -1,4 +1,5 @@
 DROP DATABASE IF EXISTS rpg;
+DROP DATABASE IF EXISTS rpg;
 
 CREATE DATABASE rpg DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE rpg;
@@ -210,7 +211,7 @@ INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Dodge', 'Dex 
 INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Mobility', 'Dodge', '+4 dodge bonus to AC against some attacks of opportunity');
 INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Spring Attack', 'Mobility, base attack bonus +4', 'Move before and after melee attack');
 INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Endurance', '', '+4 bonus on checks or saves to resist nonlethal damage');
-INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Diehard', 'Endurance', 'Remain conscious at –1 to –9 hp');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Diehard', 'Endurance', 'Remain conscious at -1 to -9 hp');
 INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Eschew Materials', '', 'Cast spells without material components');
 INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Exotic Weapon Proficiency', 'Base attack bonus +1', 'No penalty on attacks with specific exotic weapon');
 INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Extra Turning', 'Ability to turn or rebuke creatures', 'Can turn or rebuke 4 more times per day');
@@ -241,7 +242,7 @@ INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Nimble Finger
 INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Persuasive', '', '+2 bonus on Bluff checks and Intimidate checks');
 INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Point Blank Shot', '', '+1 bonus on ranged attack and damage within 30 ft.');
 INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Far Shot', 'Point Blank Shot', 'Increase range increment by 50% or 100%');
-INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Precise Shot', 'Point Blank Shot', 'No –4 penalty for shooting into melee');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Precise Shot', 'Point Blank Shot', 'No -4 penalty for shooting into melee');
 INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Rapid Shot', 'Dex 13, Point Blank Shot', 'One extra ranged attack each round');
 INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Manyshot', 'Dex 17, Point Blank Shot, Rapid Shot, base attack bonus +6', 'Shoot two or more arrows simultaneously');
 INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Shot on the Run', 'Dex 13, Dodge, Mobility, Point Blank Shot, base attack bonus +4', 'Move before and after ranged attack');
@@ -260,7 +261,7 @@ INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Self-Sufficie
 INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Shield Proficiency', '', 'No armor check penalty on attack rolls');
 INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Improved Shield Bash', 'Shield Proficiency', 'Retain shield bonus to AC when shield bashing');
 INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Tower Shield Proficiency', 'Shield Proficiency', 'No armor check penalty on attack rolls');
-INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Simple Weapon Proficiency', '', 'No –4 penalty on attack rolls with simple weapons');
+INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Simple Weapon Proficiency', '', 'No -4 penalty on attack rolls with simple weapons');
 INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Skill Focus', '', '+3 bonus on checks with selected skill');
 INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Spell Focus', '', '+1 bonus on save DCs against specific school of magic');
 INSERT INTO feats (feat_name, prerequisites, description) VALUES ('Greater Spell Focus', '', '+1 bonus on save DCs against specific school of magic');
