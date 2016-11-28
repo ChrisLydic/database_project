@@ -18,63 +18,28 @@ if (isset($_GET["mode"]) && $_GET["mode"] == "edit")
 require("db_open.php");
 require("character_utils.php");
 
+$class_big_array = array();
 $class_array = array();
+$race_big_array = array();
 $race_array = array();
 
 // Get the array of classes
-$class_array = mysqli_fetch_all(mysqli_query($con, "SELECT class_id, class_name FROM classes;"), MYSQLI_ASSOC);
+$class_big_array = mysqli_fetch_all(mysqli_query($con, "SELECT class_id, class_name FROM classes;"), MYSQLI_ASSOC);
+foreach($class_big_array as $key=>$value){
+	array_push($class_array, $value["class_name"]);
+}
 // Get the length of the class array
 $class_length = count($class_array);
 
 // Get the array of races
-$race_array = mysqli_fetch_all(mysqli_query($con, "SELECT race_id, race_name FROM races;"), MYSQLI_ASSOC);
+$race_big_array = mysqli_fetch_all(mysqli_query($con, "SELECT race_id, race_name FROM races;"), MYSQLI_ASSOC);
+foreach($race_big_array as $key=>$value){
+	array_push($race_array, $value["race_name"]);
+}
 // Get the length of the race array
 $race_length = count($race_array);
 
-/*
-	Need:
-		Name:
-			Random from names file based on race
-		Level:
-			1
-		Strength, Dexterity, Constitution, Intelligence, Wisdom, Charisma:
-			Roll 4d6, drop lowest. (Can be optimized later but for base, this works)
-		Weight:
-			Based on race and gender
-		Height:
-			Based on race and gender
-		Age:
-			Based on race and class
-		Religion:
-			Random from deities file.
-		Gender:
-			Male of Female.
-		Class:
-			Random class from the array.
-		Race:
-			Random race from the arraay.
-		Hit Points:
-			Based on class, add const modifier.
-		Alignment: (not in database, have to manually set name.)
-			Base pure random, future based on table. Maybe put restrictions.
-		Money:
-			Based on class. Add to the database. Page #111 in the pdf.
 
-	Order:
-		Level,
-		Stats,
-		Religion,
-		Gender,
-		Class,
-		Race,
-		Name,
-		Weight,
-		Height,
-		Age,
-		Hit Points,
-		Alignment,
-		Money
-*/
 
 // Level
 $level = 1;
@@ -85,7 +50,7 @@ function roll_dice($numDice, $diceType){
 	for($i = 0; $i < $numDice; $i++){
 		$total += rand(1, $diceType);
 	}
-	return $total
+	return $total;
 }
 
 // Stats
@@ -110,7 +75,7 @@ $str = roll_stats();
 // Dexterity
 $dex = roll_stats();
 // Constitution
-$cons = roll_stats();
+$const = roll_stats();
 // Intelligence
 $int = roll_stats();
 // Wisdom
@@ -120,7 +85,7 @@ $cha = roll_stats();
 
 // Religion
 // Read the religions into an array
-$religion_array = file("heities.txt", FILE_IGNORE_NEW_LINES);
+$religion_array = file("deities.txt", FILE_IGNORE_NEW_LINES);
 // Grab a random index in the array
 $rand_index = rand(0, count($religion_array));
 $religion = $religion_array[$rand_index];
@@ -139,73 +104,149 @@ if($rand_index == 0){
 
 // Class
 // Grab a random class from the array
-$class_id = rand(0, $class_length);
-$class = class_array[$rand_index];
+$class_id = rand(1, $class_length + 1);
+$class = $class_array[$class_id - 1];
 
 // Race
 // Grab a random class from the array
-$race_id = rand(0, $race_length);
-$race = race_array[$rand_index];
+$race_id = rand(1, $race_length + 1);
+$race = $race_array[$race_id - 1];
 
 // Name - may be a bit difficult
 $name = "Noname";
+$name_file = "";
+$last_name_file = "";
+// For half breeds
+$choice = 0;
+switch ($race){
+	case "Human":
+		$name_file = "human_names.txt";
+	break;
+	case "Dwarf":
+		$name_file = "dwarven_names.txt";
+		$last_name_file = "dwarven_clan_names.txt";
+	break;
+	case "Elf":
+		$name_file = "elven_names.txt";
+		$last_name_file = "elven_family_names.txt";
+	break;
+	case "Gnome":
+		$name_file = "gnome_names.txt";
+		$last_name_file = "gnome_clan_names.txt";
+	break;
+	case "Half-elf":
+		// Half elf go with either human or elf
+		$choice = rand(1,2);
+		if($choice == 1){
+			//Human
+			$name_file = "human_names.txt";
+		} else {
+			// Elf
+			$name_file = "elven_names.txt";
+			$last_name_file = "elven_family_names.txt";
+		}
+	break;
+	case "Half-orc":
+		// Half orc go with either human or orc
+		$choice = rand(1, 2);
+		if($choice == 1){
+			// Human
+			$name_file = "human_names.txt";
+		} else {
+			// Orc
+			$name_file = "orc_names.txt";
+		}
+	break;
+	case "Halfling":
+		$name_file = "halfling_names.txt";
+	break;
+}
+// Read the file into an array
+$first_name_array = file($name_file, FILE_IGNORE_NEW_LINES);
+// Get a random index from the array
+$rand_index = rand(0, count($first_name_array));
+$name = $first_name_array[$rand_index];
+
+if($last_name_file != ""){
+	// Read into array
+	$last_name_array = file($last_name_file, FILE_IGNORE_NEW_LINES);
+	// Get random index out of the array
+	$rand_index = rand(0, count($last_name_array));
+	$name = $name . " " . $last_name_array[$rand_index];
+}
+
+
+
 
 // Weight - based on race and gender
 $w_h_result = mysqli_query($con, "SELECT * FROM r_heights_weights WHERE race_id='$race_id' AND gender='$gender'");
-$w_h_info = mysqli_fetch_array($w_h_result, MYSQLI_NUM);
+$w_h_info = mysqli_fetch_array($w_h_result);
 // 0		1		2		3		4			5		6		7
 // race_id	gender	base_h	#dice_h	d_type_h	base_w	#dice_w	d_type_w
 
-$weight = $w_h_info[5] + roll_dice($w_h_info[6], w_h_info[7]);
+$weight = $w_h_info["base_weight"] + roll_dice($w_h_info["num_dice_weight"], $w_h_info["sides_dice_weight"]);
 
 // Height - based on race and gender
-$height = $w_h_info[2] + roll_dice($w_h_info[3], w_h_info[4]);
+$height = $w_h_info["base_height"] + roll_dice($w_h_info["num_dice_height"], $w_h_info["sides_dice_height"]);
 
 // Age - based on race and class
-$base_age = mysqli_query($con, "SELECT base_age FROM r_base_ages WHERE race_id='$race_id'");
-$class_type = mysqli_query($con, "SELECT class_type_id FROM r_class_types WHERE class_id='$class_id'");
-$age_info = mysqli_fetch_array(mysqli_query($con, "SELECT * from r_additional_ages WHERE race_id='$race_id' AND class_id='$class_id'"),MYSQLI_NUM);
-$age = $base_age + roll_dice($age_info[2], $age_info[3]);
+$base_age_result = mysqli_fetch_array(mysqli_query($con, "SELECT base_age FROM r_base_ages WHERE race_id='$race_id'"));
+$base_age = $base_age_result["base_age"];
+
+$class_type_result = mysqli_fetch_array(mysqli_query($con, "SELECT class_type_id FROM r_class_types WHERE class_id='$class_id'"));
+$class_type = $class_type_result["class_type_id"];
+
+$age_result = mysqli_query($con, "SELECT * from r_additional_ages WHERE race_id='$race_id' AND class_type_id='$class_type'");
+$age_info = mysqli_fetch_array($age_result);
+$age = $base_age + roll_dice($age_info["num_dice"], $age_info["sides_dice"]);
 
 // Hit Points - based on class, add const modifier
+$hit_dice_result = mysqli_fetch_array(mysqli_query($con, "SELECT hd FROM classes WHERE class_id='class_id'"));
+$hit_dice = $hit_dice_result["hd"];
 
+$const_mod = $const - 10;
+if($const_mod < 0) {
+	$const_mod == 0;
+} else
+$hit_points = roll_dice(1, $hit_dice) + $const;
 
 // Alignment - random.
 // Function to take care of setting the alignment
-function set_alignment{
+function set_alignment(){
 	$align_num = rand(0, 8);
-	$alignment = "";
 	// set the alignment based on the number rolled
 	switch($align_num){
 		case 0:
-			$alignment = "Lawful Good";
+			$alignment = "LG";
 		break;
 		case 1:
-			$alignment = "Neutral Good";
+			$alignment = "NG";
 		break;
 		case 2:
-			$alignment = "Chaotic Good";
+			$alignment = "CG";
 		break;
 		case 3:
-			$alignment = "Lawful Neutral";
+			$alignment = "LN";
 		break;
 		case 4:
-			$alignment = "Neutral";
+			$alignment = "N";
 		break;
 		case 5:
-			$alignment = "Chaotic Neutral";
+			$alignment = "CN";
 		break;
 		case 6:
-			$alignment = "Lawful Evil";
+			$alignment = "LE";
 		break;
 		case 7:
-			$alignment = "Neutral Evil";
+			$alignment = "NE";
 		break;
 		case 8:
-			$alignment = "Chaotic Evil";
+			$alignment = "CE";
 		break;
 	}
+	return $alignment;
 }
+$alignment = "";
 $alignment = set_alignment();
 // Later, if we add restrictions to the alignment based on class/race, it can
 // be reset until it has the correct alignment.
@@ -245,101 +286,71 @@ switch ($class){
 if($class != "Monk"){
 	$money *= 10;
 }
-	
-	
 
+$form_array = array();
+$form_array["character_name"] = mysqli_real_escape_string($con, $name);
+$form_array["character_level"] = intval($level);
+$form_array["str_attr"] = intval($str);
+$form_array["int_attr"] = intval($int);
+$form_array["cha_attr"] = intval($cha);
+$form_array["con_attr"] = intval($const);
+$form_array["dex_attr"] = intval($dex);
+$form_array["wis_attr"] = intval($wis);
+$form_array["weight"] = intval($weight);
+$form_array["height"] = intval($height);
+$form_array["age"] = intval($age);
+$form_array["religion"] = mysqli_real_escape_string($con, $religion);
+$form_array["gender"] = mysqli_real_escape_string($con, $gender);
+$form_array["char_class"] = intval($class_id);
+$form_array["race"] = intval($race_id);
+$form_array["hit_points"] = intval($hit_points);
+$form_array["alignment"] = mysqli_real_escape_string($con, $alignment);
+$form_array["money"] = floatval($money);
 
-
-
-
-
-if ($edit) {
-	if (isset($_GET["char"])) {
-		$charId = $_GET["char"];
-	} else {
-		header("Location: error.php");
-	}
-
-	if (isset($_SESSION["allowed"][$charId])) {
-		require("db_open.php");
-		$result = mysqli_query($con, "SELECT * FROM characters WHERE character_id='$charId'");
-		$row = mysqli_fetch_array($result);
-
-		$result_class = mysqli_query($con, "SELECT class_name FROM classes WHERE class_id='{$row["char_class"]}' ;");
-		if ($result_class) {
-			$class_row = mysqli_fetch_array($result_class);
-			$_SESSION["class"] = $class_row["class_name"];
-		}
-
-		$result_race = mysqli_query($con, "SELECT race_name FROM races WHERE race_id='{$row["race"]}' ;");
-		if ($result_race) {
-			$race_row = mysqli_fetch_array($result_race);
-			$_SESSION["race"] =  $race_row["race_name"];
-		}
-	} else {
-		header("Location: error.php");
-	}
+$res = mysqli_query($con, "SELECT user_id FROM users WHERE username = '{$_SESSION["user"]}' ;");
+if ($res) {
+	$row = mysqli_fetch_array($res);
+	$form_array["user_id"] = $row["user_id"];
+} else {
+	header("Location: index.php");
 }
-	
-if ($is_form_full) {
-	$form_array = array();
-	$form_array["character_name"] = mysqli_real_escape_string($con, $_POST["character_name"]);
-	$form_array["character_level"] = intval($_POST["character_level"]);
-	$form_array["str_attr"] = intval($_POST["str_attr"]);
-	$form_array["int_attr"] = intval($_POST["int_attr"]);
-	$form_array["cha_attr"] = intval($_POST["cha_attr"]);
-	$form_array["con_attr"] = intval($_POST["con_attr"]);
-	$form_array["dex_attr"] = intval($_POST["dex_attr"]);
-	$form_array["wis_attr"] = intval($_POST["wis_attr"]);
-	$form_array["weight"] = intval($_POST["weight"]);
-	$form_array["height"] = intval($_POST["height"]);
-	$form_array["age"] = intval($_POST["age"]);
-	$form_array["religion"] = mysqli_real_escape_string($con, $_POST["religion"]);
-	$form_array["gender"] = mysqli_real_escape_string($con, $_POST["gender"]);
-	$form_array["char_class"] = intval($_POST["char_class"]);
-	$form_array["race"] = intval($_POST["race"]);
-	$form_array["hit_points"] = intval($_POST["hit_points"]);
-	$form_array["alignment"] = mysqli_real_escape_string($con, $_POST["alignment"]);
-	$form_array["money"] = floatval($_POST["money"]);
 
-	$res = mysqli_query($con, "SELECT user_id FROM users WHERE username = '{$_SESSION["user"]}' ;");
-	if ($res) {
-		$row = mysqli_fetch_array($res);
-		$form_array["user_id"] = $row["user_id"];
-	} else {
-		header("Location: index.php");
-	}
+if (is_valid($con, $form_array)) {
+	$insert_str = "INSERT INTO characters (";
+	$values_str = "VALUES (";
 
-	if (is_valid($con, $form_array)) {
-		if ($edit)
-		{
-			$set_str = "";
-			foreach ( $form_array as $key => $value ) {
-				if ( $key === "user_id" ) {
-					$set_str = $set_str . $key . "='" . $value . "' ";
-				} else {
-					$set_str = $set_str . $key . "='" . $value . "', ";
-				}
-			}
-			mysqli_query($con, "UPDATE characters SET $set_str WHERE character_id=$charId;");
-			header("Location: character.php?" . http_build_query($_GET)); # TODO Fix to not add edit to URL
+	foreach ( $form_array as $key => $value ) {
+		if ( $key === "user_id" ) {
+			$insert_str = $insert_str . $key . ")";
+			$values_str = $values_str . "'" . $value . "')";
 		} else {
-			$insert_str = "INSERT INTO characters (";
-			$values_str = "VALUES (";
-
-			foreach ( $form_array as $key => $value ) {
-				if ( $key === "user_id" ) {
-					$insert_str = $insert_str . $key . ")";
-					$values_str = $values_str . "'" . $value . "')";
-				} else {
-					$insert_str = $insert_str . $key . ",";
-					$values_str = $values_str . "'" . $value . "',";
-				}
-			}
-			$newChar = mysqli_multi_query($con, "$insert_str $values_str");
-			header("Location: index.php");
+			$insert_str = $insert_str . $key . ",";
+			$values_str = $values_str . "'" . $value . "',";
 		}
-	} # doesn't do anything if invalid because invalid form data would require user to subvert html form
+	}
+	$newChar = mysqli_multi_query($con, "$insert_str $values_str");
+	header("Location: index.php");
+} # doesn't do anything if invalid because invalid form data would require user to subvert html form
+else{
+	echo "User: " . $form_array["user_id"]  . "\n";
+	echo "Name: " . $form_array["character_name"] . "\n";
+	echo "Level: " . $form_array["character_level"] . "\n";
+	echo "Strength: " . $form_array["str_attr"] . "\n";
+	echo "Intelligence: " . $form_array["int_attr"] . "\n";
+	echo "Charisma: " . $form_array["cha_attr"] . "\n";
+	echo "Constitution: " . $form_array["con_attr"] . "\n";
+	echo "Dexterity: " . $form_array["dex_attr"] . "\n";
+	echo "Wisdom: " . $form_array["wis_attr"] . "\n";
+	echo "Weight: " . $form_array["weight"] . "\n";
+	echo "Height: " . $form_array["height"] . "\n";
+	echo "Age: " . $form_array["age"] . "\n";
+	echo "Religion: " . $form_array["religion"] . "\n";
+	echo "Gender: " . $form_array["gender"] . "\n";
+	echo "Class: " . $form_array["char_class"] . "\n";
+	echo "Race: " . $form_array["race"] . "\n";
+	echo "HP: " . $form_array["hit_points"] . "\n";
+	echo "Alignment: " . $form_array["alignment"] . "\n";
+	echo "Money: " . $form_array["money"] . "\n";
 }
 ?>
 <!DOCTYPE html>
@@ -357,94 +368,9 @@ if ($is_form_full) {
 	</head>
 	<body>
 		<?php require("header.php"); ?>
-		<h1><?php echo ($edit ? "Edit " . $row["character_name"] : "Create Character") ?></h1>
+		<h1>Random Character</h1>
 
-		<form name="form" method="post">
-
-			<label for="character_name">Name:</label>
-			<input type="text" name="character_name" placeholder="Name" maxlength="50" required="required" value="<?php echo ($edit ? $row["character_name"] : "") ?>">
-			
-			<label for="character_level">Level:</label>
-			<input type="number" name="character_level" required="required" value="<?php echo ($edit ? $row["character_level"] : 1) ?>" min="1" max="<?php echo PHP_INT_MAX ?>">
-			
-			<label for="str_attr">Strength:</label>
-			<input type="number" name="str_attr" value="<?php echo ($edit ? $row["str_attr"] : 0) ?>" min="0" max="<?php echo PHP_INT_MAX ?>">
-			
-			<label for="dex_attr">Dexterity:</label>
-			<input type="number" name="dex_attr" value="<?php echo ($edit ? $row["dex_attr"] : 0) ?>" min="0" max="<?php echo PHP_INT_MAX ?>">
-			
-			<label for="con_attr">Constitution:</label>
-			<input type="number" name="con_attr" value="<?php echo ($edit ? $row["con_attr"] : 0) ?>" min="0" max="<?php echo PHP_INT_MAX ?>">
-			
-			<label for="int_attr">Intelligence:</label>
-			<input type="number" name="int_attr" value="<?php echo ($edit ? $row["int_attr"] : 0) ?>" min="0" max="<?php echo PHP_INT_MAX ?>">
-			
-			<label for="wis_attr">Wisdom:</label>
-			<input type="number" name="wis_attr" required="required" value="<?php echo ($edit ? $row["wis_attr"] : 1) ?>" min="1" max="<?php echo PHP_INT_MAX ?>">
-			
-			<label for="cha_attr">Charisma:</label>
-			<input type="number" name="cha_attr" required="required" value="<?php echo ($edit ? $row["cha_attr"] : 1) ?>" min="1" max="<?php echo PHP_INT_MAX ?>">
-			
-			<label for="weight">Weight (pounds):</label>
-			<input type="number" name="weight" value="<?php echo ($edit ? $row["weight"] : 0) ?>" min="0" max="<?php echo PHP_INT_MAX ?>">
-			
-			<label for="height">Height (inches):</label>
-			<input type="number" name="height" value="<?php echo ($edit ? $row["height"] : 0) ?>" min="0" max="<?php echo PHP_INT_MAX ?>">
-			
-			<label for="age">Age:</label>
-			<input type="number" name="age" value="<?php echo ($edit ? $row["age"] : 0) ?>" min="0" max="<?php echo PHP_INT_MAX ?>">
-			
-			<label for="religion">Religion:</label>
-			<input type="text" name="religion" placeholder="Religion" maxlength="20" required="true" value="<?php echo ($edit ? $row["religion"] : "") ?>">
-
-			<label for="gender">Gender:</label>
-			<input type="text" name="gender" placeholder="Gender" maxlength="10" required="true" value="<?php echo ($edit ? $row["gender"] : "") ?>">
-
-			<label for="char_class">Class:</label>
-			<select name="char_class" required="required">
-				<?php
-					$array = $_SESSION["classes"];
-					foreach ($array as $key => $value) {
-				?>
-					<option value="<?php echo $key; ?>" <?php echo ($key == $row["char_class"] ? "selected=\"selected\"" : "") ?>><?php echo $value; ?></option>
-				<?php
-					}
-				?>
-			</select>
-
-			<label for="race">Race:</label>
-			<select name="race" required="required">
-				<?php
-					$array = $_SESSION["races"];
-					foreach ($array as $key => $value) {
-				?>
-					<option value="<?php echo $key; ?>" <?php echo ($key == $row["race"] ? "selected=\"selected\"" : "") ?>><?php echo $value; ?></option>
-				<?php
-					}
-				?>
-			</select>
-
-			<label for="hit_points">Hit Points:</label>
-			<input type="number" name="hit_points" required="required" value="<?php echo ($edit ? $row["hit_points"] : 0) ?>" min="<?php echo PHP_INT_MIN ?>" max="<?php echo PHP_INT_MAX ?>">
-
-			<label for="alignment">Alignment:</label>
-			<select name="alignment" required="required">
-				<option value="LG" <?php echo ("LG" == $row["alignment"] ? "selected=\"selected\"" : "") ?>>Lawful Good</option>
-				<option value="NG" <?php echo ("NG" == $row["alignment"] ? "selected=\"selected\"" : "") ?>>Neutral Good</option>
-				<option value="CG" <?php echo ("CG" == $row["alignment"] ? "selected=\"selected\"" : "") ?>>Chaotic Good</option>
-				<option value="LN" <?php echo ("LN" == $row["alignment"] ? "selected=\"selected\"" : "") ?>>Lawful Neutral</option>
-				<option value="N" <?php echo ("N" == $row["alignment"] ? "selected=\"selected\"" : "") ?>>Neutral</option>
-				<option value="CN" <?php echo ("CN" == $row["alignment"] ? "selected=\"selected\"" : "") ?>>Chaotic Neutral</option>
-				<option value="LE" <?php echo ("LE" == $row["alignment"] ? "selected=\"selected\"" : "") ?>>Lawful Evil</option>
-				<option value="NE" <?php echo ("NE" == $row["alignment"] ? "selected=\"selected\"" : "") ?>>Neutral Evil</option>
-				<option value="CE" <?php echo ("CE" == $row["alignment"] ? "selected=\"selected\"" : "") ?>>Chaotic Evil</option>
-			</select>
-
-			<label for="money">Money:</label>
-			<input type="number" name="money" required="required" value="<?php echo ($edit ? $row["money"] : 0) ?>" min="0" max="<?php echo PHP_INT_MAX ?>" step="0.01">
-			<input type="submit" value="Submit" />
-
-		</form>
+		Generating Random character.
 	</body>
 </html>
 <?php
