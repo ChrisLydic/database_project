@@ -5,27 +5,6 @@ if (!$_SESSION["auth"]) {
 	$_SESSION["auth"] = false;
 	header("Location: log_in.php");
 } else {
-	if (isset($_POST["query"])) {
-		$query = $_POST["query"];
-	} else {
-		$query = "";
-	}
-	
-	require("db_open.php");
-
-	$result = mysqli_query($con, "SELECT character_name, character_id FROM characters WHERE character_name like '%$query%' ORDER BY character_name");
-	if ($result) {
-		$empty_result = false;
-		$results = array();
-		while($row = mysqli_fetch_array($result)) {
-			$results[$row["character_id"]] = $row["character_name"];
-		}
-
-		if (sizeof($results) === 0) {
-			$empty_result = true;
-		}
-	}
-	
 ?>
 <!DOCTYPE html>
 <html lang="en" xml:lang="en">
@@ -33,41 +12,43 @@ if (!$_SESSION["auth"]) {
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<link href="screen.css" rel="stylesheet" type="text/css" media="screen" />
 		<title>Search</title>
+		<script type="text/javascript">
+            //<![CDATA[
+			function showResult() {
+				str = document.getElementById("query").value;
+				if (str.length==0) {
+					document.getElementById("results").innerHTML="";
+					return;
+				}
+				if (window.XMLHttpRequest) {
+					// code for IE7+, Firefox, Chrome, Opera, Safari
+					xmlhttp=new XMLHttpRequest();
+				} else {  // code for IE6, IE5
+					xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+				}
+				xmlhttp.onreadystatechange=function() {
+					if (this.readyState==4 && this.status==200) {
+						document.getElementById("results").innerHTML=this.responseText;
+					}
+				}
+				xmlhttp.open("GET","search_server.php?q="+str,true);
+				xmlhttp.send();
+			}
+            //]]>
+        </script>
 	</head>
 	<body>
 		<?php require("header.php"); ?>
 
 		<h1>Search</h1>
 
-		<form name="form" method="post">
-			<input name="query" type="search" value="<?= isset($_POST["query"]) ? $_POST["query"] : ""?>">
-			<input type="submit" value="Search">
+		<form name="form">
+			<input id="query" name="query" type="search" onkeyup="showResult();"/>
 		</form>
-
-		<?php
-		if(isset($results)) {
-		?>
+		
 		<h2>Results:</h2>
 
-		<?php
-		if($empty_result) {
-		?>
-		<p>No results found.</p>
-		<?php
-		} else {
-		?>
-		<ul>
-			<?php
-			foreach ($results as $key => $value) {
-				?>
-				<li><a href="character.php?char=<?php echo $key; ?>"><?php echo $value; ?></a></li>
-				<?php
-			}
-			?>
-		</ul>
-		<?php
-		}}
-		?>
+		<div id="results"></div>
 
 	</body>
 </html>

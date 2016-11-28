@@ -87,8 +87,8 @@ $cha = roll_stats();
 // Read the religions into an array
 $religion_array = file("random\\deities.txt", FILE_IGNORE_NEW_LINES);
 // Grab a random index in the array
-$rand_index = rand(0, count($religion_array));
-$religion = $religion_array[$rand_index];
+$rand_index = rand(1, count($religion_array));
+$religion = $religion_array[$rand_index - 1];
 
 
 // Gender
