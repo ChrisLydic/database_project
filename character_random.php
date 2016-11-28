@@ -85,7 +85,7 @@ $cha = roll_stats();
 
 // Religion
 // Read the religions into an array
-$religion_array = file("deities.txt", FILE_IGNORE_NEW_LINES);
+$religion_array = file("random\\deities.txt", FILE_IGNORE_NEW_LINES);
 // Grab a random index in the array
 $rand_index = rand(0, count($religion_array));
 $religion = $religion_array[$rand_index];
@@ -104,12 +104,12 @@ if($rand_index == 0){
 
 // Class
 // Grab a random class from the array
-$class_id = rand(1, $class_length + 1);
+$class_id = rand(1, $class_length);
 $class = $class_array[$class_id - 1];
 
 // Race
 // Grab a random class from the array
-$race_id = rand(1, $race_length + 1);
+$race_id = rand(1, $race_length);
 $race = $race_array[$race_id - 1];
 
 // Name - may be a bit difficult
@@ -121,19 +121,19 @@ $choice = 0;
 switch ($race){
 	case "Human":
 		$name_file = "human_names.txt";
-	break;
+		break;
 	case "Dwarf":
 		$name_file = "dwarven_names.txt";
 		$last_name_file = "dwarven_clan_names.txt";
-	break;
+		break;
 	case "Elf":
 		$name_file = "elven_names.txt";
 		$last_name_file = "elven_family_names.txt";
-	break;
+		break;
 	case "Gnome":
 		$name_file = "gnome_names.txt";
 		$last_name_file = "gnome_clan_names.txt";
-	break;
+		break;
 	case "Half-elf":
 		// Half elf go with either human or elf
 		$choice = rand(1,2);
@@ -145,7 +145,7 @@ switch ($race){
 			$name_file = "elven_names.txt";
 			$last_name_file = "elven_family_names.txt";
 		}
-	break;
+		break;
 	case "Half-orc":
 		// Half orc go with either human or orc
 		$choice = rand(1, 2);
@@ -156,27 +156,24 @@ switch ($race){
 			// Orc
 			$name_file = "orc_names.txt";
 		}
-	break;
+		break;
 	case "Halfling":
 		$name_file = "halfling_names.txt";
-	break;
+		break;
 }
 // Read the file into an array
-$first_name_array = file($name_file, FILE_IGNORE_NEW_LINES);
+$first_name_array = file("random\\".$name_file, FILE_IGNORE_NEW_LINES);
 // Get a random index from the array
 $rand_index = rand(0, count($first_name_array));
 $name = $first_name_array[$rand_index];
 
 if($last_name_file != ""){
 	// Read into array
-	$last_name_array = file($last_name_file, FILE_IGNORE_NEW_LINES);
+	$last_name_array = file("random\\".$last_name_file, FILE_IGNORE_NEW_LINES);
 	// Get random index out of the array
 	$rand_index = rand(0, count($last_name_array));
 	$name = $name . " " . $last_name_array[$rand_index];
 }
-
-
-
 
 // Weight - based on race and gender
 $w_h_result = mysqli_query($con, "SELECT * FROM r_heights_weights WHERE race_id='$race_id' AND gender='$gender'");
@@ -352,27 +349,6 @@ else{
 	echo "Alignment: " . $form_array["alignment"] . "\n";
 	echo "Money: " . $form_array["money"] . "\n";
 }
-?>
-<!DOCTYPE html>
-<html lang="en" xml:lang="en">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<link href="screen.css" rel="stylesheet" type="text/css" media="screen" />
-		<title><?php echo ($edit ? "Edit " . $row["character_name"] : "Create Character") ?></title>
-		<script type="text/javascript">
-		//<![CDATA[
-//			function validateForm() {
-//			}
-		//]]>
-		</script>
-	</head>
-	<body>
-		<?php require("header.php"); ?>
-		<h1>Random Character</h1>
 
-		Generating Random character.
-	</body>
-</html>
-<?php
 mysqli_close($con);
 ?>
