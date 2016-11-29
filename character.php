@@ -227,9 +227,8 @@ if (!$_SESSION["auth"]) {
 				//skill has no effect
 				unset($mod);
 			}else {
-				$result_skills_races = mysqli_query($con,"SELECT * FROM skills_races WHERE skill_id = '{$value["skill_id"]}' and race_id = '{$row["race"]}'");
+				$result_skills_races = mysqli_query($con,"SELECT * FROM skills_races WHERE skill_id = '{$value["skill_id"]}' AND race_id = '{$row["race"]}'");
 				$skills_races = mysqli_fetch_array($result_skills_races);
-				print_r($skills_races);
 				if ($value["attribute"] == "INT") {
 					$mod = $int_mod;
 				} elseif ($value["attribute"] == "DEX") {
