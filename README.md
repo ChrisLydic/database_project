@@ -43,10 +43,3 @@ This README describes the set-up and guidelines for Team Null's project for CSCI
 	    * All JavaScript in external files and `<script>` tags should begin with `"use strict";`.
 	    * Follow [Google JavaScript Style Guide](https://google.github.io/styleguide/javascriptguide.xml) unless it conflicts with the above.
 * Other guidelines
-
-### Contact ###
-
-* Team Leader: Alex Hedges (aph3032@rit.edu)
-* Design Engineer: Christopher Lydic (cxl9041@rit.edu)
-* Test Engineer: Pushpinder Singh (pxs7613@rit.edu)
-* UI Engineer: Rebecca Brown (rb8715@rit.edu)
